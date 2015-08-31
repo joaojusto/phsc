@@ -1,0 +1,975 @@
+
+
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+	<script type="text/javascript">
+window.TSMark = function(mark_label) {
+	if (!true || !window.performance || !window.performance.mark) return;
+	performance.mark(mark_label);
+}
+TSMark('start_load');
+window.TSMeasureAndBeacon = function(measure_label, start_mark_label) {
+	if (!true || !window.performance || !window.performance.mark || !window.performance.measure) return;
+	performance.mark(start_mark_label + '_end');
+	try {
+		performance.measure(measure_label, start_mark_label, start_mark_label + '_end');
+		(new Image()).src = "https:\/\/slack.com\/beacon\/timing" + '?data=' + encodeURIComponent(measure_label + ':' + performance.getEntriesByName(measure_label)[0].duration);
+	} catch(e) { return; }
+}
+</script>	<script type="text/javascript">window.location.href="\/integrations";</script>
+
+
+<script type="text/javascript">
+window.callSlackAPIUnauthed = function(method, args, callback) {
+	var url = '/api/'+method+'?t='+Date.now();
+	var req = new XMLHttpRequest();
+	
+	req.onreadystatechange = function() {
+		if (req.readyState == 4) {
+			req.onreadystatechange = null;
+			var obj;
+			
+			if (req.status == 200) {
+				if (req.responseText.indexOf('{') == 0) {
+					try {
+						eval('obj = '+req.responseText);
+					} catch (err) {
+						console.warn('unable to do anything with api rsp');
+					}
+				}
+			}
+			
+			obj = obj || {
+				ok: false	
+			}
+			
+			callback(obj.ok, obj, args);
+		}
+	}
+	
+	req.open('POST', url, 1);
+	req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+	var args2 = [];
+	for (i in args) {
+		args2[args2.length] = encodeURIComponent(i)+'='+encodeURIComponent(args[i]);
+	}
+
+	req.send(args2.join('&'));
+}
+</script>
+
+			
+	
+	<script type="text/javascript">
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		ga('create', "UA-106458-18", 'slack.com');
+		ga('send', 'pageview');
+
+					(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			Date.now(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+			'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+			})(window,document,'script','dataLayer',"GTM-KH2LPK");
+		
+		(function(e,c,b,f,d,g,a){e.SlackBeaconObject=d;
+		e[d]=e[d]||function(){(e[d].q=e[d].q||[]).push([1*new Date(),arguments])};
+		e[d].l=1*new Date();g=c.createElement(b);a=c.getElementsByTagName(b)[0];
+		g.async=1;g.src=f;a.parentNode.insertBefore(g,a)
+		})(window,document,"script","https://slack.global.ssl.fastly.net/dcf8/js/libs/beacon.js","sb");
+		sb('set', 'token', '3307f436963e02d4f9eb85ce5159744c');
+
+				sb('track', 'pageview');
+
+		function track(a){ga('send','event','web',a);sb('track',a);}
+
+	</script>
+
+
+		<script type='text/javascript'>
+		
+		(function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
+		for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);
+		
+
+		mixpanel.init("12d52d8633a5b432975592d13ebd3f34");
+
+		
+			function mixpanel_track(){if(window.mixpanel)mixpanel.track.apply(mixpanel, arguments);}
+			function mixpanel_track_forms(){if(window.mixpanel)mixpanel.track_forms.apply(mixpanel, arguments);}
+			function mixpanel_track_links(){if(window.mixpanel)mixpanel.track_links.apply(mixpanel, arguments);}
+		
+	</script>
+	
+			<meta name="referrer" content="no-referrer">
+			<meta name="superfish" content="nofish">
+	<script type="text/javascript">
+
+
+
+var TS_last_log_date = null;
+var TSMakeLogDate = function() {
+	var date = new Date();
+
+	var y = date.getFullYear();
+	var mo = date.getMonth()+1;
+	var d = date.getDate();
+
+	var time = {
+	  h: date.getHours(),
+	  mi: date.getMinutes(),
+	  s: date.getSeconds(),
+	  ms: date.getMilliseconds()
+	};
+
+	Object.keys(time).map(function(moment, index) {
+		if(time[moment] < 10) {
+			time[moment] = '0' + time[moment];
+		}
+	});
+
+	var str = y + '/' + mo + '/' + d + ' ' + time.h + ':' + time.mi + ':' + time.s + '.' + time.ms;
+	if (TS_last_log_date) {
+		var diff = date-TS_last_log_date;
+		//str+= ' ('+diff+'ms)';
+	}
+	TS_last_log_date = date;
+	return str+' ';
+}
+
+var TSSSB = {
+	env: (function() {
+		var v = {
+			win_ssb_version: null,
+			win_ssb_version_minor: null,
+			mac_ssb_version: null,
+			mac_ssb_version_minor: null,
+			lin_ssb_version: null,
+			lin_ssb_version_minor: null
+		}
+		
+		var is_win = (navigator.appVersion.indexOf("Windows") !== -1);
+		var is_lin = (navigator.appVersion.indexOf("Linux") !== -1);
+		var is_mac = !!(navigator.userAgent.match(/(OS X)/g));
+
+		if (navigator.userAgent.match(/(Slack_SSB)/g) || navigator.userAgent.match(/(Slack_WINSSB)/g)) {
+			// Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/534.55.3 (KHTML, like Gecko) Slack_SSB/0.32
+			var parts = navigator.userAgent.split('/');
+			var version_str = parts[parts.length-1];
+			var version_float = parseFloat(version_str);
+			var versionA = version_str.split('.');
+			var version_minor = (versionA.length == 3) ? parseInt(versionA[2]) : 0;
+	
+			if (navigator.userAgent.match(/(AtomShell)/g)) {
+				// Electron-based app
+				if (is_lin) {
+					v.lin_ssb_version = version_float;
+					v.lin_ssb_version_minor = version_minor;
+				} else {
+					v.win_ssb_version = version_float;
+					v.win_ssb_version_minor = version_minor;
+				}
+			} else {
+				// MacGap-based app
+				v.mac_ssb_version = version_float;
+				v.mac_ssb_version_minor = version_minor;
+			}
+		}
+
+		return v;
+	})(),
+	
+	
+
+	call: function() {
+		return false;
+	}
+
+	
+}
+
+</script>	<script type="text/javascript">
+		
+		var was_TS = window.TS;
+		delete window.TS;
+		TSSSB.call('didFinishLoading');
+		if (was_TS) window.TS = was_TS;
+	</script>
+	    <meta charset="utf-8">
+    <title>Integrations | Slack</title>
+    <meta name="author" content="Slack">
+
+	
+																
+																													
+				
+																
+				
+		
+				<!-- output_css "core" -->
+    <link href="https://slack.global.ssl.fastly.net/b747/style/rollup-plastic.css" rel="stylesheet" type="text/css">
+
+		<!-- output_css "file_pages" -->
+		
+	<!-- output_css "regular" -->
+    <link href="https://slack.global.ssl.fastly.net/1e63/style/libs/lato-1.css" rel="stylesheet" type="text/css">
+    <link href="https://slack.global.ssl.fastly.net/c3f3/style/sticky_nav.css" rel="stylesheet" type="text/css">
+    <link href="https://slack.global.ssl.fastly.net/fbe81/style/footer.css" rel="stylesheet" type="text/css">
+    <link href="https://slack.global.ssl.fastly.net/365f/style/filter_select.css" rel="stylesheet" type="text/css">
+
+		<style type="text/css">
+		
+
+			h1 {
+				font-weight: 300;
+			}
+			.section.colored * {
+				color: white !important;
+			}
+			.integration {
+				float: left;
+				width: 35%;
+				margin: 0.75rem 0.75rem 0.75rem 8rem;
+				border-radius: 0.5rem;
+				border: 1px solid #DDD;
+				padding: 1rem;
+				font-size: 1rem;
+				min-height: 106px;
+				transition: 0.15s;
+				background: white;
+			}
+			.integration:hover {
+				background: #f1f7fa;
+				border-color: #CCC;
+			}
+			.integration:nth-child(even) {
+				margin: 0.75rem 7rem 0.75rem 0.75rem;
+			}
+			.integration .icon {
+				float: left;
+				margin-right: 1rem;
+			}
+			.integration h4 {
+				margin: 0.25rem 0;
+			}
+			.integration p {
+				margin: 0;
+				font-weight: 500;
+				line-height: 1.25rem;
+			}
+			.integration a h4 {
+				color: #2a80b9;
+			}
+			.integration a p {
+				color: #555459;
+			}
+			.integration a:hover {
+				text-decoration: none;
+			}
+			.integration a:hover p {
+				color: #2a80b9;
+			}
+
+			#integrations_graphic {
+				width: 350px;
+				height: 350px;
+				float: right;
+				margin: -2rem 1rem 2rem 4rem;
+			}
+			.section.footer {
+				font-size: 1rem;
+			}
+			.footer p {
+				margin: 2rem auto 0;
+				line-height: 2rem;
+				font-weight: 500;
+			}
+			.section.footer a {
+				font-weight: 700;
+				color: #0f7965;
+				margin: 0 0.5rem;
+			}
+
+			/* Tablet Landscape */
+			@media only screen and (max-width: 1023px) {
+				.integration,
+				.integration:nth-child(even) {
+					width: 46.5%;
+					margin: 0.75rem;
+					padding: 0.9rem;
+				}
+			}
+
+			/* Tablet Portrait */
+			@media only screen and (max-width: 767px) {
+				#integrations_graphic {
+					width: 260px;
+					height: 260px;
+					margin: 1rem auto 2rem;
+					float: none;
+					display: block;
+				}
+				h1 {
+					text-align: center;
+				} #header { margin-top: 0; } .integration, .integration:nth-child(even) { width: 100%;
+					float: none;
+					margin: 0 0 1rem;
+					padding: 0.9rem;
+					min-height: 0;
+				}
+
+				.integration p {
+					font-size: 0.9rem;
+				}
+				.section.footer p {
+					font-size: 0.7rem;
+					line-height: 1.5rem;
+				}
+			}
+		
+	</style>
+
+
+	
+	
+	<meta property="og:type" 		content="website"/>
+<meta property="og:site_name" 	content="Slack"/>
+<meta property="og:image" 		content="https://slack.global.ssl.fastly.net/489d/img/integrations_200x200.png"/>
+<meta property="og:title" 		content="Slack Integrations"/>
+<meta property="og:description" content="Integrations let you automatically pull information and activity from outside tools into Slack in a way that's timely, relevant, and searchable."/>
+
+
+	<!--[if lt IE 9]>
+	<script src="https://slack.global.ssl.fastly.net/ef0d/js/libs/html5shiv.js"></script>
+	<![endif]-->
+
+	
+<link id="favicon" rel="shortcut icon" href="https://slack.global.ssl.fastly.net/66f9/img/icons/favicon-32.png" sizes="16x16 32x32 48x48" type="image/png" />
+
+<link rel="icon" href="https://slack.global.ssl.fastly.net/ba3c/img/icons/app-256.png" sizes="256x256" type="image/png" />
+
+<link rel="apple-touch-icon-precomposed" sizes="152x152" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-152.png" />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-144.png" />
+<link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-120.png" />
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-114.png" />
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://slack.global.ssl.fastly.net/0dc1/img/icons/ios-72.png" />
+<link rel="apple-touch-icon-precomposed" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-57.png" />
+
+<meta name="msapplication-TileColor" content="#FFFFFF" />
+<meta name="msapplication-TileImage" content="https://slack.global.ssl.fastly.net/66f9/img/icons/app-144.png" />	<script>
+!function(a,b){function c(a,b){try{if("function"!=typeof a)return a;if(!a.bugsnag){var c=e();a.bugsnag=function(d){if(b&&b.eventHandler&&(u=d),v=c,!y){var e=a.apply(this,arguments);return v=null,e}try{return a.apply(this,arguments)}catch(f){throw l("autoNotify",!0)&&(x.notifyException(f,null,null,"error"),s()),f}finally{v=null}},a.bugsnag.bugsnag=a.bugsnag}return a.bugsnag}catch(d){return a}}function d(){B=!1}function e(){var a=document.currentScript||v;if(!a&&B){var b=document.scripts||document.getElementsByTagName("script");a=b[b.length-1]}return a}function f(a){var b=e();b&&(a.script={src:b.src,content:l("inlineScript",!0)?b.innerHTML:""})}function g(b){var c=l("disableLog"),d=a.console;void 0===d||void 0===d.log||c||d.log("[Bugsnag] "+b)}function h(b,c,d){if(d>=5)return encodeURIComponent(c)+"=[RECURSIVE]";d=d+1||1;try{if(a.Node&&b instanceof a.Node)return encodeURIComponent(c)+"="+encodeURIComponent(r(b));var e=[];for(var f in b)if(b.hasOwnProperty(f)&&null!=f&&null!=b[f]){var g=c?c+"["+f+"]":f,i=b[f];e.push("object"==typeof i?h(i,g,d):encodeURIComponent(g)+"="+encodeURIComponent(i))}return e.join("&")}catch(j){return encodeURIComponent(c)+"="+encodeURIComponent(""+j)}}function i(a,b){if(null==b)return a;a=a||{};for(var c in b)if(b.hasOwnProperty(c))try{a[c]=b[c].constructor===Object?i(a[c],b[c]):b[c]}catch(d){a[c]=b[c]}return a}function j(a,b){a+="?"+h(b)+"&ct=img&cb="+(new Date).getTime();var c=new Image;c.src=a}function k(a){var b={},c=/^data\-([\w\-]+)$/;if(a)for(var d=a.attributes,e=0;e<d.length;e++){var f=d[e];if(c.test(f.nodeName)){var g=f.nodeName.match(c)[1];b[g]=f.value||f.nodeValue}}return b}function l(a,b){C=C||k(J);var c=void 0!==x[a]?x[a]:C[a.toLowerCase()];return"false"===c&&(c=!1),void 0!==c?c:b}function m(a){return a&&a.match(D)?!0:(g("Invalid API key '"+a+"'"),!1)}function n(b,c){var d=l("apiKey");if(m(d)&&A){A-=1;var e=l("releaseStage"),f=l("notifyReleaseStages");if(f){for(var h=!1,k=0;k<f.length;k++)if(e===f[k]){h=!0;break}if(!h)return}var n=[b.name,b.message,b.stacktrace].join("|");if(n!==w){w=n,u&&(c=c||{},c["Last Event"]=q(u));var o={notifierVersion:H,apiKey:d,projectRoot:l("projectRoot")||a.location.protocol+"//"+a.location.host,context:l("context")||a.location.pathname,userId:l("userId"),user:l("user"),metaData:i(i({},l("metaData")),c),releaseStage:e,appVersion:l("appVersion"),url:a.location.href,userAgent:navigator.userAgent,language:navigator.language||navigator.userLanguage,severity:b.severity,name:b.name,message:b.message,stacktrace:b.stacktrace,file:b.file,lineNumber:b.lineNumber,columnNumber:b.columnNumber,payloadVersion:"2"},p=x.beforeNotify;if("function"==typeof p){var r=p(o,o.metaData);if(r===!1)return}return 0===o.lineNumber&&/Script error\.?/.test(o.message)?g("Ignoring cross-domain script error. See https://bugsnag.com/docs/notifiers/js/cors"):(j(l("endpoint")||G,o),void 0)}}}function o(){var a,b,c=10,d="[anonymous]";try{throw new Error("")}catch(e){a="<generated>\n",b=p(e)}if(!b){a="<generated-ie>\n";var f=[];try{for(var h=arguments.callee.caller.caller;h&&f.length<c;){var i=E.test(h.toString())?RegExp.$1||d:d;f.push(i),h=h.caller}}catch(j){g(j)}b=f.join("\n")}return a+b}function p(a){return a.stack||a.backtrace||a.stacktrace}function q(a){var b={millisecondsAgo:new Date-a.timeStamp,type:a.type,which:a.which,target:r(a.target)};return b}function r(a){if(a){var b=a.attributes;if(b){for(var c="<"+a.nodeName.toLowerCase(),d=0;d<b.length;d++)b[d].value&&"null"!=b[d].value.toString()&&(c+=" "+b[d].name+'="'+b[d].value+'"');return c+">"}return a.nodeName}}function s(){z+=1,a.setTimeout(function(){z-=1})}function t(a,b,c){var d=a[b],e=c(d);a[b]=e}var u,v,w,x={},y=!0,z=0,A=10;x.noConflict=function(){return a.Bugsnag=b,x},x.refresh=function(){A=10},x.notifyException=function(a,b,c,d){b&&"string"!=typeof b&&(c=b,b=void 0),c||(c={}),f(c),n({name:b||a.name,message:a.message||a.description,stacktrace:p(a)||o(),file:a.fileName||a.sourceURL,lineNumber:a.lineNumber||a.line,columnNumber:a.columnNumber?a.columnNumber+1:void 0,severity:d||"warning"},c)},x.notify=function(b,c,d,e){n({name:b,message:c,stacktrace:o(),file:a.location.toString(),lineNumber:1,severity:e||"warning"},d)};var B="complete"!==document.readyState;document.addEventListener?(document.addEventListener("DOMContentLoaded",d,!0),a.addEventListener("load",d,!0)):a.attachEvent("onload",d);var C,D=/^[0-9a-f]{32}$/i,E=/function\s*([\w\-$]+)?\s*\(/i,F="https://notify.bugsnag.com/",G=F+"js",H="2.4.7",I=document.getElementsByTagName("script"),J=I[I.length-1];if(a.atob){if(a.ErrorEvent)try{0===new a.ErrorEvent("test").colno&&(y=!1)}catch(K){}}else y=!1;if(l("autoNotify",!0)){t(a,"onerror",function(b){return function(c,d,e,g,h){var i=l("autoNotify",!0),j={};!g&&a.event&&(g=a.event.errorCharacter),f(j),v=null,i&&!z&&n({name:h&&h.name||"window.onerror",message:c,file:d,lineNumber:e,columnNumber:g,stacktrace:h&&p(h)||o(),severity:"error"},j),b&&b(c,d,e,g,h)}});var L=function(a){return function(b,d){if("function"==typeof b){b=c(b);var e=Array.prototype.slice.call(arguments,2);return a(function(){b.apply(this,e)},d)}return a(b,d)}};t(a,"setTimeout",L),t(a,"setInterval",L),a.requestAnimationFrame&&t(a,"requestAnimationFrame",function(a){return function(b){return a(c(b))}}),a.setImmediate&&t(a,"setImmediate",function(a){return function(){var b=Array.prototype.slice.call(arguments);return b[0]=c(b[0]),a.apply(this,b)}}),"EventTarget Window Node ApplicationCache AudioTrackList ChannelMergerNode CryptoOperation EventSource FileReader HTMLUnknownElement IDBDatabase IDBRequest IDBTransaction KeyOperation MediaController MessagePort ModalWindow Notification SVGElementInstance Screen TextTrack TextTrackCue TextTrackList WebSocket WebSocketWorker Worker XMLHttpRequest XMLHttpRequestEventTarget XMLHttpRequestUpload".replace(/\w+/g,function(b){var d=a[b]&&a[b].prototype;d&&d.hasOwnProperty&&d.hasOwnProperty("addEventListener")&&(t(d,"addEventListener",function(a){return function(b,d,e,f){return d&&d.handleEvent&&(d.handleEvent=c(d.handleEvent,{eventHandler:!0})),a.call(this,b,c(d,{eventHandler:!0}),e,f)}}),t(d,"removeEventListener",function(a){return function(b,d,e,f){return a.call(this,b,d,e,f),a.call(this,b,c(d),e,f)}}))})}a.Bugsnag=x,"function"==typeof define&&define.amd?define([],function(){return x}):"object"==typeof module&&"object"==typeof module.exports&&(module.exports=x)}(window,window.Bugsnag);
+Bugsnag.apiKey = "2a86b308af5a81d2c9329fedfb4b30c7";
+Bugsnag.appVersion = "428ae7cf74e60bfe2100ee2100e3378579c00ef8" + '-' + "1441052328";
+Bugsnag.endpoint = "https://errors-webapp.slack-core.com/js";
+Bugsnag.releaseStage = "prod";
+Bugsnag.autoNotify = false;
+Bugsnag.metaData = {};
+Bugsnag.refresh_interval = setInterval(function () { (window.TS && window.TS.client) ? Bugsnag.refresh() : clearInterval(Bugsnag.refresh_interval); }, 15 * 60 * 1000);
+</script>
+</head>
+
+<body class="">
+
+		  			<script>
+		
+			var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+			if (w > 1440) document.querySelector('body').classList.add('widescreen');
+		
+		</script>
+	
+  	
+			<div id="nojs_banner">
+			<strong>You must enable javascript in order to use Slack.</strong>
+			You can do this in <a href="http://enable-javascript.com/" target="new" class="bold">your browser settings</a>.
+		</div>
+	
+
+	
+							<nav class="top persistent">
+	<a href="index.html" class="logo"></a>
+	<ul>
+		<li><a  href="is.html">Product</a></li>
+		<li><a  href="pricing.html">Pricing</a></li>		<li><a  href="https://slack.zendesk.com/hc/en-us">Support</a></li>
+		<li><a  href="http://slackhq.com">Blog</a></li>
+					<li class="sign_in"><a href="signin.html">Sign in</a></li>
+				<li>
+			<a href="create.html" class="btn_sticky ga_track_signup mxpnl_signup_nav ">Sign up for free</a>
+		</li>
+		<li class="mobile_menu_btn">
+			<a href="integrations-nojsmode=1.html#" class="btn_sticky">Menu</a>
+		</li>
+	</ul>
+</nav>
+<nav class="mobile_menu loading" aria-hidden="true">
+	<a href="index.html" class="logo"></a>
+	<a href="integrations-nojsmode=1.html#" class="close" aria-label="close"><i class="ts_icon ts_icon_times"></i></a>
+	<ul>
+		<li><a  href="is.html">Product</a></li>
+		<li><a  href="pricing.html">Pricing</a></li>		<li><a  href="https://slack.zendesk.com/hc/en-us">Support</a></li>
+		<li><a  href="http://slackhq.com">Blog</a></li>
+		<li><a href="signin.html">Sign in</a></li>
+	</ul>
+	<a href="create.html" class="sign_up ga_track_signup mxpnl_signup_nav ">Sign up for free</a>
+</nav>	
+	<div id="page" >
+
+		<div id="page_contents" class="">
+
+<div class="section">
+	<img id="integrations_graphic" src="https://slack.global.ssl.fastly.net/66f9/img/integrations_circular_graphic_@2x.png" srcset="https://slack.global.ssl.fastly.net/66f9/img/integrations_circular_graphic.png 1x, https://slack.global.ssl.fastly.net/66f9/img/integrations_circular_graphic_@2x.png 2x" />
+	<h1 class="havana_blue bottom_margin large_top_margin">Slack works with the services that your team already uses!</h1>
+	<h3 class="light">Integrations let you automatically pull information and activity from outside tools into Slack in a way that's timely, relevant, and searchable.</h3>
+	<h3 class="light">Stop switching between apps – Slack's integrations will keep your team's info all in one place.</h3>
+</div>
+
+<div class="section sky_blue_bg colored full align_center rounded large_padding large_bottom_margin clear_both">
+	<h1>Slack integrates with dozens of external services, and we're adding more all the time!</h1>
+</div>
+<div class="section clearfix">
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts error notifications to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/9f42/plugins/airbrake/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Airbrake</h4>
+			<p>Error monitoring and handling.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Post App Store reviews from your monitored apps to a Slack channel">
+			<img src="https://slack.global.ssl.fastly.net/851b/plugins/app_review_monitor/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>App Review Monitor</h4>
+			<p>App Store reviews delivered to Slack.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Launch an appear.in video conference from a channel.">
+			<img src="https://slack.global.ssl.fastly.net/d708/plugins/appearin/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>appear.in</h4>
+			<p>Video conferences in your browser.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts alerts, errors and deploys to a channel">
+			<img src="https://slack.global.ssl.fastly.net/66f9/img/services/appsignal_128.png" width="64" height="64" class="icon" />
+			<h4>AppSignal</h4>
+			<p>Detailed metrics for Ruby on Rails apps.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Post to a Slack channel when there are changes to your Asana workspace.">
+			<img src="https://slack.global.ssl.fastly.net/7bf4/img/services/asana_128.png" width="64" height="64" class="icon" />
+			<h4>Asana</h4>
+			<p>Communications and task management for teams.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Post commit, review, and deploy notifications to Slack">
+			<img src="https://slack.global.ssl.fastly.net/8114/plugins/beanstalk/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Beanstalk</h4>
+			<p>A complete workflow to write, review and deploy code.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts to a channel when code is committed to a repository.">
+			<img src="https://slack.global.ssl.fastly.net/0c91/plugins/bitbucket/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Bitbucket</h4>
+			<p>Free source code hosting for Git and Mercurial.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Use a slash command to quickly log in to your Bitium apps">
+			<img src="https://slack.global.ssl.fastly.net/41ed/plugins/bitium/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Bitium</h4>
+			<p>Application and Access Management for teams.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Post project updates to a Slack channel.">
+			<img src="https://slack.global.ssl.fastly.net/5fb7/plugins/blossom/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Blossom</h4>
+			<p>Agile project management for modern teams.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts reward announcements to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/97bf/img/services/bonusly_128.png" width="64" height="64" class="icon" />
+			<h4>Bonusly</h4>
+			<p>Reward employees effortlessly.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Monitor and reply to messages in channels, groups, and DMs as a bot user.">
+			<img src="https://slack.global.ssl.fastly.net/93ed/img/services/bots_128.png" width="64" height="64" class="icon" />
+			<h4>Bots</h4>
+			<p>Connect a bot to the Slack Real Time Messaging API.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts alarm notifications to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/2471/plugins/boundary/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Boundary</h4>
+			<p>Real-time Server and App Monitoring for DevOps.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Easily share your Box files into Slack">
+			<img src="https://slack.global.ssl.fastly.net/9a0a/plugins/auth/box/assets/auth_128.png" width="64" height="64" class="icon" />
+			<h4>Box</h4>
+			<p>Securely store, share, and manage all your files</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Post job and candidate updates to a Slack channel">
+			<img src="https://slack.global.ssl.fastly.net/312a/plugins/nimble_hr/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Breezy HR</h4>
+			<p>Collaborative hiring platform.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Post to a Slack channel when errors occur in your application">
+			<img src="https://slack.global.ssl.fastly.net/851b/plugins/bugsnag/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Bugsnag</h4>
+			<p>Real-time bug intelligence for web and mobile apps.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts build completion notifications to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/cf06/img/services/buildbox_128.png" width="64" height="64" class="icon" />
+			<h4>Buildkite</h4>
+			<p>Secure and flexible continuous integration.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts build notifications to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/d448/plugins/circleci/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Circle CI</h4>
+			<p>Continuous Integration and Deployment.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts deployment and server alerts to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/33fe/img/services/cloud66_128.png" width="64" height="64" class="icon" />
+			<h4>Cloud 66</h4>
+			<p>DevOps as a Service.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts an alert when a repo&#039;s coverage or rating changes, and when vulnerabilities are found.">
+			<img src="https://slack.global.ssl.fastly.net/66f9/img/services/code-climate_128.png" width="64" height="64" class="icon" />
+			<h4>Code Climate</h4>
+			<p>Automated code review for Ruby, Javascript & PHP.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts new builds and build results to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/7bf4/img/services/codeship_128.png" width="64" height="64" class="icon" />
+			<h4>Codeship</h4>
+			<p>Continuous Integration and Deployment SaaS.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts to a channel when a Crashlytics-enabled mobile app reports a new crash">
+			<img src="https://slack.global.ssl.fastly.net/9fa2/img/services/crashlytics_128.png" width="64" height="64" class="icon" />
+			<h4>Crashlytics</h4>
+			<p>Mobile crash analysis and reporting.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Displays posts and snapshots in a channel.">
+			<img src="https://slack.global.ssl.fastly.net/6a7d/plugins/datadog/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Datadog</h4>
+			<p>SaaS app monitoring all in one place.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Post case updates from Desk to Slack">
+			<img src="https://slack.global.ssl.fastly.net/f6f7/plugins/desk/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Desk.com</h4>
+			<p>All-in-one customer support application</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Easily share your Dropbox files into Slack and save your Slack files to Dropbox.">
+			<img src="https://slack.global.ssl.fastly.net/7bf4/img/services/dropbox_128.png" width="64" height="64" class="icon" />
+			<h4>Dropbox</h4>
+			<p>Cloud file storage and syncing</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Send emails directly to a channel in Slack.">
+			<img src="https://slack.global.ssl.fastly.net/d41f/plugins/email/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Email</h4>
+			<p>Send emails directly to a channel in Slack.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts ticket activity to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/66f9/img/services/supportfu_128.png" width="64" height="64" class="icon" />
+			<h4>Enchant</h4>
+			<p>Scalable customer support software.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Sends a DM when a visitor checks in.">
+			<img src="https://slack.global.ssl.fastly.net/1548/plugins/envoy/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Envoy</h4>
+			<p>Modern visitor registration for iPad.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts GIFs from Giphy in any channel">
+			<img src="https://slack.global.ssl.fastly.net/0a04/plugins/giphy/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Giphy</h4>
+			<p>An online library of animated GIFs</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="">
+			<img src="https://slack.global.ssl.fastly.net/5721/plugins/github/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>GitHub</h4>
+			<p>Source control and code management.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="A shared calendar for your team.">
+			<img src="https://slack.global.ssl.fastly.net/da94/plugins/gcalendar/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Google Calendar</h4>
+			<p>A shared calendar for your team.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Automatically imports and indexes Google Drive files when a link is pasted into chat">
+			<img src="https://slack.global.ssl.fastly.net/66f9/img/services/gdrive_128.png" width="64" height="64" class="icon" />
+			<h4>Google Drive</h4>
+			<p>Online document and file storage.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Start a Hangout with all the members of a channel or private group.">
+			<img src="https://slack.global.ssl.fastly.net/6f04/img/services/hangouts_128.png" width="64" height="64" class="icon" />
+			<h4>Google+ Hangouts</h4>
+			<p>Bring your conversations to life with free video calls.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Post web traffic notifications to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/66f9/img/services/gosquared_128.png" width="64" height="64" class="icon" />
+			<h4>GoSquared</h4>
+			<p>Real-time web analytics platform.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Easily start a video conference in your browser">
+			<img src="https://slack.global.ssl.fastly.net/d87b/plugins/gotomeeting/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>GoToMeeting Free</h4>
+			<p>HD video conferencing for your team.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts help desk updates to a channel">
+			<img src="https://slack.global.ssl.fastly.net/c9e4/plugins/groove/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Groove</h4>
+			<p>A simple help desk built for teams.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Post Help Scout events to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/7bf4/img/services/helpscout_128.png" width="64" height="64" class="icon" />
+			<h4>Help Scout</h4>
+			<p>Scalable customer support software.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts to a channel when a new version of an app is deployed to Heroku">
+			<img src="https://slack.global.ssl.fastly.net/66f9/img/services/heroku_128.png" width="64" height="64" class="icon" />
+			<h4>Heroku</h4>
+			<p>Cloud application deployment and hosting.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts error alerts to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/66f9/img/services/honeybadger_128.png" width="64" height="64" class="icon" />
+			<h4>Honeybadger</h4>
+			<p>Error and performance monitoring for Ruby.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="">
+			<img src="https://slack.global.ssl.fastly.net/9fa2/img/services/hubot_128.png" width="64" height="64" class="icon" />
+			<h4>Hubot</h4>
+			<p>GitHub's scriptable chat bot.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Use Slack as an Action in IFTTT.">
+			<img src="https://slack.global.ssl.fastly.net/66f9/img/services/ifttt_128.png" width="64" height="64" class="icon" />
+			<h4>IFTTT</h4>
+			<p>Automated connections between web services.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Post Intercom alerts to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/e268/plugins/intercom/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Intercom</h4>
+			<p>The easiest way to see and talk to your users.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Post build results to a Slack channel">
+			<img src="https://slack.global.ssl.fastly.net/66f9/img/services/jenkins-ci_128.png" width="64" height="64" class="icon" />
+			<h4>Jenkins CI</h4>
+			<p>An open source continuous integration server.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts new and resolved issues to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/66f9/img/services/jira_128.png" width="64" height="64" class="icon" />
+			<h4>JIRA</h4>
+			<p>Project and issue tracking software by Atlassian.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts alerts to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/66f9/img/services/librato_128.png" width="64" height="64" class="icon" />
+			<h4>Librato</h4>
+			<p>Highly scalable metrics, monitoring & alerts</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="">
+			<img src="https://slack.global.ssl.fastly.net/86c6/plugins/lita/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Lita</h4>
+			<p>A chat bot scriptable with Ruby</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Post log alerts to a Slack channel.">
+			<img src="https://slack.global.ssl.fastly.net/2f91/plugins/logentries/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Logentries</h4>
+			<p>Centralized log management and analytics.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Post build results to a Slack channel">
+			<img src="https://slack.global.ssl.fastly.net/66f9/img/services/magnum-ci_128.png" width="64" height="64" class="icon" />
+			<h4>Magnum CI</h4>
+			<p>Hosted continuous integration and delivery.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="">
+			<img src="https://slack.global.ssl.fastly.net/7bf4/img/services/mailchimp_128.png" width="64" height="64" class="icon" />
+			<h4>MailChimp</h4>
+			<p>Online email marketing and contact management.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts Nagios alerts to a channel">
+			<img src="https://slack.global.ssl.fastly.net/7bf4/img/services/nagios_128.png" width="64" height="64" class="icon" />
+			<h4>Nagios</h4>
+			<p>Server monitoring and alerting.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts to a channel when an alert is received.">
+			<img src="https://slack.global.ssl.fastly.net/7bf4/img/services/new-relic_128.png" width="64" height="64" class="icon" />
+			<h4>New Relic</h4>
+			<p>Real-time application performance management.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Manage your OpsGenie alerts from within Slack.">
+			<img src="https://slack.global.ssl.fastly.net/403c/img/services/opsgenie_128.png" width="64" height="64" class="icon" />
+			<h4>OpsGenie</h4>
+			<p>Rich alerts for IT management.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Post alerts to a Slack channel.">
+			<img src="https://slack.global.ssl.fastly.net/8fcc/plugins/opsmatic/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Opsmatic</h4>
+			<p>Real-time server configuration monitoring.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Post to a channel when interesting events happen within your PagerDuty account">
+			<img src="https://slack.global.ssl.fastly.net/1937/img/services/pagerduty_128.png" width="64" height="64" class="icon" />
+			<h4>PagerDuty</h4>
+			<p>On-call scheduling, alerting, and incident tracking.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts logging alerts to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/72a4/plugins/papertrail/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Papertrail</h4>
+			<p>Cloud-hosted log management.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts downtime &amp; uptime alerts to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/66f9/img/services/pingdom_128.png" width="64" height="64" class="icon" />
+			<h4>Pingdom</h4>
+			<p>Uptime and performance monitoring.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts project changes to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/7bf4/img/services/pivotaltracker_128.png" width="64" height="64" class="icon" />
+			<h4>Pivotal Tracker</h4>
+			<p>Collaborative, lightweight agile project management.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts QA test results to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/7ddb/plugins/rainforestqa/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Rainforest QA</h4>
+			<p>Easily QA test your webapp in multiple browsers.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts error alerts to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/a12a/img/services/raygun_128.png" width="64" height="64" class="icon" />
+			<h4>Raygun</h4>
+			<p>Automatic error and crash reporting.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts new conversations and responses to a channel">
+			<img src="https://slack.global.ssl.fastly.net/1a55/plugins/reamaze/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Reamaze</h4>
+			<p>Helpdesk software for small businesses</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Start a simple video call from a channel">
+			<img src="https://slack.global.ssl.fastly.net/1e47/plugins/room/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Room</h4>
+			<p>Simple video calls in your browser.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Post items from RSS feeds to your channels.">
+			<img src="https://slack.global.ssl.fastly.net/66f9/img/services/rss_128.png" width="64" height="64" class="icon" />
+			<h4>RSS</h4>
+			<p>Automatically syndicated site content.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts API test results to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/66f9/img/services/runscope_128.png" width="64" height="64" class="icon" />
+			<h4>Runscope</h4>
+			<p>Testing and debugging for your APIs.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Upload scanned documents into a Slack channel">
+			<img src="https://slack.global.ssl.fastly.net/3326/plugins/scanbot/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Scanbot</h4>
+			<p>Document scanner for iOS and Android.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Use slash commands to screen share with a teammate.">
+			<img src="https://slack.global.ssl.fastly.net/66f9/img/services/screenhero_128.png" width="64" height="64" class="icon" />
+			<h4>Screenhero</h4>
+			<p>Screen sharing for collaboration in teams.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts builds and deploys to a channel">
+			<img src="https://slack.global.ssl.fastly.net/2356/img/services/semaphore_128.png" width="64" height="64" class="icon" />
+			<h4>Semaphore</h4>
+			<p>Hosted continuous integration & deployment.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts Sentry error notifications to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/66f9/img/services/sentry_128.png" width="64" height="64" class="icon" />
+			<h4>Sentry</h4>
+			<p>Real-time error logging for your applications.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts status updates to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/66f9/img/services/statuspageio_128.png" width="64" height="64" class="icon" />
+			<h4>StatusPage.io</h4>
+			<p>Hosted status pages for your team.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="">
+			<img src="https://slack.global.ssl.fastly.net/7bf4/img/services/stripe_128.png" width="64" height="64" class="icon" />
+			<h4>Stripe</h4>
+			<p>Web and mobile payments, built for developers.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts to a channel when code is committed to a repository">
+			<img src="https://slack.global.ssl.fastly.net/5a92/plugins/subversion/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Subversion</h4>
+			<p>The Subversion software source control package.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Start a Talko call from a Slack channel.">
+			<img src="https://slack.global.ssl.fastly.net/bd1c/plugins/talko/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Talko</h4>
+			<p>Team calls for mobile and web, with replay of key moments.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts build results to a channel">
+			<img src="https://slack.global.ssl.fastly.net/7bf4/img/services/travis_128.png" width="64" height="64" class="icon" />
+			<h4>Travis CI</h4>
+			<p>Hosted software build services.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts updates to Trello boards and cards to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/9fa2/img/services/trello_128.png" width="64" height="64" class="icon" />
+			<h4>Trello</h4>
+			<p>To-do lists and task management.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Automatically expands tweet content when a Twitter link is pasted into chat. Optionally searches for and posts @mentions.">
+			<img src="https://slack.global.ssl.fastly.net/66f9/img/services/twitter_128.png" width="64" height="64" class="icon" />
+			<h4>Twitter</h4>
+			<p>Social networking and microblogging service.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts chat updates to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/7bf4/img/services/userlike_128.png" width="64" height="64" class="icon" />
+			<h4>Userlike</h4>
+			<p>Live chat platform for websites.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Post a variety of service notifications to Slack">
+			<img src="https://slack.global.ssl.fastly.net/d1ba/plugins/visualstudio/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Visual Studio Online</h4>
+			<p>Collaborate and manage software projects online.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Posts status updates to a channel.">
+			<img src="https://slack.global.ssl.fastly.net/4165/plugins/workingon/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>WorkingOn</h4>
+			<p>Minimalistic progress tracking for teams.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Post updates from your to-do list into a channel">
+			<img src="https://slack.global.ssl.fastly.net/851b/plugins/wunderlist/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Wunderlist</h4>
+			<p>Collaborative to-dos lists and task management</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Get Yos in Slack.">
+			<img src="https://slack.global.ssl.fastly.net/857b/plugins/yo/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Yo</h4>
+			<p>Zero character communication.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Allows &quot;Zaps&quot; to post messages to Slack channels.">
+			<img src="https://slack.global.ssl.fastly.net/66f9/img/services/zapier_128.png" width="64" height="64" class="icon" />
+			<h4>Zapier</h4>
+			<p>Automate tasks between other online services.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="">
+			<img src="https://slack.global.ssl.fastly.net/7bf4/img/services/zendesk_128.png" width="64" height="64" class="icon" />
+			<h4>Zendesk</h4>
+			<p>Beautifully simple customer service platform.</p>
+		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Start a video conference via slash command.">
+			<img src="https://slack.global.ssl.fastly.net/e6cb/plugins/zoom/assets/service_128.png" width="64" height="64" class="icon" />
+			<h4>Zoom</h4>
+			<p>Online video conferencing platform.</p>
+		</div>
+	</div>
+
+<div class="section sky_blue_bg colored full align_center rounded large_padding large_bottom_margin large_top_margin">
+	<h1>Don't see an integration on the list? Make it yourself!</h1>
+</div>
+
+<div class="section clearfix">
+			<div class="integration clearfix" data-toggle="tooltip" title="Post messages to a queue for delayed processing by your own systems.">
+							<img src="https://slack.global.ssl.fastly.net/66f9/img/services/amazon-sqs_128.png" width="64" height="64" class="icon" />
+				<h4>Amazon SQS</h4>
+				<p>A distributed queue messaging service.</p>
+					</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="">
+			<a href="https://github.com/tinyspeck/hammock">				<img src="https://slack.global.ssl.fastly.net/7bf4/img/services/hammock_128.png" width="64" height="64" class="icon" />
+				<h4>Hammock</h4>
+				<p>Run and write integrations on your own server.</p>
+			</a>		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="A generic mechanism to consume data using HTTP POST">
+							<img src="https://slack.global.ssl.fastly.net/9fa2/img/services/incoming-webhook_128.png" width="64" height="64" class="icon" />
+				<h4>Incoming WebHooks</h4>
+				<p>Send data into Slack in real-time.</p>
+					</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="A generic mechanism to send data from Slack to an outside service using HTTP POST">
+							<img src="https://slack.global.ssl.fastly.net/9fa2/img/services/incoming-webhook_128.png" width="64" height="64" class="icon" />
+				<h4>Outgoing WebHooks</h4>
+				<p>Get data out of Slack in real-time.</p>
+					</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Get channel/group lists, fetch message history, and send messages all as a real Slack account.">
+			<a href="https://api.slack.com/">				<img src="https://slack.global.ssl.fastly.net/66f9/img/services/api_128.png" width="64" height="64" class="icon" />
+				<h4>Slack API</h4>
+				<p>Deep integration with Slack within the context of a user.</p>
+			</a>		</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="Tell Slackbot to post any string to a channel using HTTP POST">
+							<img src="https://slack.global.ssl.fastly.net/5a92/plugins/slackbot/assets/service_128.png" width="64" height="64" class="icon" />
+				<h4>Slackbot</h4>
+				<p>Easily control your Slackbot from external services.</p>
+					</div>
+			<div class="integration clearfix" data-toggle="tooltip" title="A custom command trigger to post data from Slack to an outside service using HTTP.">
+							<img src="https://slack.global.ssl.fastly.net/7bf4/img/services/slash-commands_128.png" width="64" height="64" class="icon" />
+				<h4>Slash Commands</h4>
+				<p>Customized Slack commands for your team.</p>
+					</div>
+	</div>
+
+<div class="section align_center neutral_white_bg bordered rounded large_padding large_bottom_margin large_top_margin">
+	<h1>Want to integrate your service with Slack?  <a href="help/contact.html">Get in touch</a></h1>
+	<p class="no_bottom_margin">
+		You can also help us prioritize which integrations to add next.<br class="hide_on_mobile" />
+		<a href="https://www.surveyplanet.com/survey/dcac34f0db8a7327de1c380d61894791">Take 30 seconds and fill out the survey</a>
+	</p>
+</div>
+
+
+
+		
+	</div>
+	<div id="overlay"></div>
+</div>
+
+
+	<footer >
+	<section>
+		<div class="grid">
+			<div class="col span_1_of_5">
+				<i class="ts_icon ts_icon_slack_pillow"></i>
+				<small>Made with <i class="ts_icon ts_icon_heart"></i> by Slack</small>
+			</div>
+			<div class="col span_1_of_5 nav_col">
+				<ul>
+					<li><a href="brand-guidelines.html">Brand Guidelines</a></li>
+					<li><a href="jobs.html">Jobs</a></li>
+					<li><a href="http://slackatwork.com">Slack at Work</a></li>
+					<li><a href="https://slack.zendesk.com/hc/en-us">Support</a></li>
+				</ul>
+			</div>
+			<div class="col span_1_of_5 nav_col">
+				<ul>
+					<li><a href="privacy-policy.html">Privacy</a></li>
+					<li><a href="security.html">Security</a></li>
+					<li><a href="terms-of-service.html">Terms of Service</a></li>
+					<li><a href="policies.html">Policies</a></li>
+				</ul>
+			</div>
+			<div class="col span_1_of_5 nav_col">
+				<ul>
+					<li><a href="https://status.slack.com/">Status</a></li>
+					<li><a href="https://api.slack.com/">API</a></li>
+					<li><a href="integrations.html">Integrations</a></li>
+					<li><a href="apps.html">Apps</a></li>
+				</ul>
+			</div>
+			<div class="col span_1_of_5 nav_col">
+				<ul>
+					<li><a href="varietypack.html">Podcast</a></li>
+					<li><a href="http://slackhq.com">Blog</a></li>
+					<li><a href="help/contact.html">Contact Us</a></li>
+					<li><a href="https://twitter.com/SlackHQ">@SlackHQ</a></li>
+				</ul>
+			</div>
+		</div>
+	</section>
+</footer>
+
+
+<script type="text/javascript">
+var cdn_url = "https:\/\/slack.global.ssl.fastly.net";
+var inc_js_setup_data = {
+	emoji_sheets: {
+		apple: 'https://slack.global.ssl.fastly.net/66f9/img/emoji_2015/sheet_apple_64_indexed_256colors.png',
+		google: 'https://slack.global.ssl.fastly.net/66f9/img/emoji_2015/sheet_google_64_indexed_128colors.png',
+		twitter: 'https://slack.global.ssl.fastly.net/66f9/img/emoji_2015/sheet_twitter_64_indexed_128colors.png',
+		emojione: 'https://slack.global.ssl.fastly.net/66f9/img/emoji_2015/sheet_emojione_64_indexed_128colors.png',
+	},
+};
+</script>
+
+	<!-- output_js "core" -->
+<script type="text/javascript" src="https://slack.global.ssl.fastly.net/0fed/js/libs/jquery-2.1.4.js" crossorigin="anonymous"></script>
+
+	<!-- output_js "core_web" -->
+<script type="text/javascript" src="https://slack.global.ssl.fastly.net/896b0/js/rollup-core_web.js" crossorigin="anonymous"></script>
+
+	<!-- output_js "secondary" -->
+
+		<!-- output_js "regular" -->
+<script type="text/javascript" src="https://slack.global.ssl.fastly.net/3ad4/js/sticky_nav.js" crossorigin="anonymous"></script>
+
+		<script>
+		
+			$("*[data-toggle='tooltip']").tooltip({ container: "body" });
+		
+	</script>
+
+	<!-- slack-www346 / 2015-08-31 13:24:24 / v428ae7cf74e60bfe2100ee2100e3378579c00ef8 -->
+<style>.color_9f69e7:not(.nuc) {color:#9F69E7;}.color_4bbe2e:not(.nuc) {color:#4BBE2E;}.color_e7392d:not(.nuc) {color:#E7392D;}.color_3c989f:not(.nuc) {color:#3C989F;}.color_674b1b:not(.nuc) {color:#674B1B;}.color_e96699:not(.nuc) {color:#E96699;}.color_e0a729:not(.nuc) {color:#E0A729;}.color_684b6c:not(.nuc) {color:#684B6C;}.color_5b89d5:not(.nuc) {color:#5B89D5;}.color_2b6836:not(.nuc) {color:#2B6836;}.color_99a949:not(.nuc) {color:#99A949;}.color_df3dc0:not(.nuc) {color:#DF3DC0;}.color_4cc091:not(.nuc) {color:#4CC091;}.color_9b3b45:not(.nuc) {color:#9B3B45;}.color_d58247:not(.nuc) {color:#D58247;}.color_bb86b7:not(.nuc) {color:#BB86B7;}.color_5a4592:not(.nuc) {color:#5A4592;}.color_db3150:not(.nuc) {color:#DB3150;}.color_235e5b:not(.nuc) {color:#235E5B;}.color_9e3997:not(.nuc) {color:#9E3997;}.color_53b759:not(.nuc) {color:#53B759;}.color_c386df:not(.nuc) {color:#C386DF;}.color_385a86:not(.nuc) {color:#385A86;}.color_a63024:not(.nuc) {color:#A63024;}.color_5870dd:not(.nuc) {color:#5870DD;}.color_ea2977:not(.nuc) {color:#EA2977;}.color_50a0cf:not(.nuc) {color:#50A0CF;}.color_d55aef:not(.nuc) {color:#D55AEF;}.color_d1707d:not(.nuc) {color:#D1707D;}.color_43761b:not(.nuc) {color:#43761B;}.color_e06b56:not(.nuc) {color:#E06B56;}.color_8f4a2b:not(.nuc) {color:#8F4A2B;}.color_902d59:not(.nuc) {color:#902D59;}.color_de5f24:not(.nuc) {color:#DE5F24;}.color_a2a5dc:not(.nuc) {color:#A2A5DC;}.color_827327:not(.nuc) {color:#827327;}.color_3c8c69:not(.nuc) {color:#3C8C69;}.color_8d4b84:not(.nuc) {color:#8D4B84;}.color_84b22f:not(.nuc) {color:#84B22F;}.color_4ec0d6:not(.nuc) {color:#4EC0D6;}.color_e23f99:not(.nuc) {color:#E23F99;}.color_e475df:not(.nuc) {color:#E475DF;}.color_619a4f:not(.nuc) {color:#619A4F;}.color_a72f79:not(.nuc) {color:#A72F79;}.color_7d414c:not(.nuc) {color:#7D414C;}.color_aba727:not(.nuc) {color:#ABA727;}.color_965d1b:not(.nuc) {color:#965D1B;}.color_4d5e26:not(.nuc) {color:#4D5E26;}.color_dd8527:not(.nuc) {color:#DD8527;}.color_bd9336:not(.nuc) {color:#BD9336;}.color_e85d72:not(.nuc) {color:#E85D72;}.color_dc7dbb:not(.nuc) {color:#DC7DBB;}.color_bc3663:not(.nuc) {color:#BC3663;}.color_9d8eee:not(.nuc) {color:#9D8EEE;}.color_8469bc:not(.nuc) {color:#8469BC;}.color_73769d:not(.nuc) {color:#73769D;}.color_b14cbc:not(.nuc) {color:#B14CBC;}</style>
+</body>
+</html>

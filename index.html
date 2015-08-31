@@ -1,0 +1,413 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+
+		<script type="text/javascript">
+window.TSMark = function(mark_label) {
+	if (!true || !window.performance || !window.performance.mark) return;
+	performance.mark(mark_label);
+}
+TSMark('start_load');
+window.TSMeasureAndBeacon = function(measure_label, start_mark_label) {
+	if (!true || !window.performance || !window.performance.mark || !window.performance.measure) return;
+	performance.mark(start_mark_label + '_end');
+	try {
+		performance.measure(measure_label, start_mark_label, start_mark_label + '_end');
+		(new Image()).src = "https:\/\/slack.com\/beacon\/timing" + '?data=' + encodeURIComponent(measure_label + ':' + performance.getEntriesByName(measure_label)[0].duration);
+	} catch(e) { return; }
+}
+</script>		
+			
+			<script type='text/javascript'>
+				if (window.location.host == 'slack.com' && window.location.search.indexOf('story') < 0) {
+					document.cookie = '__cvo_skip_doc=' + escape(document.URL) + '|' + escape(document.referrer) + ';path=/';
+				}
+				var _vis_opt_account_id = 160175;
+				var _vis_opt_protocol = (('https:' == document.location.protocol) ? 'https://' : 'http://');
+				document.write('<s' + 'cript src="' + _vis_opt_protocol +
+				'dev.visualwebsiteoptimizer.com/deploy/js_visitor_settings.php?v=1&a='+_vis_opt_account_id+'&url='
+				+encodeURIComponent(document.URL)+'&random='+Math.random()+'" type="text/javascript">' + '<\/s' + 'cript>');
+			</script>
+			<script type='text/javascript'>
+				if(typeof(_vis_opt_settings_loaded) == "boolean") { document.write('<s' + 'cript src="' + _vis_opt_protocol +
+				'd5phz18u4wuww.cloudfront.net/vis_opt.js" type="text/javascript">' + '<\/s' + 'cript>'); }
+			</script>
+			<script type='text/javascript'>
+				if(typeof(_vis_opt_settings_loaded) == "boolean" && typeof(_vis_opt_top_initialize) == "function") {
+				        _vis_opt_top_initialize(); vwo_$(document).ready(function() { _vis_opt_bottom_initialize(); });
+				}
+			</script>
+		
+	
+	<script type="text/javascript">
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		ga('create', "UA-56978219-1", 'slack.com');
+		ga('send', 'pageview');
+
+					(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			Date.now(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+			'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+			})(window,document,'script','dataLayer',"GTM-KH2LPK");
+		
+		(function(e,c,b,f,d,g,a){e.SlackBeaconObject=d;
+		e[d]=e[d]||function(){(e[d].q=e[d].q||[]).push([1*new Date(),arguments])};
+		e[d].l=1*new Date();g=c.createElement(b);a=c.getElementsByTagName(b)[0];
+		g.async=1;g.src=f;a.parentNode.insertBefore(g,a)
+		})(window,document,"script","https://slack.global.ssl.fastly.net/dcf8/js/libs/beacon.js","sb");
+		sb('set', 'token', '3307f436963e02d4f9eb85ce5159744c');
+
+				sb('track', 'pageview');
+
+		function track(a){ga('send','event','web',a);sb('track',a);}
+
+	</script>
+
+
+		<script type='text/javascript'>
+		
+		(function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
+		for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);
+		
+
+		mixpanel.init("12d52d8633a5b432975592d13ebd3f34");
+
+		
+			function mixpanel_track(){if(window.mixpanel)mixpanel.track.apply(mixpanel, arguments);}
+			function mixpanel_track_forms(){if(window.mixpanel)mixpanel.track_forms.apply(mixpanel, arguments);}
+			function mixpanel_track_links(){if(window.mixpanel)mixpanel.track_links.apply(mixpanel, arguments);}
+		
+	</script>
+
+				
+		<title>Slack: Be less busy</title>
+		<meta charset="utf-8">
+		<meta name="description" content="Slack brings all your communication together in one place. It’s real-time messaging, archiving and search for modern teams.">
+		<meta name="author" content="Slack">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+		<meta property="og:type" 		content="website"/>
+<meta property="og:site_name" 	content="Slack"/>
+<meta property="og:image" 		content="https://slack.com/img/slack_hash_128.v1438613008.png"/>
+<meta property="og:title" 		content="Slack: Be less busy"/>
+<meta property="og:description" content="Slack brings all your communication together in one place. It’s real-time messaging, archiving and search for modern teams."/>
+		<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@slackhq">
+<meta name="twitter:title" content="Slack: Be less busy">
+<meta name="twitter:description" content="Slack brings all your communication together in one place. It’s real-time messaging, archiving and search for modern teams.">
+<meta name="twitter:image" content="https://slack.com/img/slack_hash_twitter.v1438613008.png">		
+<link id="favicon" rel="shortcut icon" href="https://slack.global.ssl.fastly.net/66f9/img/icons/favicon-32.png" sizes="16x16 32x32 48x48" type="image/png" />
+
+<link rel="icon" href="https://slack.global.ssl.fastly.net/ba3c/img/icons/app-256.png" sizes="256x256" type="image/png" />
+
+<link rel="apple-touch-icon-precomposed" sizes="152x152" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-152.png" />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-144.png" />
+<link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-120.png" />
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-114.png" />
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://slack.global.ssl.fastly.net/0dc1/img/icons/ios-72.png" />
+<link rel="apple-touch-icon-precomposed" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-57.png" />
+
+<meta name="msapplication-TileColor" content="#FFFFFF" />
+<meta name="msapplication-TileImage" content="https://slack.global.ssl.fastly.net/66f9/img/icons/app-144.png" />
+																		
+							
+		
+		
+		
+		
+		<!-- output_css "marketing_core" -->
+		<link href="https://slack.global.ssl.fastly.net/6024/style/rollup-landing.css" rel="stylesheet" type="text/css">
+
+
+				<!-- output_css "regular" -->
+
+
+	</head>
+
+		<body><nav class="top">
+	<a href="index.html" class="logo"></a>
+	<ul>
+		<li><a  href="is.html">Product</a></li>
+		<li><a  href="pricing.html">Pricing</a></li>		<li><a  href="https://slack.zendesk.com/hc/en-us">Support</a></li>
+		<li><a  href="http://slackhq.com">Blog</a></li>
+					<li class="sign_in"><a href="signin.html">Sign in</a></li>
+				<li>
+			<a href="create.html" class="btn_sticky ga_track_signup mxpnl_signup_nav cta_track">Sign up for free</a>
+		</li>
+		<li class="mobile_menu_btn">
+			<a href="index.html#" class="btn_sticky">Menu</a>
+		</li>
+	</ul>
+</nav>
+<nav class="top fixed" aria-hidden="true">
+	<a href="index.html" class="logo"></a>
+	<ul>
+		<li><a  href="is.html">Product</a></li>
+		<li><a  href="pricing.html">Pricing</a></li>		<li><a  href="https://slack.zendesk.com/hc/en-us">Support</a></li>
+		<li><a  href="http://slackhq.com">Blog</a></li>
+		<li class="sign_in"><a href="signin.html">Sign in</a></li>
+		<li>
+			<a href="create.html" class="btn_sticky ga_track_signup mxpnl_signup_nav cta_track">Sign up for free</a>
+		</li>
+		<li class="mobile_menu_btn">
+			<a href="index.html#" class="btn_sticky">Menu</a>
+		</li>
+	</ul>
+</nav>
+<nav class="mobile_menu loading" aria-hidden="true">
+	<a href="index.html" class="logo"></a>
+	<a href="index.html#" class="close" aria-label="close"><i class="ts_icon ts_icon_times"></i></a>
+	<ul>
+		<li><a  href="is.html">Product</a></li>
+		<li><a  href="pricing.html">Pricing</a></li>		<li><a  href="https://slack.zendesk.com/hc/en-us">Support</a></li>
+		<li><a  href="http://slackhq.com">Blog</a></li>
+		<li><a href="signin.html">Sign in</a></li>
+	</ul>
+	<a href="create.html" class="sign_up ga_track_signup mxpnl_signup_nav cta_track">Sign up for free</a>
+</nav>
+	
+		<header class="first">
+		<h1>A messaging app for teams.</h1>
+		<h2>All your communication in one place, integrating with the tools and services you use every day.</h2>
+		<div id="screenshots" data-highlight="channels">
+			<div class="screenshot" data-highlight="channels" aria-label="Channels: Stay organized with channels for conversations across teams, projects, and topics"></div>
+			<div class="screenshot" data-highlight="integrations" aria-label="Integrations: Plug the tools you already use into Slack and get all your notifications in one place."></div>
+			<div class="screenshot" data-highlight="search" aria-label="Powerful Search: Focus your search to find messages or files from a specific person or time."></div>
+			<div class="switcher">
+				<a href="index.html#" class="circle" data-highlight="channels"></a>
+				<a href="index.html#" class="circle" data-highlight="integrations"></a>
+				<a href="index.html#" class="circle" data-highlight="search"></a>
+			</div>
+		</div>
+		<div id="mobile_screen"></div>
+	</header>
+			<div id="page" >
+				<section class="signup top signup_a">
+			<div class="cta">
+				<h1 class="cta_header">Slack is <strong>free</strong> to use for as long as you want and with an unlimited number of people.</h1>
+								<form action="/create" method="post" class="cta_form align_middle" id="cta_form_top">
+					<input type="hidden" name="done" value="1">
+					<input type="hidden" name="crumb" value="s-1441052658-262b17a456-☃" />
+					<input name="email" type="text" id="inline_input" placeholder="Email address" class="input_email input_inline small_right_margin">
+					<button type="submit" class="btn align_top ga_track_signup" id="submit_btn">Sign up for free</button>
+				</form>
+							</div>
+			<small>You can easily upgrade to our <a href="pricing.html">paid plans</a>, which offer more features and controls.</small>
+		</section>
+				<section id="features">
+			<h1>The funny thing is, it actually works.</h1>
+			<div class="grid">
+				<div class="feature col span_1_of_3">
+					<i class="ts_icon ts_icon_comment_alt"></i>
+					<h3>Group conversations</h3>
+					<p>Talk, share, and make decisions in open channels across your team, in private groups for sensitive matters, or use direct messages one-to-one.</p>
+				</div>
+				<div class="feature col span_1_of_3">
+					<i class="ts_icon ts_icon_all_files"></i>
+					<h3>File sharing</h3>
+					<p>Drag and drop files, documents, PDFs, images, and videos to share with anyone and get immediate feedback and discussion
+	through comments.</p>
+				</div>
+				<div class="feature col span_1_of_3">
+					<i class="ts_icon ts_icon_search"></i>
+					<h3>Deep, contextual search</h3>
+					<p>Search across your entire team archives, within documents, files, or images, and filter your results by recency, relevancy, person, and more.</p>
+				</div>
+			</div>
+			<div class="grid">
+				<div class="feature col span_1_of_3">
+					<i class="ts_icon ts_icon_tablet"></i>
+					<h3>Always in sync</h3>
+					<p>Everything you do on our desktop app is reflected on our fully native iOS and Android apps, and vice versa. Everything is in sync—pick up right where you left off. </p>
+				</div>
+				<div class="feature col span_1_of_3">
+					<i class="ts_icon ts_icon_plug"></i>
+					<h3>Over 80 integrations</h3>
+					<p>It’s not ‘yet another app’ you have to use. Slack works with all the tools you already use; set them up to post notifications directly to Slack in a single work space.</p>
+				</div>
+				<div class="feature col span_1_of_3">
+					<i class="ts_icon ts_icon_lock_o"></i>
+					<h3>Security</h3>
+					<p>All data transfer is encrypted (256-bit AES and TLS 1.2) on the desktop or the phone. We perform security testing regularly to identify and resolve any vulnerabilities.</p>
+				</div>
+			</div>
+		</section>
+		<a href="is.html" id="tour">
+			<span>Learn what Slack can do for you.</span>
+			<div class="btn"><span>Take a tour</span><i class="ts_icon ts_icon_arrow_large_right"></i></div>
+		</a>
+		<div id="email" class="detail">
+			<section>
+				<img data-src="https://slack.global.ssl.fastly.net/66f9/img/landing/goodbye_to_email.png" data-srcset="https://slack.global.ssl.fastly.net/66f9/img/landing/goodbye_to_email.png 1x, https://slack.global.ssl.fastly.net/1ce4/img/landing/goodbye_to_email@2x.png 2x" class="background" data-screen="desktop">
+				<img data-src="https://slack.global.ssl.fastly.net/1ce4/img/landing/goodbye_to_email_mobile.png" data-srcset="https://slack.global.ssl.fastly.net/1ce4/img/landing/goodbye_to_email_mobile.png 1x, https://slack.global.ssl.fastly.net/1ce4/img/landing/goodbye_to_email_mobile@2x.png 2x" class="background" data-screen="mobile">
+				<h1>Say goodbye to those neverending email threads.</h1>
+				<p>We spend 47% of our time just reading, answering, and searching email to gather what we need to do real work.   Slack helps you work in the moment — making it <strong>faster and easier to communicate</strong> with your team, with all the collective knowledge at your fingertips. More productivity, more transparency, and less email. <strong>That’s Slack.</strong></p>
+			</section>
+		</div>
+		<div id="integrations" class="detail">
+			<section>
+				<img data-src="https://slack.global.ssl.fastly.net/1ce4/img/landing/collective_brain.png" data-srcset="https://slack.global.ssl.fastly.net/1ce4/img/landing/collective_brain.png 1x, https://slack.global.ssl.fastly.net/66f9/img/landing/collective_brain@2x.png 2x" class="background">
+				<h1>Like your team’s collective brain.</h1>
+				<p>Slack integrates with <strong>over 80 external services</strong> to help you pull information from outside tools in a way that’s timely, relevant, and always searchable. No more switching between apps. <strong>Bring it all together</strong> in one simple place.</p>
+				<a href="integrations.html" class="btn">See all integrations</a>
+			</section>
+		</div>
+		<div id="wherever" class="detail">
+			<section>
+				<img data-src="https://slack.global.ssl.fastly.net/1ce4/img/landing/wherever_you_go.png" data-srcset="https://slack.global.ssl.fastly.net/1ce4/img/landing/wherever_you_go.png 1x, https://slack.global.ssl.fastly.net/1ce4/img/landing/wherever_you_go@2x.png 2x" class="background">
+				<h1>Wherever you go.</h1>
+				<p>Stay in sync with <strong>native apps for iOS and Android</strong>. Send messages, share files, get notifications, search your team archives, and more — we built our apps to give you a <strong>full-featured experience</strong> on any device you prefer.</p>
+				<a href="apps.html" class="btn">See all apps</a>
+			</section>
+		</div>
+		<div id="companies">
+			<section><h1><i class="ts_icon ts_icon_heart_o"></i>Thousands of happy customers, including:</h1></section>
+			<section>
+				<img class="logos" data-src="https://slack.global.ssl.fastly.net/9b7a/img/landing/home_logos.png" data-srcset="https://slack.global.ssl.fastly.net/9b7a/img/landing/home_logos.png 1x, https://slack.global.ssl.fastly.net/d8a87/img/landing/home_logos_2x.png 2x" alt="Companies using Slack include AirBnB, BuzzFeed, Dow Jones, ebay, Expedia, Intuit, NASA, NBCUniversal, Salesforce, and The Wall Street Journal." data-screen="desktop">
+				<img class="logos" data-src="https://slack.global.ssl.fastly.net/9b7a/img/landing/home_logos_mobile.png" data-srcset="https://slack.global.ssl.fastly.net/9b7a/img/landing/home_logos_mobile.png 1x, https://slack.global.ssl.fastly.net/9b7a/img/landing/home_logos_mobile@2x.png 2x" alt="Companies using Slack include AirBnB, BuzzFeed, Dow Jones, ebay, Expedia, Intuit, NASA, NBCUniversal, Salesforce, and The Wall Street Journal." data-screen="mobile">
+			</section>
+		</div>
+		<div id="wall">
+			<div id="tweets">
+				<div class="tweet_carousel_container">
+	<ul class="tweet_carousel">
+		<li data-position="0">
+			<blockquote class="twitter-tweet" lang="en" data-cards="hidden"><p>Nothing else in the last year has improved my quality of life as much as @SlackHQ</p>&mdash; Naval Ravikant (@naval) <a href="https://twitter.com/naval/status/631674105595498496">August 12, 2015</a></blockquote>
+		</li>
+		<li data-position="1">
+			<blockquote class="twitter-tweet" lang="en" data-cards="hidden"><p>I never thought a person could fall in love with enterprise software...Thank you @SlackHQ for making me feel even closer to my tribe!</p>&mdash; Vinodh Bhat (@vbhat) <a href="https://twitter.com/vbhat/status/628596429909590016">August 4, 2015</a></blockquote>
+		</li>
+		<li data-position="2">
+			<blockquote class="twitter-tweet" lang="en" data-cards="hidden"><p>We all know @SlackHQ is awesome, no argument there. I found out their support folks are just as awesome! They have amazingly great support!</p>&mdash; Peter Carrero (@aloyr) <a href="https://twitter.com/aloyr/status/625741558625611776">July 27, 2015</a></blockquote>
+		</li>
+		<li data-position="3">
+			<blockquote class="twitter-tweet" lang="en" data-cards="hidden"><p>Seriously, check out @SlackHQ if you are a #gamedev or #indiedev team. It's a great service that helps your internal communication big time.</p>&mdash; Rasmus Wallin (@rasmus_wallin) <a href="https://twitter.com/rasmus_wallin/status/625781235915321344">July 27, 2015</a></blockquote>
+		</li>
+		<li data-position="4">
+			<blockquote class="twitter-tweet" lang="en" data-cards="hidden"><p>love the @SlackHQ Variety Pack podcast, awesome collection of randomness!</p>&mdash; Ian Kibble (@iankibble) <a href="https://twitter.com/iankibble/status/626076899773710336">July 28, 2015</a></blockquote>
+		</li>
+		<li data-position="5">
+			<blockquote class="twitter-tweet" lang="en" data-cards="hidden"><p>Highly recommend @SlackHQ for creative collaboration. The @CinemaJaw team is on there. Took a selfie w/#Slackbot</p>&mdash; Eliaz Rodriguez (@EliazRod) <a href="https://twitter.com/EliazRod/status/626433663710859264">July 29, 2015</a></blockquote>
+		</li>
+		<li data-position="6">
+			<blockquote class="twitter-tweet" lang="en" data-cards="hidden"><p>The consistency of experience between web, mobile, desktop app in @SlackHQ is amazing. It's not just one but all. Excellent product design.</p>&mdash; Lincoln Mongillo (@mastorna) <a href="https://twitter.com/mastorna/status/626574459567144960">July 29, 2015</a></blockquote>
+		</li>
+		<li data-position="7">
+			<blockquote class="twitter-tweet" lang="en" data-cards="hidden"><p>I love @SlackHQ. Just used their reminder function to send myself a msg at the beginning of 2016. You're welcome, Future JMO! #nerdherder</p>&mdash; JMO (@hedgedevil) <a href="https://twitter.com/hedgedevil/status/626517208592592896">July 29, 2015</a></blockquote>
+		</li>
+	</ul>
+</div>				<div class="tweet_carousel_controls">
+					<a href="index.html#" data-action="left" class="left_arrow"><i class="ts_icon ts_icon_chevron_large_left"></i></a>
+					<a href="index.html#" data-action="right" class="right_arrow"><i class="ts_icon ts_icon_chevron_large_right"></i></a>
+				</div>
+			</div>
+			<section><p>More at our <a href="https://twitter.com/SlackLoveTweets">Wall of Love</a></p></section>
+		</div>
+		<div id="video" data-defer-bg="true">
+			<section>
+				<a href="https://www.youtube.com/watch?v=B6zVzWU95Sw" class="thumb" data-defer-bg="true">
+					<i class="ts_icon ts_icon_caret_right"></i>
+				</a>
+				<h1>&ldquo;So yeah, we tried Slack&hellip;&rdquo;</h1>
+				<p>The team at the Sandwich Video company tried Slack, and turns out that it really did change the way they communicate!</p>
+			</section>
+		</div>
+		<section class="signup bottom signup_a">
+						<h1 class="cta_header">Slack is <strong>free</strong> to use for as long as you want and with an unlimited number of people.</h1>
+			<div class="email_container">
+				<form action="/create" method="post" class="cta_form align_middle" id="cta_form_bottom">
+					<input type="hidden" name="done" value="1">
+					<input type="hidden" name="crumb" value="s-1441052658-262b17a456-☃" />
+					<input name="email" type="text" id="inline_input" placeholder="Email address" class="input_email input_inline small_right_margin">
+					<button type="submit" class="btn align_top ga_track_signup">Sign up for free</button>
+				</form>
+			</div>
+						<small>You can easily upgrade to our <a href="pricing.html">paid plans</a>, which offer more features and controls.</small>
+		</section>
+	</div>
+	<div id="video_overlay">
+		<div class="video_container">
+			<div id="video_embed"></div>
+			<div type="button" id="video_close_btn" class="close ts_icon ts_icon_times"></div>
+		</div>
+	</div>
+		<footer >
+	<section>
+		<div class="grid">
+			<div class="col span_1_of_5">
+				<i class="ts_icon ts_icon_slack_pillow"></i>
+				<small>Made with <i class="ts_icon ts_icon_heart"></i> by Slack</small>
+			</div>
+			<div class="col span_1_of_5 nav_col">
+				<ul>
+					<li><a href="brand-guidelines.html">Brand Guidelines</a></li>
+					<li><a href="jobs.html">Jobs</a></li>
+					<li><a href="http://slackatwork.com">Slack at Work</a></li>
+					<li><a href="https://slack.zendesk.com/hc/en-us">Support</a></li>
+				</ul>
+			</div>
+			<div class="col span_1_of_5 nav_col">
+				<ul>
+					<li><a href="privacy-policy.html">Privacy</a></li>
+					<li><a href="security.html">Security</a></li>
+					<li><a href="terms-of-service.html">Terms of Service</a></li>
+					<li><a href="policies.html">Policies</a></li>
+				</ul>
+			</div>
+			<div class="col span_1_of_5 nav_col">
+				<ul>
+					<li><a href="https://status.slack.com/">Status</a></li>
+					<li><a href="https://api.slack.com/">API</a></li>
+					<li><a href="integrations.html">Integrations</a></li>
+					<li><a href="apps.html">Apps</a></li>
+				</ul>
+			</div>
+			<div class="col span_1_of_5 nav_col">
+				<ul>
+					<li><a href="varietypack.html">Podcast</a></li>
+					<li><a href="http://slackhq.com">Blog</a></li>
+					<li><a href="help/contact.html">Contact Us</a></li>
+					<li><a href="https://twitter.com/SlackHQ">@SlackHQ</a></li>
+				</ul>
+			</div>
+		</div>
+	</section>
+</footer>
+
+					
+				
+						
+	
+	
+	
+	
+	<!-- output_js "marketing_core" -->
+<script type="text/javascript" src="https://slack.global.ssl.fastly.net/6c0d/js/rollup-landing.js" crossorigin="anonymous"></script>
+
+
+		<!-- output_js "regular" -->
+<script type="text/javascript" src="https://slack.global.ssl.fastly.net/0ab2/js/libs/jquery.typed.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://slack.global.ssl.fastly.net/bcd3/js/landing_page.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://slack.global.ssl.fastly.net/c846/js/libs/bowser.js" crossorigin="anonymous"></script>
+
+
+
+	
+			<script>
+		landing.perf_beacon_prefix = 'landing';
+		</script>
+	
+			<script>
+		$(landing.init);
+		</script>
+	
+	<script data-src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+		</body>
+</html>

@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+	<script type="text/javascript">
+window.TSMark = function(mark_label) {
+	if (!true || !window.performance || !window.performance.mark) return;
+	performance.mark(mark_label);
+}
+TSMark('start_load');
+window.TSMeasureAndBeacon = function(measure_label, start_mark_label) {
+	if (!true || !window.performance || !window.performance.mark || !window.performance.measure) return;
+	performance.mark(start_mark_label + '_end');
+	try {
+		performance.measure(measure_label, start_mark_label, start_mark_label + '_end');
+		(new Image()).src = "https:\/\/slack.com\/beacon\/timing" + '?data=' + encodeURIComponent(measure_label + ':' + performance.getEntriesByName(measure_label)[0].duration);
+	} catch(e) { return; }
+}
+</script>	<script type="text/javascript">window.location.href="\/terms-of-service\/api";</script>
+
+
+<script type="text/javascript">
+window.callSlackAPIUnauthed = function(method, args, callback) {
+	var url = '/api/'+method+'?t='+Date.now();
+	var req = new XMLHttpRequest();
+	
+	req.onreadystatechange = function() {
+		if (req.readyState == 4) {
+			req.onreadystatechange = null;
+			var obj;
+			
+			if (req.status == 200) {
+				if (req.responseText.indexOf('{') == 0) {
+					try {
+						eval('obj = '+req.responseText);
+					} catch (err) {
+						console.warn('unable to do anything with api rsp');
+					}
+				}
+			}
+			
+			obj = obj || {
+				ok: false	
+			}
+			
+			callback(obj.ok, obj, args);
+		}
+	}
+	
+	req.open('POST', url, 1);
+	req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+	var args2 = [];
+	for (i in args) {
+		args2[args2.length] = encodeURIComponent(i)+'='+encodeURIComponent(args[i]);
+	}
+
+	req.send(args2.join('&'));
+}
+</script>
+
+			
+	
+	<script type="text/javascript">
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		ga('create', "UA-106458-18", 'slack.com');
+		ga('send', 'pageview');
+
+					(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			Date.now(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+			'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+			})(window,document,'script','dataLayer',"GTM-KH2LPK");
+		
+		(function(e,c,b,f,d,g,a){e.SlackBeaconObject=d;
+		e[d]=e[d]||function(){(e[d].q=e[d].q||[]).push([1*new Date(),arguments])};
+		e[d].l=1*new Date();g=c.createElement(b);a=c.getElementsByTagName(b)[0];
+		g.async=1;g.src=f;a.parentNode.insertBefore(g,a)
+		})(window,document,"script","https://slack.global.ssl.fastly.net/dcf8/js/libs/beacon.js","sb");
+		sb('set', 'token', '3307f436963e02d4f9eb85ce5159744c');
+
+				sb('track', 'pageview');
+
+		function track(a){ga('send','event','web',a);sb('track',a);}
+
+	</script>
+
+
+		<script type='text/javascript'>
+		
+		(function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
+		for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);
+		
+
+		mixpanel.init("12d52d8633a5b432975592d13ebd3f34");
+
+		
+			function mixpanel_track(){if(window.mixpanel)mixpanel.track.apply(mixpanel, arguments);}
+			function mixpanel_track_forms(){if(window.mixpanel)mixpanel.track_forms.apply(mixpanel, arguments);}
+			function mixpanel_track_links(){if(window.mixpanel)mixpanel.track_links.apply(mixpanel, arguments);}
+		
+	</script>
+	
+			<meta name="referrer" content="no-referrer">
+			<meta name="superfish" content="nofish">
+	<script type="text/javascript">
+
+
+
+var TS_last_log_date = null;
+var TSMakeLogDate = function() {
+	var date = new Date();
+
+	var y = date.getFullYear();
+	var mo = date.getMonth()+1;
+	var d = date.getDate();
+
+	var time = {
+	  h: date.getHours(),
+	  mi: date.getMinutes(),
+	  s: date.getSeconds(),
+	  ms: date.getMilliseconds()
+	};
+
+	Object.keys(time).map(function(moment, index) {
+		if(time[moment] < 10) {
+			time[moment] = '0' + time[moment];
+		}
+	});
+
+	var str = y + '/' + mo + '/' + d + ' ' + time.h + ':' + time.mi + ':' + time.s + '.' + time.ms;
+	if (TS_last_log_date) {
+		var diff = date-TS_last_log_date;
+		//str+= ' ('+diff+'ms)';
+	}
+	TS_last_log_date = date;
+	return str+' ';
+}
+
+var TSSSB = {
+	env: (function() {
+		var v = {
+			win_ssb_version: null,
+			win_ssb_version_minor: null,
+			mac_ssb_version: null,
+			mac_ssb_version_minor: null,
+			lin_ssb_version: null,
+			lin_ssb_version_minor: null
+		}
+		
+		var is_win = (navigator.appVersion.indexOf("Windows") !== -1);
+		var is_lin = (navigator.appVersion.indexOf("Linux") !== -1);
+		var is_mac = !!(navigator.userAgent.match(/(OS X)/g));
+
+		if (navigator.userAgent.match(/(Slack_SSB)/g) || navigator.userAgent.match(/(Slack_WINSSB)/g)) {
+			// Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/534.55.3 (KHTML, like Gecko) Slack_SSB/0.32
+			var parts = navigator.userAgent.split('/');
+			var version_str = parts[parts.length-1];
+			var version_float = parseFloat(version_str);
+			var versionA = version_str.split('.');
+			var version_minor = (versionA.length == 3) ? parseInt(versionA[2]) : 0;
+	
+			if (navigator.userAgent.match(/(AtomShell)/g)) {
+				// Electron-based app
+				if (is_lin) {
+					v.lin_ssb_version = version_float;
+					v.lin_ssb_version_minor = version_minor;
+				} else {
+					v.win_ssb_version = version_float;
+					v.win_ssb_version_minor = version_minor;
+				}
+			} else {
+				// MacGap-based app
+				v.mac_ssb_version = version_float;
+				v.mac_ssb_version_minor = version_minor;
+			}
+		}
+
+		return v;
+	})(),
+	
+	
+
+	call: function() {
+		return false;
+	}
+
+	
+}
+
+</script>	<script type="text/javascript">
+		
+		var was_TS = window.TS;
+		delete window.TS;
+		TSSSB.call('didFinishLoading');
+		if (was_TS) window.TS = was_TS;
+	</script>
+	    <meta charset="utf-8">
+    <title>API Terms of Service | Slack</title>
+    <meta name="author" content="Slack">
+
+	
+																
+																													
+				
+																
+				
+		
+				<!-- output_css "core" -->
+    <link href="https://slack.global.ssl.fastly.net/b747/style/rollup-plastic.css" rel="stylesheet" type="text/css">
+
+		<!-- output_css "file_pages" -->
+		
+	<!-- output_css "regular" -->
+    <link href="https://slack.global.ssl.fastly.net/cc95/style/legal.css" rel="stylesheet" type="text/css">
+    <link href="https://slack.global.ssl.fastly.net/1e63/style/libs/lato-1.css" rel="stylesheet" type="text/css">
+    <link href="https://slack.global.ssl.fastly.net/c3f3/style/sticky_nav.css" rel="stylesheet" type="text/css">
+    <link href="https://slack.global.ssl.fastly.net/fbe81/style/footer.css" rel="stylesheet" type="text/css">
+    <link href="https://slack.global.ssl.fastly.net/365f/style/filter_select.css" rel="stylesheet" type="text/css">
+
+	
+
+	
+	
+	
+
+	<!--[if lt IE 9]>
+	<script src="https://slack.global.ssl.fastly.net/ef0d/js/libs/html5shiv.js"></script>
+	<![endif]-->
+
+	
+<link id="favicon" rel="shortcut icon" href="https://slack.global.ssl.fastly.net/66f9/img/icons/favicon-32.png" sizes="16x16 32x32 48x48" type="image/png" />
+
+<link rel="icon" href="https://slack.global.ssl.fastly.net/ba3c/img/icons/app-256.png" sizes="256x256" type="image/png" />
+
+<link rel="apple-touch-icon-precomposed" sizes="152x152" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-152.png" />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-144.png" />
+<link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-120.png" />
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-114.png" />
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://slack.global.ssl.fastly.net/0dc1/img/icons/ios-72.png" />
+<link rel="apple-touch-icon-precomposed" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-57.png" />
+
+<meta name="msapplication-TileColor" content="#FFFFFF" />
+<meta name="msapplication-TileImage" content="https://slack.global.ssl.fastly.net/66f9/img/icons/app-144.png" />	<script>
+!function(a,b){function c(a,b){try{if("function"!=typeof a)return a;if(!a.bugsnag){var c=e();a.bugsnag=function(d){if(b&&b.eventHandler&&(u=d),v=c,!y){var e=a.apply(this,arguments);return v=null,e}try{return a.apply(this,arguments)}catch(f){throw l("autoNotify",!0)&&(x.notifyException(f,null,null,"error"),s()),f}finally{v=null}},a.bugsnag.bugsnag=a.bugsnag}return a.bugsnag}catch(d){return a}}function d(){B=!1}function e(){var a=document.currentScript||v;if(!a&&B){var b=document.scripts||document.getElementsByTagName("script");a=b[b.length-1]}return a}function f(a){var b=e();b&&(a.script={src:b.src,content:l("inlineScript",!0)?b.innerHTML:""})}function g(b){var c=l("disableLog"),d=a.console;void 0===d||void 0===d.log||c||d.log("[Bugsnag] "+b)}function h(b,c,d){if(d>=5)return encodeURIComponent(c)+"=[RECURSIVE]";d=d+1||1;try{if(a.Node&&b instanceof a.Node)return encodeURIComponent(c)+"="+encodeURIComponent(r(b));var e=[];for(var f in b)if(b.hasOwnProperty(f)&&null!=f&&null!=b[f]){var g=c?c+"["+f+"]":f,i=b[f];e.push("object"==typeof i?h(i,g,d):encodeURIComponent(g)+"="+encodeURIComponent(i))}return e.join("&")}catch(j){return encodeURIComponent(c)+"="+encodeURIComponent(""+j)}}function i(a,b){if(null==b)return a;a=a||{};for(var c in b)if(b.hasOwnProperty(c))try{a[c]=b[c].constructor===Object?i(a[c],b[c]):b[c]}catch(d){a[c]=b[c]}return a}function j(a,b){a+="?"+h(b)+"&ct=img&cb="+(new Date).getTime();var c=new Image;c.src=a}function k(a){var b={},c=/^data\-([\w\-]+)$/;if(a)for(var d=a.attributes,e=0;e<d.length;e++){var f=d[e];if(c.test(f.nodeName)){var g=f.nodeName.match(c)[1];b[g]=f.value||f.nodeValue}}return b}function l(a,b){C=C||k(J);var c=void 0!==x[a]?x[a]:C[a.toLowerCase()];return"false"===c&&(c=!1),void 0!==c?c:b}function m(a){return a&&a.match(D)?!0:(g("Invalid API key '"+a+"'"),!1)}function n(b,c){var d=l("apiKey");if(m(d)&&A){A-=1;var e=l("releaseStage"),f=l("notifyReleaseStages");if(f){for(var h=!1,k=0;k<f.length;k++)if(e===f[k]){h=!0;break}if(!h)return}var n=[b.name,b.message,b.stacktrace].join("|");if(n!==w){w=n,u&&(c=c||{},c["Last Event"]=q(u));var o={notifierVersion:H,apiKey:d,projectRoot:l("projectRoot")||a.location.protocol+"//"+a.location.host,context:l("context")||a.location.pathname,userId:l("userId"),user:l("user"),metaData:i(i({},l("metaData")),c),releaseStage:e,appVersion:l("appVersion"),url:a.location.href,userAgent:navigator.userAgent,language:navigator.language||navigator.userLanguage,severity:b.severity,name:b.name,message:b.message,stacktrace:b.stacktrace,file:b.file,lineNumber:b.lineNumber,columnNumber:b.columnNumber,payloadVersion:"2"},p=x.beforeNotify;if("function"==typeof p){var r=p(o,o.metaData);if(r===!1)return}return 0===o.lineNumber&&/Script error\.?/.test(o.message)?g("Ignoring cross-domain script error. See https://bugsnag.com/docs/notifiers/js/cors"):(j(l("endpoint")||G,o),void 0)}}}function o(){var a,b,c=10,d="[anonymous]";try{throw new Error("")}catch(e){a="<generated>\n",b=p(e)}if(!b){a="<generated-ie>\n";var f=[];try{for(var h=arguments.callee.caller.caller;h&&f.length<c;){var i=E.test(h.toString())?RegExp.$1||d:d;f.push(i),h=h.caller}}catch(j){g(j)}b=f.join("\n")}return a+b}function p(a){return a.stack||a.backtrace||a.stacktrace}function q(a){var b={millisecondsAgo:new Date-a.timeStamp,type:a.type,which:a.which,target:r(a.target)};return b}function r(a){if(a){var b=a.attributes;if(b){for(var c="<"+a.nodeName.toLowerCase(),d=0;d<b.length;d++)b[d].value&&"null"!=b[d].value.toString()&&(c+=" "+b[d].name+'="'+b[d].value+'"');return c+">"}return a.nodeName}}function s(){z+=1,a.setTimeout(function(){z-=1})}function t(a,b,c){var d=a[b],e=c(d);a[b]=e}var u,v,w,x={},y=!0,z=0,A=10;x.noConflict=function(){return a.Bugsnag=b,x},x.refresh=function(){A=10},x.notifyException=function(a,b,c,d){b&&"string"!=typeof b&&(c=b,b=void 0),c||(c={}),f(c),n({name:b||a.name,message:a.message||a.description,stacktrace:p(a)||o(),file:a.fileName||a.sourceURL,lineNumber:a.lineNumber||a.line,columnNumber:a.columnNumber?a.columnNumber+1:void 0,severity:d||"warning"},c)},x.notify=function(b,c,d,e){n({name:b,message:c,stacktrace:o(),file:a.location.toString(),lineNumber:1,severity:e||"warning"},d)};var B="complete"!==document.readyState;document.addEventListener?(document.addEventListener("DOMContentLoaded",d,!0),a.addEventListener("load",d,!0)):a.attachEvent("onload",d);var C,D=/^[0-9a-f]{32}$/i,E=/function\s*([\w\-$]+)?\s*\(/i,F="https://notify.bugsnag.com/",G=F+"js",H="2.4.7",I=document.getElementsByTagName("script"),J=I[I.length-1];if(a.atob){if(a.ErrorEvent)try{0===new a.ErrorEvent("test").colno&&(y=!1)}catch(K){}}else y=!1;if(l("autoNotify",!0)){t(a,"onerror",function(b){return function(c,d,e,g,h){var i=l("autoNotify",!0),j={};!g&&a.event&&(g=a.event.errorCharacter),f(j),v=null,i&&!z&&n({name:h&&h.name||"window.onerror",message:c,file:d,lineNumber:e,columnNumber:g,stacktrace:h&&p(h)||o(),severity:"error"},j),b&&b(c,d,e,g,h)}});var L=function(a){return function(b,d){if("function"==typeof b){b=c(b);var e=Array.prototype.slice.call(arguments,2);return a(function(){b.apply(this,e)},d)}return a(b,d)}};t(a,"setTimeout",L),t(a,"setInterval",L),a.requestAnimationFrame&&t(a,"requestAnimationFrame",function(a){return function(b){return a(c(b))}}),a.setImmediate&&t(a,"setImmediate",function(a){return function(){var b=Array.prototype.slice.call(arguments);return b[0]=c(b[0]),a.apply(this,b)}}),"EventTarget Window Node ApplicationCache AudioTrackList ChannelMergerNode CryptoOperation EventSource FileReader HTMLUnknownElement IDBDatabase IDBRequest IDBTransaction KeyOperation MediaController MessagePort ModalWindow Notification SVGElementInstance Screen TextTrack TextTrackCue TextTrackList WebSocket WebSocketWorker Worker XMLHttpRequest XMLHttpRequestEventTarget XMLHttpRequestUpload".replace(/\w+/g,function(b){var d=a[b]&&a[b].prototype;d&&d.hasOwnProperty&&d.hasOwnProperty("addEventListener")&&(t(d,"addEventListener",function(a){return function(b,d,e,f){return d&&d.handleEvent&&(d.handleEvent=c(d.handleEvent,{eventHandler:!0})),a.call(this,b,c(d,{eventHandler:!0}),e,f)}}),t(d,"removeEventListener",function(a){return function(b,d,e,f){return a.call(this,b,d,e,f),a.call(this,b,c(d),e,f)}}))})}a.Bugsnag=x,"function"==typeof define&&define.amd?define([],function(){return x}):"object"==typeof module&&"object"==typeof module.exports&&(module.exports=x)}(window,window.Bugsnag);
+Bugsnag.apiKey = "2a86b308af5a81d2c9329fedfb4b30c7";
+Bugsnag.appVersion = "428ae7cf74e60bfe2100ee2100e3378579c00ef8" + '-' + "1441052328";
+Bugsnag.endpoint = "https://errors-webapp.slack-core.com/js";
+Bugsnag.releaseStage = "prod";
+Bugsnag.autoNotify = false;
+Bugsnag.metaData = {};
+Bugsnag.refresh_interval = setInterval(function () { (window.TS && window.TS.client) ? Bugsnag.refresh() : clearInterval(Bugsnag.refresh_interval); }, 15 * 60 * 1000);
+</script>
+</head>
+
+<body class="">
+
+		  			<script>
+		
+			var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+			if (w > 1440) document.querySelector('body').classList.add('widescreen');
+		
+		</script>
+	
+  	
+			<div id="nojs_banner">
+			<strong>You must enable javascript in order to use Slack.</strong>
+			You can do this in <a href="http://enable-javascript.com/" target="new" class="bold">your browser settings</a>.
+		</div>
+	
+
+	
+							<nav class="top persistent">
+	<a href="../index.html" class="logo"></a>
+	<ul>
+		<li><a  href="../is.html">Product</a></li>
+		<li><a  href="../pricing.html">Pricing</a></li>		<li><a  href="https://slack.zendesk.com/hc/en-us">Support</a></li>
+		<li><a  href="http://slackhq.com">Blog</a></li>
+					<li class="sign_in"><a href="../signin.html">Sign in</a></li>
+				<li>
+			<a href="../create.html" class="btn_sticky ga_track_signup mxpnl_signup_nav ">Sign up for free</a>
+		</li>
+		<li class="mobile_menu_btn">
+			<a href="api-nojsmode=1.html#" class="btn_sticky">Menu</a>
+		</li>
+	</ul>
+</nav>
+<nav class="mobile_menu loading" aria-hidden="true">
+	<a href="../index.html" class="logo"></a>
+	<a href="api-nojsmode=1.html#" class="close" aria-label="close"><i class="ts_icon ts_icon_times"></i></a>
+	<ul>
+		<li><a  href="../is.html">Product</a></li>
+		<li><a  href="../pricing.html">Pricing</a></li>		<li><a  href="https://slack.zendesk.com/hc/en-us">Support</a></li>
+		<li><a  href="http://slackhq.com">Blog</a></li>
+		<li><a href="../signin.html">Sign in</a></li>
+	</ul>
+	<a href="../create.html" class="sign_up ga_track_signup mxpnl_signup_nav ">Sign up for free</a>
+</nav>	
+	<div id="page" >
+
+		<div id="page_contents" class="">
+
+
+<h1>API Terms of Service</h1>
+
+<p>
+	You can view all of our policy documents, including security and disclosure practices, at <a href="../policies.html">Policies</a>.
+</p>
+<div class="tab_set on_neutral_grey">
+	<a href="../terms-of-service.html" >Slack TOS</a>
+	<a href="government.html" >Government TOS Addendum</a>
+	<a href="api.html" class="selected">API TOS</a>
+	<i class="tab_caret ts_icon ts_icon_caret_down"></i>
+	<i class="tab_caret ts_icon ts_icon_caret_up"></i>
+</div>
+<div class="tab_pane selected">
+
+<style type="text/css">
+
+.col_right ol li:before,
+#page_contents ol li:before {
+	display: inline-block;
+	margin-bottom: 1rem;
+	margin-right: 0.75rem;
+	font-weight: bold;
+	text-align: right;
+	content: counters(item,".") ".";
+	counter-increment: item;
+}
+.col_right ol ol li:before,
+#page_contents ol ol li:before {
+	font-weight: bold;
+	margin-left: -1rem;
+	margin-right: 0.25rem;
+}
+#page_contents li p {
+	margin-left: 2rem;
+}
+#page_contents ol.flat li:before {
+	/* hide */
+	display: none !important;
+}
+#page_contents span.roman {
+	display: inline-block;
+	position: relative;
+	min-width: 1.5rem;
+	margin-left: -1.75rem;
+}
+
+</style>
+
+	<div class="col span_5_of_6">
+
+		<p>
+			<b>Slack API Terms of Service Agreement</b>
+		</p>
+
+		<ol>
+			
+			<li>
+
+				<b>Acceptance of Terms</b>
+				
+				<p>
+					This Slack API Terms of Service document (the <b>“API TOS”</b>) is an agreement you must accept in order to use the Slack API (as described below). This document describes both your rights and your obligations as part of using the Slack API. It is important that you read it carefully because you will be legally bound to these terms. Slack Technologies, Inc. (<b>“Slack” “we” “us”</b>) only provides the Slack API to you subject to this API TOS. By accepting this API TOS or by accessing or using the Slack API, you agree to be bound by this API TOS (including the Privacy Policy, Brand Guidelines, and general Terms of Service, which are incorporated here by reference).
+				</p>
+
+				<p>
+					If you are entering into this API TOS on behalf of a company or other legal entity, you represent that you have the authority to bind such entity to this API TOS. In that case, the terms “<b>you</b>” or “<b>your</b>” shall also refer to such entity. If you do not have such authority, or if you do not agree with this API TOS, you may not use the Slack API. You acknowledge that this API TOS is a contract between you and Slack, even though it is electronic and is not physically signed by you and Slack, and it governs your use of the Slack API.
+				</p>
+
+			</li>
+
+			<li>
+				
+				<b>API Key Definitions</b>
+
+				<ol type="a" style="list-style-type:lower-alpha">
+
+					<li>
+						<b>Application</b> – Any software application, website, or product you create or service you offer using the Slack API (defined below).
+					</li>
+
+					<li>
+						<b>API Documentation</b> – The documentation, data and information that Slack provides regarding the use of the Slack API through the Developer Site.
+					</li>
+
+					<li>
+						<b>Data</b> – means any data and content uploaded, posted, transmitted or otherwise made available by users via the Services, including messages, files, comments, profile information and anything else entered or uploaded into the Service by a user of the Service.
+					</li>
+
+					<li>
+						<b>Developer Site</b> – Slack’s Developer site found at <a href="https://api.slack.com/" target="_blank">https://api.slack.com/</a>
+					</li>
+					
+					<li>
+						<b>Slack API or “our API”</b> – The publicly available Slack Application Programming Interface (“API”) as well as the related API Documentation.
+					</li>
+					
+					<li>
+						<b>Slack Brand</b> – The Slack brand and brand assets, including names, logos, trade names and trademarks. 
+					</li>
+
+					<li>
+						<b>Slack Service(s)</b> – Slack’s real-time communication, messaging, archiving and search services and related systems and technologies, as well as the website http://slack.com (the “Site”), and all software, applications, data, reports, text, images, and other content made available by or on behalf of Slack through any of the foregoing. The “Service” does not include Data or any software application or service that is provided by you or a third party (including Applications), whether or not Slack designates them as “official integrations”. 
+					</li>
+
+				</ol>
+
+			</li>
+
+			<li>
+
+				<b>API License</b>
+
+				<p>
+					As long as you follow this API TOS, Slack grants you a limited, non-exclusive, non-assignable, non-transferable license to use the APIs to develop, test, and support any software application, website, or product, and to integrate the Slack APIs with your Application. Your license is subject to the limitations set forth in Section 4.2 through 4.11 and Section 9 below, and you agree that violation of Section 4 will automatically terminate your license to use the Slack APIs.
+				</p>
+
+			</li>
+
+			<li>
+
+				<b>Use of APIs and Slack Data</b>
+
+				<p>
+					The following identifies limitations on use related to the Slack API:
+				</p>
+
+				<ol type="a">
+
+					<li>
+						<b>Reliance on API.</b>  Slack is still evolving, and we need the flexibility to occasionally make changes to our APIs, including backwards incompatible ones. We will try to give notice of these changes, but you should follow the <a href="https://twitter.com/slackapi/" target="_blank">@slackapi Twitter account</a> for updates.  Also, parts of our API are undocumented, including certain methods, events, and properties.  Given that these undocumented aspects of our API may change at any time, you should not rely on these behaviors.
+					</li>
+
+					<li>
+						<b>Applicable laws or agreements.</b>  You may not use the Slack API in violation of any law or regulation, or rights of any person, including but not limited to intellectual property rights, rights of privacy, or rights of personality, or in any manner inconsistent with this API TOS or Slack’s other agreements to which you are subject.
+					</li>
+
+					<li>
+						<b>Scope of acceptable use.</b>  You may not use the Slack API or any other technology in a manner that accesses or uses any information beyond what Slack allows under this API TOS or the Documentation; that changes the Slack Service; that breaks or circumvents any of Slack’s technical, administrative, process or security measures; that disrupts or degrades the performance of the Slack Service or the Slack API; or that tests the vulnerability of Slack’s systems or networks.
+					</li>
+
+					<li>
+						<b>Malware.</b>  You may not transmit any viruses or other computer programming that may damage, detrimentally interfere with, surreptitiously intercept, or expropriate any system or data.
+					</li>
+
+					<li>
+						<b>Reverse engineering.</b>  You may not attempt to reverse engineer or otherwise derive source code, trade secrets, or know-how in the Slack API or portion thereof;
+					</li>
+
+					<li>
+						<b>Functionality.</b>  You may not use the Slack API to replicate or compete with core products or services offered by Slack. You acknowledge and agree that Slack has or may in the future offer products or services that are similar to your Application, and nothing will prevent Slack from doing so;
+					</li>
+
+					<li>
+						<b>Commercial Use.</b>  You may charge for your Application.  However, you may not sell, rent, lease, sublicense, redistribute, or syndicate access to the Slack API.
+					</li>
+					
+					<li>
+
+						<b>Advertising.</b>  You may place advertisements on and around your Application. However, you may <u>not</u>:
+
+						<ol class="flat" style="margin-top:1rem">
+
+							<li>
+								<span class="roman">i.</span> Place any advertisements within Slack Service channels, and your advertisements may not resemble or be reasonably likely to confuse users as being a Slack Service message;
+							</li>
+
+							<li>
+								<span class="roman">ii.</span> Use Data or any content from Slack in any advertisements or for purposes of targeting advertisements, in your Application or elsewhere; or
+							</li>
+							
+							<li>
+								<span class="roman">iii.</span> Use contact information obtained from Slack (including email addresses) to contact Slack users outside of Slack without their express permission.
+							</li>
+
+						</ol>
+
+					</li>
+
+					<li>
+						<b>Rate Limits.</b>  You will not attempt to exceed or circumvent limitations on access, calls and use of Slack API, or otherwise use the Slack API in a manner that exceeds reasonable request volume, constitutes excessive or abusive usage, or otherwise fails to comply or is inconsistent with any part of this API TOS or the Documentation.  See <a href="https://api.slack.com/docs/rate-limits" target="_blank">https://api.slack.com/docs/rate-limits</a>.
+					</li>
+
+					<li>
+						<b>Use for promotion of gambling or adult content.</b>  You may not use the Slack APIs in any Application that includes adult content, promotes gambling, involves the sale of tobacco or alcohol to persons under 21 years of age, or otherwise violates any applicable law or regulation.
+					</li>
+
+					<li>
+						<b>Distribution of your application.</b> You may not distribute or allow access to the Slack APIs to anyone other than, if applicable, the company on whose behalf you entered into this API TOS. Anyone who wants to access our APIs must agree to be bound by this API TOS.
+					</li>
+
+				</ol>
+
+			</li>
+
+			<li>
+				<b>Use of Slack Brand or Marks.</b>  You must not use the Slack Brand in a way that suggests your service is endorsed by, sponsored by, or associated with Slack, and you must abide by Slack’s Brand Guidelines available at <a href="../brand-guidelines.html" target="_blank">https://slack.com/brand-guidelines</a>.
+			</li>
+
+			<li>
+
+				<b>Storage of Data</b>
+
+				<ol type="a">
+
+					<li>
+						<b>Caching Data.</b>  Where Data is cached, you should refresh the cache at least every 24 hours.
+					</li>
+
+					<li>
+						<b>Secure Storage Measures.</b>  All Data should be stored and served using strong encryption.
+					</li>
+
+					<li>
+						<b>Delete at User Request.</b>  You must delete all Data you have collected from a Slack user upon request by that user, and when the Slack user deauthorizes your Application or closes his or her account with you.  Similarly, when a team stops using your Application, you should delete all Data obtained from that team.  The restrictions of this Section do not apply to Data that Slack users also provide directly to you and that is separately entered or uploaded to you by the user of your Application.
+					</li>
+
+					<li>
+						<b>Deletion at Termination.</b>  If we terminate your use of the Slack APIs for any reason, then you must permanently delete all Data and any other information that you stored pursuant to your use of the Slack APIs, except when doing so would cause you to violate any law or obligation imposed by a governmental authority.  This provision does not require a Slack user to delete Data stored in Slack if the Slack user is prohibited from accessing the Slack API.
+					</li>
+
+					<li>
+						<b>No Other Storing.</b> You may not copy or store any Data or capture or store any information expressed by the Data (such as hashed or transferred data), except to the extent permitted by this API TOS.
+					</li>
+
+
+				</ol>
+
+			</li>
+
+			<li>
+
+				<b>Your User Agreement and Privacy Policy</b>
+
+				<p>
+					If you offer your Application for use by others outside your organization, you must maintain a user agreement and privacy policy for your Application, which is prominently identified or located where users download or access your Application.  Your privacy policy must meet applicable legal standards and accurately describe the collection, use, storage and sharing of data.  You must promptly notify us of any breaches of your user agreement or privacy policy that impact or may impact Slack users. Your privacy policy must be at least as stringent and user-friendly as ours.
+				</p>
+
+			</li>
+
+			<li>
+
+				<b>Security Measures</b>
+
+				<ol type="a">
+
+					<li>
+						<b>Protections.</b>  The network, operating system and software of your web servers, databases, and computer systems (collectively, “<b>Your Systems</b>”) must be properly configured to securely operate your Application and store Data. Your Application must use reasonable security measures to protect your users’ information. You must not architect or select Your Systems in a manner to avoid the foregoing obligation.
+					</li>
+
+					<li>
+						<b>Reporting.</b>  You must promptly report any security deficiencies in, or intrusions to, your Systems to Slack in writing via email to <a href="mailto:security@slack.com">security@slack.com</a> or subsequent contact information posted on the Developer Site. This includes any unauthorized access, use, disclosure or destruction of Data. You will work with Slack to immediately correct any security deficiency, and will immediately disconnect any intrusions or intruder. In the event of any security deficiency or intrusion involving the Application, Slack APIs or Data, you will make no public statements regarding such deficiencies or intrusions (e.g., press, blogs, social media, bulletin boards, etc.) without prior written and express permission from Slack in each instance.
+					</li>
+
+				</ol>
+
+			</li>
+
+			<li>
+
+				<b>Government Access.</b>  You will not knowingly:
+
+				<ol type="a">
+
+					<li>
+						Allow or assist any government entities, law enforcement, or other organizations to conduct surveillance or obtain data using your access to the Slack API in order to avoid serving legal process directly on Slack.  Any such use by you for law enforcement purposes is a breach of this API TOS.   
+					</li>
+
+					<li>
+						Display, distribute or otherwise make available Data or any Application to any person or entity that you reasonably believe will use Data to violate the <a href="http://www.un.org/en/documents/udhr/" target="_blank">Universal Declaration of Human Rights</a> (located at <a href="http://www.un.org/en/documents/udhr/" target="_blank">http://www.un.org/en/documents/udhr/</a>), including without limitation Articles 12, 18, or 19. Any law enforcement personnel seeking information about Slack users will be referred to Slack’s User Data Request Policy, located at <a href="../user-data-request-policy.html" target="_blank">https://slack.com/user-data-request-policy</a>. You will not conduct and your Application will not provide analyses or research that isolates a small group of individuals or any single individual for any unlawful or discriminatory purposes. Exemptions to these restrictions may be requested for exigent circumstances and are subject to prior written approval from Slack.
+					</li>
+
+				</ol>
+
+			</li>
+
+			<li>
+
+				<b>Government Use.</b>
+
+				<p>
+					The Slack APIs are “commercial items” as that term is defined at 48 C.F.R. 2.101, consisting of “commercial computer software” and “commercial computer software documentation” as such terms are used in 48 C.F.R. 12.212. Any use, modification, derivative, reproduction, release, performance, display, disclosure or distribution of the Slack API by any government entity is prohibited, except as expressly permitted by the terms of this API TOS. Additionally, any use by U.S. government entities must be in accordance with 48 C.F.R. 12.212 and 48 C.F.R. 227.7202-1 through 227.7202-4. The contractor/manufacturer is Slack Technologies, Inc., 155 5th Street, Sixth Floor; San Francisco, CA 94103.
+				</p>
+
+			</li>
+
+			<li>
+
+				<b>Ownership.</b>
+
+				<p>
+					As between you and us, we own all rights, title, and interest, including all intellectual property rights, in and to, the (1) Slack APIs, Documentation, and all elements and components thereof; (2) Data; (3) Slack Services; and (4) Brand Features (collectively, the “Slack Materials”). The only exception to this is Data that you as a Slack user have licensed to Slack under the <a href="../terms-of-service.html" target="_blank">https://slack.com/terms-of-service</a>, which governs that Data. Except for the express licenses granted in this API TOS, Slack does not grant you any right, title, or interest in the Slack Materials. You agree to take such actions as Slack may reasonably request to perfect Slack’s rights to the Slack Materials.
+				</p>
+
+			</li>
+
+			<li>
+
+				<b>Term and Termination</b>
+
+				<ol type="a">
+
+					<li>
+						<b>Duration of Terms.</b>  This API TOS will go into effect on the date upon which you agree to them, by accessing or using the Slack API, and will continue until terminated as set forth herein.
+					</li>
+
+					<li>
+						<b>Your Right to Terminate.</b>  You may terminate this API TOS by discontinuing use of our APIs.
+					</li>
+
+					<li>
+						<b>Suspension; Termination.</b>  We may change, suspend or discontinue the Slack API and suspend or terminate your use of the Slack API, the Slack Service, and/or Slack Brand at any time and for any reason, without notice. Without limiting the foregoing, we may limit your Application's access to the Slack API if it, in our sole discretion, may negatively affect our Service or our ability to provide our Service.
+					</li>
+
+					<li>
+
+						<b>Effect of Termination.</b>  Upon termination of this API TOS:
+
+						<ol type="i" class="flat" style="margin-top:1rem">
+
+							<li>
+								<span class="roman">i.</span> All rights and licenses granted to you will terminate immediately;
+							</li>
+
+							<li>
+								<span class="roman">ii.</span> You will promptly destroy Documentation and any other Slack information in your possession or control that was received under this API TOS;
+							</li>
+							
+							<li>
+								<span class="roman">iii.</span> Unless we agree otherwise in writing or as stated in this API TOS, you must permanently delete all Data and other information that you stored pursuant to your use of the Slack APIs. Slack may request that you certify in writing your compliance with this section; and
+							</li>
+							
+							<li>
+								<span class="roman">iv.</span> Slack will make commercially reasonable efforts to remove all references and links to your Application from its Services (Slack has no other obligation to delete copies of, references to, or links to your Application).
+							</li>
+
+						</ol>
+
+					</li>
+
+					<li>
+						The following sections of this API TOS shall survive any termination, Sections 4 (“Use of the APIs and Slack Data”), 5 (“Use of Slack Brand or Marks”), 6.4 (“Delete at User Request”), 6.5 (“Deletion at Termination”), 7 (“Your User Agreement and Privacy Policy”), 8 (“Security Measures”), 11 (“Ownership”), 12 (“Term and Termination”), 13 (“Other Important Terms”), 14 (“Disclaimer of Warranties; Limitation of Liability; Indemnity”), 15 (“Dispute Resolution”) and 16 (“General Legal Terms”).
+					</li>
+
+				</ol>
+
+			</li>
+
+			<li>
+
+				<b>Other Important Terms.</b>
+
+				<ol type="a">
+
+					<li>
+						<b>Legal Representations.</b>  You represent and warrant to Slack that, excluding Slack Materials, you have the right to use, reproduce, transmit, copy, publicly display, publicly perform, and distribute your Application, and that use of your Application by Slack and its users will not violate the rights of any third party (e.g., copyright, patent, trademark, privacy, publicity or other proprietary right of any person or entity), or any applicable regulation or law, including the Digital Millennium Copyright Act, the laws of any country in which your Application is made available and any applicable export laws.
+					</li>
+
+					<li>
+						<b>Modification of the API TOS.</b> We may change, add to or delete this API TOS or any portion thereof from time to time in our sole discretion. If we make a material change to this API TOs, we will provide you with reasonable notice prior to the changes either by emailing the email address associated with your account or by posting a notice on the Developer Site. You acknowledge that these updates and modifications may adversely impact how you access, use, and communicate with the Slack API.  If any change in unacceptable to you, then your only recourse is to cease all use of the Slack API.  Your continued access or use of the Slack API will mean that you agree to the updates and modifications.
+					</li>
+
+					<li>
+
+						<b>Other Applicable Agreements.</b>  You and your Application must also comply with the following, which are hereby incorporated by reference:
+
+						<ol type="i" style="margin-top:1rem">
+
+							<li>
+								<a href="../terms-of-service.html" target="_blank">Slack Terms of Service</a>
+							</li>
+
+							<li>
+								<a href="../privacy-policy.html" target="_blank">Slack Privacy Policy</a>
+							</li>
+
+							<li>
+								<a href="../brand-guidelines.html" target="_blank">Slack Brand Guidelines</a>
+							</li>
+
+						</ol>
+
+						<p>
+							In the event of any conflict between the content in this document and the above documents, this document controls your use of the Slack APIs.  
+						</p>
+
+					</li>
+
+				</ol>
+				
+			</li>
+				
+			<li>
+
+				<b>Disclaimer of Warranties; Limitation of Liability; Indemnity</b>
+
+				<ol type="a">
+				
+					<li>
+						<b><u>NO WARRANTIES</u></b>. THE SLACK API AND ALL RELATED COMPONENTS AND INFORMATION ARE PROVIDED ON AN “AS IS” AND “AS AVAILABLE” BASIS WITHOUT ANY WARRANTIES OF ANY KIND, AND SLACK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES, WHETHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, TITLE, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. YOU ACKNOWLEDGE THAT SLACK DOES NOT WARRANT THAT THE SLACK API WILL BE UNINTERRUPTED, TIMELY, SECURE, ERROR-FREE OR VIRUS-FREE, NOR DOES IT MAKE ANY WARRANTY AS TO THE RESULTS THAT MAY BE OBTAINED FROM USE OF THE SLACK API, AND NO INFORMATION, ADVICE OR SERVICES OBTAINED BY YOU FROM SLACK OR THROUGH THE DEVELOPER SITE SHALL CREATE ANY WARRANTY NOT EXPRESSLY STATED IN THIS API TOS.
+					</li>
+
+					<li>
+						<b><u>LIMITATION ON LIABILITY</u></b>. UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL THEORY (WHETHER IN CONTRACT, TORT, OR OTHERWISE) SHALL SLACK BE LIABLE TO YOU OR ANY THIRD PARTY FOR (A) ANY INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, CONSEQUENTIAL OR PUNITIVE DAMAGES, INCLUDING LOST PROFITS, LOST SALES OR BUSINESS, LOST DATA, OR (B) FOR ANY AMOUNT IN THE AGGREGATE IN EXCESS OF THE FEES ACTUALLY PAID BY YOU IN THE SIX (6) MONTHS PRECEDING THE EVENT GIVING RISE TO YOUR CLAIM OR, IF NO FEES APPLY, FIVE HUNDRED ($500) U.S. DOLLARS, OR (C) ANY MATTER BEYOND OUR REASONABLE CONTROL. THE PROVISIONS OF THIS SECTION ALLOCATE THE RISKS UNDER THIS TOS BETWEEN THE PARTIES, AND THE PARTIES HAVE RELIED ON THESE LIMITATIONS IN DETERMINING WHETHER TO ENTER INTO THIS TOS. Some jurisdictions do not allow the exclusion of implied warranties or limitation of liability for incidental or consequential damages, which means that some of the above limitations may not apply to you. IN THESE JURISDICTIONS, SLACK’S LIABILITY WILL BE LIMITED TO THE GREATEST EXTENT PERMITTED BY LAW.
+					</li>
+
+					<li>
+						<b><u>Indemnity</u></b>. You agree to defend, hold harmless and indemnify Slack, and its subsidiaries, affiliates, officers, agents, employees, and suppliers, from and against any third party claim arising from or in any way related to your or your users’ use of the Application, Slack API or Data, use of Slack Brand, or violation of this API TOS, including any liability or expense arising from all claims, losses, damages (actual and consequential), suits, judgments, litigation costs and attorneys’ fees, of every kind and nature. In such a case, we will provide you with written notice of such claim, suit, or action.
+					</li>
+
+				</ol>
+
+			</li>
+
+			<li>
+
+				<b>Dispute Resolution</b>
+
+				<p>
+					This API TOS and any claim, cause of action or dispute (“<b>Claim</b>”) arising out of or related to this Agreement shall be governed by the laws of the state of California, United States, regardless of your country of origin or where you access the Slack Service, and notwithstanding any conflicts of law principles and the United Nations Convention for the International Sale of Goods. You and Slack agree that all Claims arising out of or related to this Agreement must be resolved exclusively in the courts located in the county of San Francisco, California or the U.S. District Court for the Northern District of California. You and Slack agree to submit to the personal jurisdiction of the courts located within the county of San Francisco, California or the Northern District of California, and agree to waive any and all objections to the exercise of jurisdiction over the parties by such courts and to venue in such courts for the purpose of litigating all such Claims. Notwithstanding the above, you agree that Slack shall still be allowed to apply for injunctive remedies (or an equivalent type of urgent legal relief) in any jurisdiction.
+				</p>
+
+			</li>
+			
+			<li>
+
+				<b>General Legal Terms</b>
+
+				<ol type="a">
+
+					<li>
+						<b>Severability.</b>  If any provision of this API TOS is found to be illegal, void, or unenforceable, the unenforceable provision will be modified so as to render it enforceable to the maximum extent possible in order to effect the intention of the provision; if a term cannot be so modified, it will be severed and the remaining provisions of this API TOS will not be affected in any way.
+					</li>
+
+					<li>
+						<b>Language.</b>  Where Slack has provided you with a translation of the English language version of this API TOS or any document referenced in this API TOS, you agree that the translation is provided for your convenience only and that the English language versions of any such document, will control.
+					</li>
+					
+					<li>
+						<b>Notice and Service of Process.</b>  We may notify you via postings on the Developer Site or via the email address associated with your Application or Slack Service account. Slack accepts service of process by mail or courier at the physical address set forth in Section 16.9 below. Any notices that you provide without compliance with this section shall have no legal effect.
+					</li>
+
+					<li>
+						<b>Entire Agreement.</b>  This API TOS and any documents incorporated into this API TOS by reference, constitute the entire agreement between you and Slack regarding the Slack APIs and supersedes all prior agreements and understandings, whether written or oral, or whether established by custom, practice, policy or precedent, with respect to the subject matter of this API TOS.
+					</li>
+
+					<li>
+						<b>No Informal Waivers, Agreements, or Representations.</b>  Our failure to act with respect to a breach of this API TOs by you or others does not waive our right to act with respect to that breach or subsequent similar or other breaches. No representations, statements, consents, waivers or other acts or omissions by any Slack affiliate shall be deemed legally binding on any Slack affiliate, unless documented in a physical writing hand signed by a duly appointed officer of Slack.
+					</li>
+
+					<li>
+						<b>Injunctive Relief.</b>  In no event shall you seek or be entitled to rescission, injunctive or other equitable relief, or to enjoin or restrain the operation of the Developer Site or Slack Service or any Slack APIs, or other material used or displayed through the Slack Developer Site or Slack Service.
+					</li>
+
+					<li>
+						<b>Assignment and Delegation.</b>  You may not assign or delegate any rights or obligations under this API TOS, including in connection with a change of control. Any purported assignment and delegation shall be ineffective. We may freely assign or delegate all rights and obligations under this API TOs, fully or partially without notice to you. We may also substitute, by way of unilateral novation, effective upon notice to you, Slack Technologies, Inc. for any third party that assumes our rights and obligations under this API TOs.
+					</li>
+
+					<li>
+						<b>Potential Other Rights and Obligations.</b>  You may have rights or obligations under local law other than those enumerated here if you are located outside the United States.
+					</li>
+
+					<li>
+						<b>How to Contact Us.</b>  If you have questions or comments about this API TOS, or wish to make use of our Slack API in any way not permitted by this API TOS, please contact us via email at <a href="mailto:integrations@slack.com">integrations@slack.com</a> or by physical mail at:
+
+						<p>
+							Slack Technologies<br />
+							155 5th Street, 6th Floor<br />
+							San Francisco, CA 94017
+						</p>
+
+					</li>
+
+				</ol>
+
+			</li>
+
+		</ol>
+
+	</div>
+
+	<div class="clear_both"></div>
+
+</div>
+
+		
+	</div>
+	<div id="overlay"></div>
+</div>
+
+
+	<footer >
+	<section>
+		<div class="grid">
+			<div class="col span_1_of_5">
+				<i class="ts_icon ts_icon_slack_pillow"></i>
+				<small>Made with <i class="ts_icon ts_icon_heart"></i> by Slack</small>
+			</div>
+			<div class="col span_1_of_5 nav_col">
+				<ul>
+					<li><a href="../brand-guidelines.html">Brand Guidelines</a></li>
+					<li><a href="../jobs.html">Jobs</a></li>
+					<li><a href="http://slackatwork.com">Slack at Work</a></li>
+					<li><a href="https://slack.zendesk.com/hc/en-us">Support</a></li>
+				</ul>
+			</div>
+			<div class="col span_1_of_5 nav_col">
+				<ul>
+					<li><a href="../privacy-policy.html">Privacy</a></li>
+					<li><a href="../security.html">Security</a></li>
+					<li><a href="../terms-of-service.html">Terms of Service</a></li>
+					<li><a href="../policies.html">Policies</a></li>
+				</ul>
+			</div>
+			<div class="col span_1_of_5 nav_col">
+				<ul>
+					<li><a href="https://status.slack.com/">Status</a></li>
+					<li><a href="https://api.slack.com/">API</a></li>
+					<li><a href="../integrations.html">Integrations</a></li>
+					<li><a href="../apps.html">Apps</a></li>
+				</ul>
+			</div>
+			<div class="col span_1_of_5 nav_col">
+				<ul>
+					<li><a href="../varietypack.html">Podcast</a></li>
+					<li><a href="http://slackhq.com">Blog</a></li>
+					<li><a href="../help/contact.html">Contact Us</a></li>
+					<li><a href="https://twitter.com/SlackHQ">@SlackHQ</a></li>
+				</ul>
+			</div>
+		</div>
+	</section>
+</footer>
+
+
+<script type="text/javascript">
+var cdn_url = "https:\/\/slack.global.ssl.fastly.net";
+var inc_js_setup_data = {
+	emoji_sheets: {
+		apple: 'https://slack.global.ssl.fastly.net/66f9/img/emoji_2015/sheet_apple_64_indexed_256colors.png',
+		google: 'https://slack.global.ssl.fastly.net/66f9/img/emoji_2015/sheet_google_64_indexed_128colors.png',
+		twitter: 'https://slack.global.ssl.fastly.net/66f9/img/emoji_2015/sheet_twitter_64_indexed_128colors.png',
+		emojione: 'https://slack.global.ssl.fastly.net/66f9/img/emoji_2015/sheet_emojione_64_indexed_128colors.png',
+	},
+};
+</script>
+
+	<!-- output_js "core" -->
+<script type="text/javascript" src="https://slack.global.ssl.fastly.net/0fed/js/libs/jquery-2.1.4.js" crossorigin="anonymous"></script>
+
+	<!-- output_js "core_web" -->
+<script type="text/javascript" src="https://slack.global.ssl.fastly.net/896b0/js/rollup-core_web.js" crossorigin="anonymous"></script>
+
+	<!-- output_js "secondary" -->
+
+		<!-- output_js "regular" -->
+<script type="text/javascript" src="https://slack.global.ssl.fastly.net/3ad4/js/sticky_nav.js" crossorigin="anonymous"></script>
+
+	
+	<!-- slack-www332 / 2015-08-31 13:24:32 / v428ae7cf74e60bfe2100ee2100e3378579c00ef8 -->
+<style>.color_9f69e7:not(.nuc) {color:#9F69E7;}.color_4bbe2e:not(.nuc) {color:#4BBE2E;}.color_e7392d:not(.nuc) {color:#E7392D;}.color_3c989f:not(.nuc) {color:#3C989F;}.color_674b1b:not(.nuc) {color:#674B1B;}.color_e96699:not(.nuc) {color:#E96699;}.color_e0a729:not(.nuc) {color:#E0A729;}.color_684b6c:not(.nuc) {color:#684B6C;}.color_5b89d5:not(.nuc) {color:#5B89D5;}.color_2b6836:not(.nuc) {color:#2B6836;}.color_99a949:not(.nuc) {color:#99A949;}.color_df3dc0:not(.nuc) {color:#DF3DC0;}.color_4cc091:not(.nuc) {color:#4CC091;}.color_9b3b45:not(.nuc) {color:#9B3B45;}.color_d58247:not(.nuc) {color:#D58247;}.color_bb86b7:not(.nuc) {color:#BB86B7;}.color_5a4592:not(.nuc) {color:#5A4592;}.color_db3150:not(.nuc) {color:#DB3150;}.color_235e5b:not(.nuc) {color:#235E5B;}.color_9e3997:not(.nuc) {color:#9E3997;}.color_53b759:not(.nuc) {color:#53B759;}.color_c386df:not(.nuc) {color:#C386DF;}.color_385a86:not(.nuc) {color:#385A86;}.color_a63024:not(.nuc) {color:#A63024;}.color_5870dd:not(.nuc) {color:#5870DD;}.color_ea2977:not(.nuc) {color:#EA2977;}.color_50a0cf:not(.nuc) {color:#50A0CF;}.color_d55aef:not(.nuc) {color:#D55AEF;}.color_d1707d:not(.nuc) {color:#D1707D;}.color_43761b:not(.nuc) {color:#43761B;}.color_e06b56:not(.nuc) {color:#E06B56;}.color_8f4a2b:not(.nuc) {color:#8F4A2B;}.color_902d59:not(.nuc) {color:#902D59;}.color_de5f24:not(.nuc) {color:#DE5F24;}.color_a2a5dc:not(.nuc) {color:#A2A5DC;}.color_827327:not(.nuc) {color:#827327;}.color_3c8c69:not(.nuc) {color:#3C8C69;}.color_8d4b84:not(.nuc) {color:#8D4B84;}.color_84b22f:not(.nuc) {color:#84B22F;}.color_4ec0d6:not(.nuc) {color:#4EC0D6;}.color_e23f99:not(.nuc) {color:#E23F99;}.color_e475df:not(.nuc) {color:#E475DF;}.color_619a4f:not(.nuc) {color:#619A4F;}.color_a72f79:not(.nuc) {color:#A72F79;}.color_7d414c:not(.nuc) {color:#7D414C;}.color_aba727:not(.nuc) {color:#ABA727;}.color_965d1b:not(.nuc) {color:#965D1B;}.color_4d5e26:not(.nuc) {color:#4D5E26;}.color_dd8527:not(.nuc) {color:#DD8527;}.color_bd9336:not(.nuc) {color:#BD9336;}.color_e85d72:not(.nuc) {color:#E85D72;}.color_dc7dbb:not(.nuc) {color:#DC7DBB;}.color_bc3663:not(.nuc) {color:#BC3663;}.color_9d8eee:not(.nuc) {color:#9D8EEE;}.color_8469bc:not(.nuc) {color:#8469BC;}.color_73769d:not(.nuc) {color:#73769D;}.color_b14cbc:not(.nuc) {color:#B14CBC;}</style>
+</body>
+</html>

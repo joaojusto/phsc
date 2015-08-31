@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+	<script type="text/javascript">
+window.TSMark = function(mark_label) {
+	if (!true || !window.performance || !window.performance.mark) return;
+	performance.mark(mark_label);
+}
+TSMark('start_load');
+window.TSMeasureAndBeacon = function(measure_label, start_mark_label) {
+	if (!true || !window.performance || !window.performance.mark || !window.performance.measure) return;
+	performance.mark(start_mark_label + '_end');
+	try {
+		performance.measure(measure_label, start_mark_label, start_mark_label + '_end');
+		(new Image()).src = "https:\/\/slack.com\/beacon\/timing" + '?data=' + encodeURIComponent(measure_label + ':' + performance.getEntriesByName(measure_label)[0].duration);
+	} catch(e) { return; }
+}
+</script>	<noscript><meta http-equiv="refresh" content="0; URL='2013-11-07-nojsmode=1.html'" /></noscript>
+<script type="text/javascript">
+window.load_start_ms = Date.now();
+window.load_log = [];
+window.logLoad = function(k) {
+	var ms = Date.now();
+	var secs = (ms-window.load_start_ms)/1000;
+
+	window.load_log.push({
+		k: k,
+		t: secs
+	})
+	
+	if (window.TS) {
+		TS.log(88, secs+' '+k);
+	}
+}
+if(self!==top)window.document.write("\u003Cstyle>body * {display:none !important;}\u003C\/style>\u003Ca href=\"#\" onclick="+
+"\"top.location.href=window.location.href\" style=\"display:block !important;padding:10px\">Go to Slack.com\u003C\/a>");
+</script>
+
+
+<script type="text/javascript">
+window.callSlackAPIUnauthed = function(method, args, callback) {
+	var url = '/api/'+method+'?t='+Date.now();
+	var req = new XMLHttpRequest();
+	
+	req.onreadystatechange = function() {
+		if (req.readyState == 4) {
+			req.onreadystatechange = null;
+			var obj;
+			
+			if (req.status == 200) {
+				if (req.responseText.indexOf('{') == 0) {
+					try {
+						eval('obj = '+req.responseText);
+					} catch (err) {
+						console.warn('unable to do anything with api rsp');
+					}
+				}
+			}
+			
+			obj = obj || {
+				ok: false	
+			}
+			
+			callback(obj.ok, obj, args);
+		}
+	}
+	
+	req.open('POST', url, 1);
+	req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+	var args2 = [];
+	for (i in args) {
+		args2[args2.length] = encodeURIComponent(i)+'='+encodeURIComponent(args[i]);
+	}
+
+	req.send(args2.join('&'));
+}
+</script>
+
+			
+	
+	<script type="text/javascript">
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		ga('create', "UA-106458-18", 'slack.com');
+		ga('send', 'pageview');
+
+					(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			Date.now(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+			'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+			})(window,document,'script','dataLayer',"GTM-KH2LPK");
+		
+		(function(e,c,b,f,d,g,a){e.SlackBeaconObject=d;
+		e[d]=e[d]||function(){(e[d].q=e[d].q||[]).push([1*new Date(),arguments])};
+		e[d].l=1*new Date();g=c.createElement(b);a=c.getElementsByTagName(b)[0];
+		g.async=1;g.src=f;a.parentNode.insertBefore(g,a)
+		})(window,document,"script","https://slack.global.ssl.fastly.net/dcf8/js/libs/beacon.js","sb");
+		sb('set', 'token', '3307f436963e02d4f9eb85ce5159744c');
+
+				sb('track', 'pageview');
+
+		function track(a){ga('send','event','web',a);sb('track',a);}
+
+	</script>
+
+
+		<script type='text/javascript'>
+		
+		(function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
+		for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);
+		
+
+		mixpanel.init("12d52d8633a5b432975592d13ebd3f34");
+
+		
+			function mixpanel_track(){if(window.mixpanel)mixpanel.track.apply(mixpanel, arguments);}
+			function mixpanel_track_forms(){if(window.mixpanel)mixpanel.track_forms.apply(mixpanel, arguments);}
+			function mixpanel_track_links(){if(window.mixpanel)mixpanel.track_links.apply(mixpanel, arguments);}
+		
+	</script>
+	
+			<meta name="referrer" content="no-referrer">
+			<meta name="superfish" content="nofish">
+	<script type="text/javascript">
+
+
+
+var TS_last_log_date = null;
+var TSMakeLogDate = function() {
+	var date = new Date();
+
+	var y = date.getFullYear();
+	var mo = date.getMonth()+1;
+	var d = date.getDate();
+
+	var time = {
+	  h: date.getHours(),
+	  mi: date.getMinutes(),
+	  s: date.getSeconds(),
+	  ms: date.getMilliseconds()
+	};
+
+	Object.keys(time).map(function(moment, index) {
+		if(time[moment] < 10) {
+			time[moment] = '0' + time[moment];
+		}
+	});
+
+	var str = y + '/' + mo + '/' + d + ' ' + time.h + ':' + time.mi + ':' + time.s + '.' + time.ms;
+	if (TS_last_log_date) {
+		var diff = date-TS_last_log_date;
+		//str+= ' ('+diff+'ms)';
+	}
+	TS_last_log_date = date;
+	return str+' ';
+}
+
+var TSSSB = {
+	env: (function() {
+		var v = {
+			win_ssb_version: null,
+			win_ssb_version_minor: null,
+			mac_ssb_version: null,
+			mac_ssb_version_minor: null,
+			lin_ssb_version: null,
+			lin_ssb_version_minor: null
+		}
+		
+		var is_win = (navigator.appVersion.indexOf("Windows") !== -1);
+		var is_lin = (navigator.appVersion.indexOf("Linux") !== -1);
+		var is_mac = !!(navigator.userAgent.match(/(OS X)/g));
+
+		if (navigator.userAgent.match(/(Slack_SSB)/g) || navigator.userAgent.match(/(Slack_WINSSB)/g)) {
+			// Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/534.55.3 (KHTML, like Gecko) Slack_SSB/0.32
+			var parts = navigator.userAgent.split('/');
+			var version_str = parts[parts.length-1];
+			var version_float = parseFloat(version_str);
+			var versionA = version_str.split('.');
+			var version_minor = (versionA.length == 3) ? parseInt(versionA[2]) : 0;
+	
+			if (navigator.userAgent.match(/(AtomShell)/g)) {
+				// Electron-based app
+				if (is_lin) {
+					v.lin_ssb_version = version_float;
+					v.lin_ssb_version_minor = version_minor;
+				} else {
+					v.win_ssb_version = version_float;
+					v.win_ssb_version_minor = version_minor;
+				}
+			} else {
+				// MacGap-based app
+				v.mac_ssb_version = version_float;
+				v.mac_ssb_version_minor = version_minor;
+			}
+		}
+
+		return v;
+	})(),
+	
+	
+
+	call: function() {
+		return false;
+	}
+
+	
+}
+
+</script>	<script type="text/javascript">
+		
+		var was_TS = window.TS;
+		delete window.TS;
+		TSSSB.call('didFinishLoading');
+		if (was_TS) window.TS = was_TS;
+	</script>
+	    <meta charset="utf-8">
+    <title>Policy Archives | Slack</title>
+    <meta name="author" content="Slack">
+
+	
+																
+																													
+				
+																
+				
+		
+				<!-- output_css "core" -->
+    <link href="https://slack.global.ssl.fastly.net/b747/style/rollup-plastic.css" rel="stylesheet" type="text/css">
+
+		<!-- output_css "file_pages" -->
+		
+	<!-- output_css "regular" -->
+    <link href="https://slack.global.ssl.fastly.net/cc95/style/legal.css" rel="stylesheet" type="text/css">
+    <link href="https://slack.global.ssl.fastly.net/1e63/style/libs/lato-1.css" rel="stylesheet" type="text/css">
+    <link href="https://slack.global.ssl.fastly.net/c3f3/style/sticky_nav.css" rel="stylesheet" type="text/css">
+    <link href="https://slack.global.ssl.fastly.net/fbe81/style/footer.css" rel="stylesheet" type="text/css">
+    <link href="https://slack.global.ssl.fastly.net/365f/style/filter_select.css" rel="stylesheet" type="text/css">
+
+	
+
+	
+	
+	
+
+	<!--[if lt IE 9]>
+	<script src="https://slack.global.ssl.fastly.net/ef0d/js/libs/html5shiv.js"></script>
+	<![endif]-->
+
+	
+<link id="favicon" rel="shortcut icon" href="https://slack.global.ssl.fastly.net/66f9/img/icons/favicon-32.png" sizes="16x16 32x32 48x48" type="image/png" />
+
+<link rel="icon" href="https://slack.global.ssl.fastly.net/ba3c/img/icons/app-256.png" sizes="256x256" type="image/png" />
+
+<link rel="apple-touch-icon-precomposed" sizes="152x152" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-152.png" />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-144.png" />
+<link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-120.png" />
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-114.png" />
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://slack.global.ssl.fastly.net/0dc1/img/icons/ios-72.png" />
+<link rel="apple-touch-icon-precomposed" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-57.png" />
+
+<meta name="msapplication-TileColor" content="#FFFFFF" />
+<meta name="msapplication-TileImage" content="https://slack.global.ssl.fastly.net/66f9/img/icons/app-144.png" />	<script>
+!function(a,b){function c(a,b){try{if("function"!=typeof a)return a;if(!a.bugsnag){var c=e();a.bugsnag=function(d){if(b&&b.eventHandler&&(u=d),v=c,!y){var e=a.apply(this,arguments);return v=null,e}try{return a.apply(this,arguments)}catch(f){throw l("autoNotify",!0)&&(x.notifyException(f,null,null,"error"),s()),f}finally{v=null}},a.bugsnag.bugsnag=a.bugsnag}return a.bugsnag}catch(d){return a}}function d(){B=!1}function e(){var a=document.currentScript||v;if(!a&&B){var b=document.scripts||document.getElementsByTagName("script");a=b[b.length-1]}return a}function f(a){var b=e();b&&(a.script={src:b.src,content:l("inlineScript",!0)?b.innerHTML:""})}function g(b){var c=l("disableLog"),d=a.console;void 0===d||void 0===d.log||c||d.log("[Bugsnag] "+b)}function h(b,c,d){if(d>=5)return encodeURIComponent(c)+"=[RECURSIVE]";d=d+1||1;try{if(a.Node&&b instanceof a.Node)return encodeURIComponent(c)+"="+encodeURIComponent(r(b));var e=[];for(var f in b)if(b.hasOwnProperty(f)&&null!=f&&null!=b[f]){var g=c?c+"["+f+"]":f,i=b[f];e.push("object"==typeof i?h(i,g,d):encodeURIComponent(g)+"="+encodeURIComponent(i))}return e.join("&")}catch(j){return encodeURIComponent(c)+"="+encodeURIComponent(""+j)}}function i(a,b){if(null==b)return a;a=a||{};for(var c in b)if(b.hasOwnProperty(c))try{a[c]=b[c].constructor===Object?i(a[c],b[c]):b[c]}catch(d){a[c]=b[c]}return a}function j(a,b){a+="?"+h(b)+"&ct=img&cb="+(new Date).getTime();var c=new Image;c.src=a}function k(a){var b={},c=/^data\-([\w\-]+)$/;if(a)for(var d=a.attributes,e=0;e<d.length;e++){var f=d[e];if(c.test(f.nodeName)){var g=f.nodeName.match(c)[1];b[g]=f.value||f.nodeValue}}return b}function l(a,b){C=C||k(J);var c=void 0!==x[a]?x[a]:C[a.toLowerCase()];return"false"===c&&(c=!1),void 0!==c?c:b}function m(a){return a&&a.match(D)?!0:(g("Invalid API key '"+a+"'"),!1)}function n(b,c){var d=l("apiKey");if(m(d)&&A){A-=1;var e=l("releaseStage"),f=l("notifyReleaseStages");if(f){for(var h=!1,k=0;k<f.length;k++)if(e===f[k]){h=!0;break}if(!h)return}var n=[b.name,b.message,b.stacktrace].join("|");if(n!==w){w=n,u&&(c=c||{},c["Last Event"]=q(u));var o={notifierVersion:H,apiKey:d,projectRoot:l("projectRoot")||a.location.protocol+"//"+a.location.host,context:l("context")||a.location.pathname,userId:l("userId"),user:l("user"),metaData:i(i({},l("metaData")),c),releaseStage:e,appVersion:l("appVersion"),url:a.location.href,userAgent:navigator.userAgent,language:navigator.language||navigator.userLanguage,severity:b.severity,name:b.name,message:b.message,stacktrace:b.stacktrace,file:b.file,lineNumber:b.lineNumber,columnNumber:b.columnNumber,payloadVersion:"2"},p=x.beforeNotify;if("function"==typeof p){var r=p(o,o.metaData);if(r===!1)return}return 0===o.lineNumber&&/Script error\.?/.test(o.message)?g("Ignoring cross-domain script error. See https://bugsnag.com/docs/notifiers/js/cors"):(j(l("endpoint")||G,o),void 0)}}}function o(){var a,b,c=10,d="[anonymous]";try{throw new Error("")}catch(e){a="<generated>\n",b=p(e)}if(!b){a="<generated-ie>\n";var f=[];try{for(var h=arguments.callee.caller.caller;h&&f.length<c;){var i=E.test(h.toString())?RegExp.$1||d:d;f.push(i),h=h.caller}}catch(j){g(j)}b=f.join("\n")}return a+b}function p(a){return a.stack||a.backtrace||a.stacktrace}function q(a){var b={millisecondsAgo:new Date-a.timeStamp,type:a.type,which:a.which,target:r(a.target)};return b}function r(a){if(a){var b=a.attributes;if(b){for(var c="<"+a.nodeName.toLowerCase(),d=0;d<b.length;d++)b[d].value&&"null"!=b[d].value.toString()&&(c+=" "+b[d].name+'="'+b[d].value+'"');return c+">"}return a.nodeName}}function s(){z+=1,a.setTimeout(function(){z-=1})}function t(a,b,c){var d=a[b],e=c(d);a[b]=e}var u,v,w,x={},y=!0,z=0,A=10;x.noConflict=function(){return a.Bugsnag=b,x},x.refresh=function(){A=10},x.notifyException=function(a,b,c,d){b&&"string"!=typeof b&&(c=b,b=void 0),c||(c={}),f(c),n({name:b||a.name,message:a.message||a.description,stacktrace:p(a)||o(),file:a.fileName||a.sourceURL,lineNumber:a.lineNumber||a.line,columnNumber:a.columnNumber?a.columnNumber+1:void 0,severity:d||"warning"},c)},x.notify=function(b,c,d,e){n({name:b,message:c,stacktrace:o(),file:a.location.toString(),lineNumber:1,severity:e||"warning"},d)};var B="complete"!==document.readyState;document.addEventListener?(document.addEventListener("DOMContentLoaded",d,!0),a.addEventListener("load",d,!0)):a.attachEvent("onload",d);var C,D=/^[0-9a-f]{32}$/i,E=/function\s*([\w\-$]+)?\s*\(/i,F="https://notify.bugsnag.com/",G=F+"js",H="2.4.7",I=document.getElementsByTagName("script"),J=I[I.length-1];if(a.atob){if(a.ErrorEvent)try{0===new a.ErrorEvent("test").colno&&(y=!1)}catch(K){}}else y=!1;if(l("autoNotify",!0)){t(a,"onerror",function(b){return function(c,d,e,g,h){var i=l("autoNotify",!0),j={};!g&&a.event&&(g=a.event.errorCharacter),f(j),v=null,i&&!z&&n({name:h&&h.name||"window.onerror",message:c,file:d,lineNumber:e,columnNumber:g,stacktrace:h&&p(h)||o(),severity:"error"},j),b&&b(c,d,e,g,h)}});var L=function(a){return function(b,d){if("function"==typeof b){b=c(b);var e=Array.prototype.slice.call(arguments,2);return a(function(){b.apply(this,e)},d)}return a(b,d)}};t(a,"setTimeout",L),t(a,"setInterval",L),a.requestAnimationFrame&&t(a,"requestAnimationFrame",function(a){return function(b){return a(c(b))}}),a.setImmediate&&t(a,"setImmediate",function(a){return function(){var b=Array.prototype.slice.call(arguments);return b[0]=c(b[0]),a.apply(this,b)}}),"EventTarget Window Node ApplicationCache AudioTrackList ChannelMergerNode CryptoOperation EventSource FileReader HTMLUnknownElement IDBDatabase IDBRequest IDBTransaction KeyOperation MediaController MessagePort ModalWindow Notification SVGElementInstance Screen TextTrack TextTrackCue TextTrackList WebSocket WebSocketWorker Worker XMLHttpRequest XMLHttpRequestEventTarget XMLHttpRequestUpload".replace(/\w+/g,function(b){var d=a[b]&&a[b].prototype;d&&d.hasOwnProperty&&d.hasOwnProperty("addEventListener")&&(t(d,"addEventListener",function(a){return function(b,d,e,f){return d&&d.handleEvent&&(d.handleEvent=c(d.handleEvent,{eventHandler:!0})),a.call(this,b,c(d,{eventHandler:!0}),e,f)}}),t(d,"removeEventListener",function(a){return function(b,d,e,f){return a.call(this,b,d,e,f),a.call(this,b,c(d),e,f)}}))})}a.Bugsnag=x,"function"==typeof define&&define.amd?define([],function(){return x}):"object"==typeof module&&"object"==typeof module.exports&&(module.exports=x)}(window,window.Bugsnag);
+Bugsnag.apiKey = "2a86b308af5a81d2c9329fedfb4b30c7";
+Bugsnag.appVersion = "428ae7cf74e60bfe2100ee2100e3378579c00ef8" + '-' + "1441052328";
+Bugsnag.endpoint = "https://errors-webapp.slack-core.com/js";
+Bugsnag.releaseStage = "prod";
+Bugsnag.autoNotify = false;
+Bugsnag.metaData = {};
+Bugsnag.refresh_interval = setInterval(function () { (window.TS && window.TS.client) ? Bugsnag.refresh() : clearInterval(Bugsnag.refresh_interval); }, 15 * 60 * 1000);
+</script>
+</head>
+
+<body class="">
+
+		  			<script>
+		
+			var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+			if (w > 1440) document.querySelector('body').classList.add('widescreen');
+		
+		</script>
+	
+  	
+	
+
+	
+							<nav class="top persistent">
+	<a href="../../index.html" class="logo"></a>
+	<ul>
+		<li><a  href="../../is.html">Product</a></li>
+		<li><a  href="../../pricing.html">Pricing</a></li>		<li><a  href="https://slack.zendesk.com/hc/en-us">Support</a></li>
+		<li><a  href="http://slackhq.com">Blog</a></li>
+					<li class="sign_in"><a href="../../signin.html">Sign in</a></li>
+				<li>
+			<a href="../../create.html" class="btn_sticky ga_track_signup mxpnl_signup_nav ">Sign up for free</a>
+		</li>
+		<li class="mobile_menu_btn">
+			<a href="2013-11-07.html#" class="btn_sticky">Menu</a>
+		</li>
+	</ul>
+</nav>
+<nav class="mobile_menu loading" aria-hidden="true">
+	<a href="../../index.html" class="logo"></a>
+	<a href="2013-11-07.html#" class="close" aria-label="close"><i class="ts_icon ts_icon_times"></i></a>
+	<ul>
+		<li><a  href="../../is.html">Product</a></li>
+		<li><a  href="../../pricing.html">Pricing</a></li>		<li><a  href="https://slack.zendesk.com/hc/en-us">Support</a></li>
+		<li><a  href="http://slackhq.com">Blog</a></li>
+		<li><a href="../../signin.html">Sign in</a></li>
+	</ul>
+	<a href="../../create.html" class="sign_up ga_track_signup mxpnl_signup_nav ">Sign up for free</a>
+</nav>	
+	<div id="page" >
+
+		<div id="page_contents" class="">
+
+<h1>Policy Archives</h1>
+
+<p>
+	You can view all of our policy documents, including security and disclosure practices, at <a href="../../policies.html">Policies</a>.
+</p>
+<div class="tab_pane selected">
+	<p><strong>Last updated: November 7, 2013</strong></p>
+
+	<ol>
+		<li>
+			<strong>Acceptance of Terms.</strong>
+			<ol>
+				<li>This document is an agreement which you must accept in order to use the Slack service. It describes both your rights and your obligations as part of using the service. It is important that you read it carefully because you will be legally bound to these terms. Slack Technologies, Inc. (“Slack Technologies” “we” “us”) only provides its Slack Service (as defined below) to you subject to this Terms of Service agreement (“TOS”).  By accepting this TOS or by accessing or using the Service or Site, you acknowledge that you agree to be bound by this TOS.<br /><br />
+					If you are entering into this TOS on behalf of a company or business, you represent that you have the authority to bind such entity, its end users and its affiliates to this TOS. In that case, the terms “you” or “your” shall refer to such entity, its end users (including administrators) and its affiliates, as applicable. If you do not have such authority, or if you do not agree with this TOS, you may not use the Service.  You acknowledge that this TOS is a contract between you and Slack Technologies, even though it is electronic and is not physically signed by you and Slack Technologies, and it governs your use of the Service.</li>
+				<li>As our business evolves, Slack Technologies may need to change this TOS from time to time.  If we do so, we will provide our business customers reasonable prior notice either by emailing the email address associated with your account or by posting a notice on the Site.  You can review the most current version of this TOS at any time by visiting this page.  The revised terms and conditions will become effective on the date set forth in our notice, and if you use the Service after that date, your use will constitute acceptance of the revised terms and conditions.  If any change to this TOS is not acceptable to you, your only remedy is to cancel your account and stop using the Services, which you may do by clicking here <a href="https://my.slack.com/account/settings">https://my.slack.com/account/settings</a> or otherwise through the process provided in the Service.</li>
+				<li>As part of the registration process, you will identify an administrative user name (in the form of an email address) and password for your account.  You may use these credentials to create standard users (each with their own password) up to the maximum number permitted for your account.  You are responsible for maintaining the confidentiality of your login, password and account and for all activities that occur under your login or account. End users should be aware that your company’s administrator may have certain rights to access your account and related information in connection with the Services and to set your company’s policies regarding your use of various aspects of the Services.  Please refer to your company administrator if you have questions regarding such matter.</li>
+			</ol>
+		</li>
+
+		<li>
+			<strong>Description of Service.</strong><br />			The “Service(s)” include (a) Slack Technologies’s Slack real-time communication, messaging, archiving and search services and related systems and technologies, as well as the website <a href="../../index.html">http://slack.com</a>, and our related mobile applications, and (b) all software (including the Software, as defined below), applications, data, reports, text, images, and other content made available through any of the foregoing.  Any new features added to or augmenting the Service are also subject to this TOS.  Slack Technologies reserves the right to modify or discontinue the Service (or any Service plan) or any feature or functionality thereof at any time without notice to you.  All rights, title and interest in and to the Service and its components (including all intellectual property rights) will remain with and belong exclusively to Slack Technologies.
+		</li>
+
+		<li>
+			<strong>Access and Use of the Service.</strong>
+			<ol>
+				<li>You may access and use the Service only for lawful, authorized purposes and you shall not misuse the Service in any manner (as determined by Slack Technologies in its sole discretion). For example, you shall not (and, as a business customer, shall ensure that your end users and administrators do not) (a) sublicense, resell, rent, lease, transfer, assign, time share or otherwise commercially exploit or make the Service available to any third party; (b) use the Service in any unlawful, improper or unauthorized manner (including without limitation in violation of any data, privacy or export control laws), in any manner that is obscene, harassing, offensive, fraudulent, misleading or the like, or in any manner that interferes with or disrupts the integrity or performance of the Service or its components; (c) infringe, misappropriate or violate the intellectual property or other rights of any third party; or (d) modify, adapt or hack the Service, or otherwise attempt to gain unauthorized access to the Service or its related systems or networks. You shall comply with any codes of conduct, policies, storage limitations, or other notices Slack Technologies provides you or publishes in connection with the Service from time to time, and you shall promptly notify Slack Technologies if you learn of a security breach related to the Service.</li>
+				<li>Any software that may be made available by Slack Technologies in connection with the Service (“Software”) contains proprietary and confidential information that is protected by applicable intellectual property and other laws.  Subject to the terms and conditions of this TOS, Slack Technologies only grants you a personal, non-sublicensable and non-exclusive license to use the object code of any Software solely in connection with the Service and in accordance with our policies. Any rights not expressly granted herein are reserved.</li>
+				<li>Slack Technologies reserves the right to use your Company name as a reference for marketing or promotional purposes on Slack Technologies’s website and in other communication with existing or potential Slack Technologies customers. For example, we might list your company on one of our webpages under lists of Slack customers. We don’t want to list customers who don’t want to be listed, so you may send an email to <a href="mailto:feedback@slack.com">feedback@slack.com</a> stating that you do not wish to be used as a reference.</li>
+			</ol>
+		</li>
+
+		<li>
+			<strong>Your Data Rights and Related Responsibilities.</strong>
+			<ol>
+				<li>"Your Data" means any data and content stored or transmitted via the Services by or on behalf of you or your end users (which may include data you elect to import from third party services you use). This includes messages you send, files you upload, comments on files, profile information and anything else you enter or upload into Slack. Slack Technologies will make commercially reasonable efforts to ensure that all facilities used to store and process Your Data meet a high standard for security (for more information on our current practices and policies regarding data privacy, security and confidentiality, please see <a href="../../security.html">https://slack.com/security</a>; we keep that document updated as these practices and policies evolve over time).</li>
+				<li>In order for us to provide the Service to you, we require that you grant us certain rights with respect to Your Data. For example, we need to be able to transmit, store and copy Your Data in order to display it to you and your teammates, to index it so you are able to search it, to make backups to prevent data loss, and so on. Your acceptance of this TOS gives us the permission to do so and grants us any such rights necessary to provide the service to you, only for the purpose of providing the service (and for no other purpose). This permission includes allowing us to use third-party service providers (such as Amazon Web Services) in the operation and administration of the service and the rights granted to us are extended to these third parties to the degree necessary in order for the service to be provided. These rights and permissions are not permanent: they terminate whenever you remove all or part of Your Data from The Service. We claim no ownership over Your Data.</li>
+				<li>If you or your end users send us any feedback or suggestions regarding the Service, you grant Slack Technologies an unlimited, irrevocable, free license to use any such feedback or suggestions for any purpose without any obligation to you or your end users. </li>
+				<li>Nothing herein shall limit our right to collect, use and analyze data and other information relating to the use and performance of the Services and related technologies and to disclose it in aggregate or de-identified forms in connection with our business. That means, for example, that we can tally up the number of people connected to the service on a given day, or the number of messages sent during a period of time, or any one of a near-infinite number of other measures or analyses and share that however we’d like.</li>
+				<li>You are solely responsible for your, your administrators’ and your end users’ conduct, the content of Your Data, and all communications with others while using the Services. We may choose to review public content for compliance with our policies and guidelines, but you acknowledge that Slack Technologies has no obligation to monitor any information on the Services. However, you further agree that Slack Technologies may remove or disable any public content at any time for any reason or for no reason at all. For example, if you upload files which do not belong to you and use the “Get Public Link” feature to make these files available publicly, we can delete those files. We are not responsible for the accuracy, appropriateness, or legality of Your Data or any other information you and your end users may be able to access using the Services. The Services provide features that allow you and your end users to share Your Data and other materials with others or to make it public. Please consider carefully what you allow to be shared or made public.</li>
+			</ol>			
+		</li>		
+
+		<li>
+			<strong>Payment.</strong><br />			To the extent any portion of the Service is made available for a fee, you will be required to select a payment plan and provide Slack Technologies accurate information regarding your credit card or other payment instrument.  You will promptly update your account information with any changes in your payment information.  You agree to pay Slack Technologies the amount that is specified in the applicable payment plan in accordance with the terms set forth in the Service and this TOS, and you authorize Slack Technologies to bill your payment instrument in advance on a periodic basis in accordance with such terms.  If you dispute any charges you must let Slack Technologies know within sixty (60) days after the date that Slack Technologies invoices you.  All amounts paid are non-refundable and we reserve the right to change our prices in the future. If we do change prices, we will provide notice of the change on the Site or in email to you, at our option, at least 30 days before the change is to take effect regarding your use of the Service.  Your continued use of the Service after the price change becomes effective constitutes your agreement to pay the changed amount. Slack Technologies may choose to bill through an invoice, in which case, full payment for invoices issued must be received by the specified date or the Services may be terminated.  Unpaid invoices are subject to a finance charge of 1.5% per month on any outstanding balance, or the maximum permitted by law, whichever is lower, plus all expenses of collection. You shall be responsible for all taxes associated with Services other than U.S. taxes based on Slack Technologies’s net income.			
+		</li>
+
+		<li>
+			<strong>Representations and Warranties.</strong><br />			You represent and warrant to Slack Technologies that (i) you have full power and authority to enter into this TOS; (ii) you own all Your Data or have obtained all permissions, releases, rights or licenses required to engage in your activities (and allow Slack Technologies to perform its obligations) in connection with the Services without obtaining any further releases or consents; and (iii) Your Data and other activities in connection with the Service, and Slack Technologies’s exercise of all rights and license granted by you herein, do not and will not violate, infringe, or misappropriate any third party’s copyright, trademark, right of privacy or publicity, or other personal or proprietary right, nor does Your Data contain any matter that is defamatory, obscene, unlawful, threatening, abusive, tortious, offensive or harassing.
+		</li>
+
+		<li>
+			<strong>Termination.</strong><br />			You have the right to terminate your account at any time by using account deletion interface provided at <a href="https://my.slack.com/account/settings">https://my.slack.com/account/settings</a>.  We also reserve the right to terminate your account (or the access privileges of any end user) and this TOS at any time for any reason, or no reason, with or without notice.  Upon termination of your account, we will have no obligation to maintain or provide Your Data, and will delete or destroy all copies of Your Data in our possession or control, in a reasonably expedient way, unless legally prohibited.  However, all accrued rights to payment and the terms of Section 5-11 shall survive termination of this TOS.
+		</li>
+
+		<li>
+			<strong>Disclaimer of Warranties.</strong>
+			<ol>
+				<li>The Services may be temporarily unavailable for scheduled maintenance or for unscheduled emergency maintenance, or because of other causes beyond our reasonable control, but Slack Technologies shall use reasonable efforts to provide advance notice of any material scheduled service disruption.  Further, you understand that the operation of the Service may be unencrypted if you chose to use unencrypted gateways to connect to the service and involve (a) transmissions over various networks, and (b) transmission to Slack Technologies’s third party vendors and hosting partners to provide the necessary technology and services to operate and maintain the Service.  Accordingly, you acknowledge that you bear sole responsibility for adequate security, protection and backup of Your Data.  Slack Technologies will have no liability to you for any unauthorized access or use of any of Your Data, or any corruption, deletion, destruction or loss of any of Your Data.</li>
+				<li>THE SERVICE AND ALL RELATED COMPONENTS AND INFORMATION ARE PROVIDED ON AN “AS IS” AND “AS AVAILABLE” BASIS WITHOUT ANY WARRANTIES OF ANY KIND, AND Slack Technologies EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES, WHETHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, TITLE, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. YOU ACKNOWLEDGE THAT Slack Technologies DOES NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED, TIMELY, SECURE, ERROR-FREE OR VIRUS-FREE, NOR DOES IT MAKE ANY WARRANTY AS TO THE RESULTS THAT MAY BE OBTAINED FROM USE OF THE SERVICES, AND NO INFORMATION, ADVICE OR SERVICES OBTAINED BY YOU FROM Slack Technologies OR THROUGH THE SERVICE SHALL CREATE ANY WARRANTY NOT EXPRESSLY STATED IN THIS TOS.</li>
+			</ol>
+		</li>
+
+		<li>
+			<strong>Limitation of Liability.</strong>
+			<ol>
+				<li>UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL THEORY (WHETHER IN CONTRACT, TORT, OR OTHERWISE) SHALL Slack Technologies BE LIABLE TO YOU OR ANY THIRD PARTY FOR (A) ANY INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, CONSEQUENTIAL OR PUNITIVE DAMAGES, INCLUDING LOST PROFITS, LOST SALES OR BUSINESS, LOST DATA, OR (B) FOR ANY AMOUNT IN THE AGGREGATE IN EXCESS OF THE FEES ACTUALLY PAID BY YOU IN THE SIX (6) MONTHS PRECEDING THE EVENT GIVING RISE to YOUR CLAIM or, IF NO FEES APPLY, one hundred ($100) U.S. dollars, OR (C) ANY MATTER BEYOND OUR REASONABLE CONTROL.  THE PROVISIONS OF THIS SECTION ALLOCATE THE RISKS UNDER THIS TOS BETWEEN THE PARTIES, AND THE PARTIES HAVE RELIED ON THESE LIMITATIONS IN DETERMINING WHETHER TO ENTER INTO THIS TOS.</li>
+				<li>Some states do not allow the exclusion of implied warranties or limitation of liability for incidental or consequential damages, which means that some of the above limitations may not apply to you. IN THESE STATES, Slack Technologies’S LIABILITY WILL BE LIMITED TO THE GREATEST EXTENT PERMITTED BY LAW.</li>		
+			</ol>
+		</li>
+
+		<li>
+			<strong>Indemnification.</strong><br />			You shall defend, indemnify, and hold harmless Slack Technologies from and against any claims, actions or demands, including without limitation reasonable legal and accounting fees, arising or resulting from your breach of this TOS, any of Your Data, or your (and your end users’) use or misuse of the Service.  Slack Technologies shall provide notice to you of any such claim, suit or demand.  Slack Technologies reserves the right to assume the exclusive defense and control of any matter which is subject to indemnification under this section. In such case, you agree to cooperate with any reasonable requests assisting Slack Technologies’s defense of such matter.
+		</li>
+
+		<li>
+			<strong>Miscellaneous.</strong><br />			If any provision of this TOS is found to be unenforceable or invalid, that provision will be limited or eliminated to the minimum extent necessary so that this TOS will otherwise remain in full force and effect and enforceable.  Both parties agree that this TOS is the complete and exclusive statement of the mutual understanding of the parties and supersedes and cancels all previous written and oral agreements, communications and other understandings relating to the subject matter of this TOS, and that all waivers and modifications must be in a writing signed by both parties, except as otherwise provided herein.  No agency, partnership, joint venture, or employment is created as a result of this TOS and you do not have any authority of any kind to bind Slack Technologies in any respect whatsoever.  In any action or proceeding to enforce rights under this TOS, the prevailing party will be entitled to recover costs and attorneys’ fees.  You may not assign this TOS without the prior written consent of Slack Technologies, but Slack Technologies may assign or transfer this TOS, in whole or in part, without restriction.  Except as otherwise set forth herein, all notices under this TOS will be in writing and will be deemed to have been duly given when received, if personally delivered; when receipt is electronically confirmed, if transmitted by facsimile or email; the day after it is sent, if sent for next day delivery by recognized overnight delivery service; and upon receipt, if sent by certified or registered mail, return receipt requested.	This TOS shall be governed by the laws of the State of California without regard to the principles of conflicts of law. Unless otherwise elected by Slack Technologies in a particular instance, you hereby expressly agree to submit to the exclusive personal jurisdiction of the federal and state courts of the State of California for the purpose of resolving any dispute relating to your access to or use of the Service.
+		</li>
+
+	</ol>
+</div>
+
+		
+	</div>
+	<div id="overlay"></div>
+</div>
+
+
+	<footer >
+	<section>
+		<div class="grid">
+			<div class="col span_1_of_5">
+				<i class="ts_icon ts_icon_slack_pillow"></i>
+				<small>Made with <i class="ts_icon ts_icon_heart"></i> by Slack</small>
+			</div>
+			<div class="col span_1_of_5 nav_col">
+				<ul>
+					<li><a href="../../brand-guidelines.html">Brand Guidelines</a></li>
+					<li><a href="../../jobs.html">Jobs</a></li>
+					<li><a href="http://slackatwork.com">Slack at Work</a></li>
+					<li><a href="https://slack.zendesk.com/hc/en-us">Support</a></li>
+				</ul>
+			</div>
+			<div class="col span_1_of_5 nav_col">
+				<ul>
+					<li><a href="../../privacy-policy.html">Privacy</a></li>
+					<li><a href="../../security.html">Security</a></li>
+					<li><a href="../../terms-of-service.html">Terms of Service</a></li>
+					<li><a href="../../policies.html">Policies</a></li>
+				</ul>
+			</div>
+			<div class="col span_1_of_5 nav_col">
+				<ul>
+					<li><a href="https://status.slack.com/">Status</a></li>
+					<li><a href="https://api.slack.com/">API</a></li>
+					<li><a href="../../integrations.html">Integrations</a></li>
+					<li><a href="../../apps.html">Apps</a></li>
+				</ul>
+			</div>
+			<div class="col span_1_of_5 nav_col">
+				<ul>
+					<li><a href="../../varietypack.html">Podcast</a></li>
+					<li><a href="http://slackhq.com">Blog</a></li>
+					<li><a href="../../help/contact.html">Contact Us</a></li>
+					<li><a href="https://twitter.com/SlackHQ">@SlackHQ</a></li>
+				</ul>
+			</div>
+		</div>
+	</section>
+</footer>
+
+
+<script type="text/javascript">
+var cdn_url = "https:\/\/slack.global.ssl.fastly.net";
+var inc_js_setup_data = {
+	emoji_sheets: {
+		apple: 'https://slack.global.ssl.fastly.net/66f9/img/emoji_2015/sheet_apple_64_indexed_256colors.png',
+		google: 'https://slack.global.ssl.fastly.net/66f9/img/emoji_2015/sheet_google_64_indexed_128colors.png',
+		twitter: 'https://slack.global.ssl.fastly.net/66f9/img/emoji_2015/sheet_twitter_64_indexed_128colors.png',
+		emojione: 'https://slack.global.ssl.fastly.net/66f9/img/emoji_2015/sheet_emojione_64_indexed_128colors.png',
+	},
+};
+</script>
+
+	<!-- output_js "core" -->
+<script type="text/javascript" src="https://slack.global.ssl.fastly.net/0fed/js/libs/jquery-2.1.4.js" crossorigin="anonymous"></script>
+
+	<!-- output_js "core_web" -->
+<script type="text/javascript" src="https://slack.global.ssl.fastly.net/896b0/js/rollup-core_web.js" crossorigin="anonymous"></script>
+
+	<!-- output_js "secondary" -->
+
+		<!-- output_js "regular" -->
+<script type="text/javascript" src="https://slack.global.ssl.fastly.net/3ad4/js/sticky_nav.js" crossorigin="anonymous"></script>
+
+	
+	<!-- slack-www355 / 2015-08-31 13:24:31 / v428ae7cf74e60bfe2100ee2100e3378579c00ef8 -->
+<style>.color_9f69e7:not(.nuc) {color:#9F69E7;}.color_4bbe2e:not(.nuc) {color:#4BBE2E;}.color_e7392d:not(.nuc) {color:#E7392D;}.color_3c989f:not(.nuc) {color:#3C989F;}.color_674b1b:not(.nuc) {color:#674B1B;}.color_e96699:not(.nuc) {color:#E96699;}.color_e0a729:not(.nuc) {color:#E0A729;}.color_684b6c:not(.nuc) {color:#684B6C;}.color_5b89d5:not(.nuc) {color:#5B89D5;}.color_2b6836:not(.nuc) {color:#2B6836;}.color_99a949:not(.nuc) {color:#99A949;}.color_df3dc0:not(.nuc) {color:#DF3DC0;}.color_4cc091:not(.nuc) {color:#4CC091;}.color_9b3b45:not(.nuc) {color:#9B3B45;}.color_d58247:not(.nuc) {color:#D58247;}.color_bb86b7:not(.nuc) {color:#BB86B7;}.color_5a4592:not(.nuc) {color:#5A4592;}.color_db3150:not(.nuc) {color:#DB3150;}.color_235e5b:not(.nuc) {color:#235E5B;}.color_9e3997:not(.nuc) {color:#9E3997;}.color_53b759:not(.nuc) {color:#53B759;}.color_c386df:not(.nuc) {color:#C386DF;}.color_385a86:not(.nuc) {color:#385A86;}.color_a63024:not(.nuc) {color:#A63024;}.color_5870dd:not(.nuc) {color:#5870DD;}.color_ea2977:not(.nuc) {color:#EA2977;}.color_50a0cf:not(.nuc) {color:#50A0CF;}.color_d55aef:not(.nuc) {color:#D55AEF;}.color_d1707d:not(.nuc) {color:#D1707D;}.color_43761b:not(.nuc) {color:#43761B;}.color_e06b56:not(.nuc) {color:#E06B56;}.color_8f4a2b:not(.nuc) {color:#8F4A2B;}.color_902d59:not(.nuc) {color:#902D59;}.color_de5f24:not(.nuc) {color:#DE5F24;}.color_a2a5dc:not(.nuc) {color:#A2A5DC;}.color_827327:not(.nuc) {color:#827327;}.color_3c8c69:not(.nuc) {color:#3C8C69;}.color_8d4b84:not(.nuc) {color:#8D4B84;}.color_84b22f:not(.nuc) {color:#84B22F;}.color_4ec0d6:not(.nuc) {color:#4EC0D6;}.color_e23f99:not(.nuc) {color:#E23F99;}.color_e475df:not(.nuc) {color:#E475DF;}.color_619a4f:not(.nuc) {color:#619A4F;}.color_a72f79:not(.nuc) {color:#A72F79;}.color_7d414c:not(.nuc) {color:#7D414C;}.color_aba727:not(.nuc) {color:#ABA727;}.color_965d1b:not(.nuc) {color:#965D1B;}.color_4d5e26:not(.nuc) {color:#4D5E26;}.color_dd8527:not(.nuc) {color:#DD8527;}.color_bd9336:not(.nuc) {color:#BD9336;}.color_e85d72:not(.nuc) {color:#E85D72;}.color_dc7dbb:not(.nuc) {color:#DC7DBB;}.color_bc3663:not(.nuc) {color:#BC3663;}.color_9d8eee:not(.nuc) {color:#9D8EEE;}.color_8469bc:not(.nuc) {color:#8469BC;}.color_73769d:not(.nuc) {color:#73769D;}.color_b14cbc:not(.nuc) {color:#B14CBC;}</style>
+</body>
+</html>

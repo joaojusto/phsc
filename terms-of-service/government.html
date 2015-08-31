@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+	<script type="text/javascript">
+window.TSMark = function(mark_label) {
+	if (!true || !window.performance || !window.performance.mark) return;
+	performance.mark(mark_label);
+}
+TSMark('start_load');
+window.TSMeasureAndBeacon = function(measure_label, start_mark_label) {
+	if (!true || !window.performance || !window.performance.mark || !window.performance.measure) return;
+	performance.mark(start_mark_label + '_end');
+	try {
+		performance.measure(measure_label, start_mark_label, start_mark_label + '_end');
+		(new Image()).src = "https:\/\/slack.com\/beacon\/timing" + '?data=' + encodeURIComponent(measure_label + ':' + performance.getEntriesByName(measure_label)[0].duration);
+	} catch(e) { return; }
+}
+</script>	<noscript><meta http-equiv="refresh" content="0; URL='government-nojsmode=1.html'" /></noscript>
+<script type="text/javascript">
+window.load_start_ms = Date.now();
+window.load_log = [];
+window.logLoad = function(k) {
+	var ms = Date.now();
+	var secs = (ms-window.load_start_ms)/1000;
+
+	window.load_log.push({
+		k: k,
+		t: secs
+	})
+	
+	if (window.TS) {
+		TS.log(88, secs+' '+k);
+	}
+}
+if(self!==top)window.document.write("\u003Cstyle>body * {display:none !important;}\u003C\/style>\u003Ca href=\"#\" onclick="+
+"\"top.location.href=window.location.href\" style=\"display:block !important;padding:10px\">Go to Slack.com\u003C\/a>");
+</script>
+
+
+<script type="text/javascript">
+window.callSlackAPIUnauthed = function(method, args, callback) {
+	var url = '/api/'+method+'?t='+Date.now();
+	var req = new XMLHttpRequest();
+	
+	req.onreadystatechange = function() {
+		if (req.readyState == 4) {
+			req.onreadystatechange = null;
+			var obj;
+			
+			if (req.status == 200) {
+				if (req.responseText.indexOf('{') == 0) {
+					try {
+						eval('obj = '+req.responseText);
+					} catch (err) {
+						console.warn('unable to do anything with api rsp');
+					}
+				}
+			}
+			
+			obj = obj || {
+				ok: false	
+			}
+			
+			callback(obj.ok, obj, args);
+		}
+	}
+	
+	req.open('POST', url, 1);
+	req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+	var args2 = [];
+	for (i in args) {
+		args2[args2.length] = encodeURIComponent(i)+'='+encodeURIComponent(args[i]);
+	}
+
+	req.send(args2.join('&'));
+}
+</script>
+
+			
+	
+	<script type="text/javascript">
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		ga('create', "UA-106458-18", 'slack.com');
+		ga('send', 'pageview');
+
+					(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			Date.now(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+			'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+			})(window,document,'script','dataLayer',"GTM-KH2LPK");
+		
+		(function(e,c,b,f,d,g,a){e.SlackBeaconObject=d;
+		e[d]=e[d]||function(){(e[d].q=e[d].q||[]).push([1*new Date(),arguments])};
+		e[d].l=1*new Date();g=c.createElement(b);a=c.getElementsByTagName(b)[0];
+		g.async=1;g.src=f;a.parentNode.insertBefore(g,a)
+		})(window,document,"script","https://slack.global.ssl.fastly.net/dcf8/js/libs/beacon.js","sb");
+		sb('set', 'token', '3307f436963e02d4f9eb85ce5159744c');
+
+				sb('track', 'pageview');
+
+		function track(a){ga('send','event','web',a);sb('track',a);}
+
+	</script>
+
+
+		<script type='text/javascript'>
+		
+		(function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
+		for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);
+		
+
+		mixpanel.init("12d52d8633a5b432975592d13ebd3f34");
+
+		
+			function mixpanel_track(){if(window.mixpanel)mixpanel.track.apply(mixpanel, arguments);}
+			function mixpanel_track_forms(){if(window.mixpanel)mixpanel.track_forms.apply(mixpanel, arguments);}
+			function mixpanel_track_links(){if(window.mixpanel)mixpanel.track_links.apply(mixpanel, arguments);}
+		
+	</script>
+	
+			<meta name="referrer" content="no-referrer">
+			<meta name="superfish" content="nofish">
+	<script type="text/javascript">
+
+
+
+var TS_last_log_date = null;
+var TSMakeLogDate = function() {
+	var date = new Date();
+
+	var y = date.getFullYear();
+	var mo = date.getMonth()+1;
+	var d = date.getDate();
+
+	var time = {
+	  h: date.getHours(),
+	  mi: date.getMinutes(),
+	  s: date.getSeconds(),
+	  ms: date.getMilliseconds()
+	};
+
+	Object.keys(time).map(function(moment, index) {
+		if(time[moment] < 10) {
+			time[moment] = '0' + time[moment];
+		}
+	});
+
+	var str = y + '/' + mo + '/' + d + ' ' + time.h + ':' + time.mi + ':' + time.s + '.' + time.ms;
+	if (TS_last_log_date) {
+		var diff = date-TS_last_log_date;
+		//str+= ' ('+diff+'ms)';
+	}
+	TS_last_log_date = date;
+	return str+' ';
+}
+
+var TSSSB = {
+	env: (function() {
+		var v = {
+			win_ssb_version: null,
+			win_ssb_version_minor: null,
+			mac_ssb_version: null,
+			mac_ssb_version_minor: null,
+			lin_ssb_version: null,
+			lin_ssb_version_minor: null
+		}
+		
+		var is_win = (navigator.appVersion.indexOf("Windows") !== -1);
+		var is_lin = (navigator.appVersion.indexOf("Linux") !== -1);
+		var is_mac = !!(navigator.userAgent.match(/(OS X)/g));
+
+		if (navigator.userAgent.match(/(Slack_SSB)/g) || navigator.userAgent.match(/(Slack_WINSSB)/g)) {
+			// Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/534.55.3 (KHTML, like Gecko) Slack_SSB/0.32
+			var parts = navigator.userAgent.split('/');
+			var version_str = parts[parts.length-1];
+			var version_float = parseFloat(version_str);
+			var versionA = version_str.split('.');
+			var version_minor = (versionA.length == 3) ? parseInt(versionA[2]) : 0;
+	
+			if (navigator.userAgent.match(/(AtomShell)/g)) {
+				// Electron-based app
+				if (is_lin) {
+					v.lin_ssb_version = version_float;
+					v.lin_ssb_version_minor = version_minor;
+				} else {
+					v.win_ssb_version = version_float;
+					v.win_ssb_version_minor = version_minor;
+				}
+			} else {
+				// MacGap-based app
+				v.mac_ssb_version = version_float;
+				v.mac_ssb_version_minor = version_minor;
+			}
+		}
+
+		return v;
+	})(),
+	
+	
+
+	call: function() {
+		return false;
+	}
+
+	
+}
+
+</script>	<script type="text/javascript">
+		
+		var was_TS = window.TS;
+		delete window.TS;
+		TSSSB.call('didFinishLoading');
+		if (was_TS) window.TS = was_TS;
+	</script>
+	    <meta charset="utf-8">
+    <title>Government TOS Addendum | Slack</title>
+    <meta name="author" content="Slack">
+
+	
+																
+																													
+				
+																
+				
+		
+				<!-- output_css "core" -->
+    <link href="https://slack.global.ssl.fastly.net/b747/style/rollup-plastic.css" rel="stylesheet" type="text/css">
+
+		<!-- output_css "file_pages" -->
+		
+	<!-- output_css "regular" -->
+    <link href="https://slack.global.ssl.fastly.net/cc95/style/legal.css" rel="stylesheet" type="text/css">
+    <link href="https://slack.global.ssl.fastly.net/1e63/style/libs/lato-1.css" rel="stylesheet" type="text/css">
+    <link href="https://slack.global.ssl.fastly.net/c3f3/style/sticky_nav.css" rel="stylesheet" type="text/css">
+    <link href="https://slack.global.ssl.fastly.net/fbe81/style/footer.css" rel="stylesheet" type="text/css">
+    <link href="https://slack.global.ssl.fastly.net/365f/style/filter_select.css" rel="stylesheet" type="text/css">
+
+	
+
+	
+	
+	
+
+	<!--[if lt IE 9]>
+	<script src="https://slack.global.ssl.fastly.net/ef0d/js/libs/html5shiv.js"></script>
+	<![endif]-->
+
+	
+<link id="favicon" rel="shortcut icon" href="https://slack.global.ssl.fastly.net/66f9/img/icons/favicon-32.png" sizes="16x16 32x32 48x48" type="image/png" />
+
+<link rel="icon" href="https://slack.global.ssl.fastly.net/ba3c/img/icons/app-256.png" sizes="256x256" type="image/png" />
+
+<link rel="apple-touch-icon-precomposed" sizes="152x152" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-152.png" />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-144.png" />
+<link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-120.png" />
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-114.png" />
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://slack.global.ssl.fastly.net/0dc1/img/icons/ios-72.png" />
+<link rel="apple-touch-icon-precomposed" href="https://slack.global.ssl.fastly.net/66f9/img/icons/ios-57.png" />
+
+<meta name="msapplication-TileColor" content="#FFFFFF" />
+<meta name="msapplication-TileImage" content="https://slack.global.ssl.fastly.net/66f9/img/icons/app-144.png" />	<script>
+!function(a,b){function c(a,b){try{if("function"!=typeof a)return a;if(!a.bugsnag){var c=e();a.bugsnag=function(d){if(b&&b.eventHandler&&(u=d),v=c,!y){var e=a.apply(this,arguments);return v=null,e}try{return a.apply(this,arguments)}catch(f){throw l("autoNotify",!0)&&(x.notifyException(f,null,null,"error"),s()),f}finally{v=null}},a.bugsnag.bugsnag=a.bugsnag}return a.bugsnag}catch(d){return a}}function d(){B=!1}function e(){var a=document.currentScript||v;if(!a&&B){var b=document.scripts||document.getElementsByTagName("script");a=b[b.length-1]}return a}function f(a){var b=e();b&&(a.script={src:b.src,content:l("inlineScript",!0)?b.innerHTML:""})}function g(b){var c=l("disableLog"),d=a.console;void 0===d||void 0===d.log||c||d.log("[Bugsnag] "+b)}function h(b,c,d){if(d>=5)return encodeURIComponent(c)+"=[RECURSIVE]";d=d+1||1;try{if(a.Node&&b instanceof a.Node)return encodeURIComponent(c)+"="+encodeURIComponent(r(b));var e=[];for(var f in b)if(b.hasOwnProperty(f)&&null!=f&&null!=b[f]){var g=c?c+"["+f+"]":f,i=b[f];e.push("object"==typeof i?h(i,g,d):encodeURIComponent(g)+"="+encodeURIComponent(i))}return e.join("&")}catch(j){return encodeURIComponent(c)+"="+encodeURIComponent(""+j)}}function i(a,b){if(null==b)return a;a=a||{};for(var c in b)if(b.hasOwnProperty(c))try{a[c]=b[c].constructor===Object?i(a[c],b[c]):b[c]}catch(d){a[c]=b[c]}return a}function j(a,b){a+="?"+h(b)+"&ct=img&cb="+(new Date).getTime();var c=new Image;c.src=a}function k(a){var b={},c=/^data\-([\w\-]+)$/;if(a)for(var d=a.attributes,e=0;e<d.length;e++){var f=d[e];if(c.test(f.nodeName)){var g=f.nodeName.match(c)[1];b[g]=f.value||f.nodeValue}}return b}function l(a,b){C=C||k(J);var c=void 0!==x[a]?x[a]:C[a.toLowerCase()];return"false"===c&&(c=!1),void 0!==c?c:b}function m(a){return a&&a.match(D)?!0:(g("Invalid API key '"+a+"'"),!1)}function n(b,c){var d=l("apiKey");if(m(d)&&A){A-=1;var e=l("releaseStage"),f=l("notifyReleaseStages");if(f){for(var h=!1,k=0;k<f.length;k++)if(e===f[k]){h=!0;break}if(!h)return}var n=[b.name,b.message,b.stacktrace].join("|");if(n!==w){w=n,u&&(c=c||{},c["Last Event"]=q(u));var o={notifierVersion:H,apiKey:d,projectRoot:l("projectRoot")||a.location.protocol+"//"+a.location.host,context:l("context")||a.location.pathname,userId:l("userId"),user:l("user"),metaData:i(i({},l("metaData")),c),releaseStage:e,appVersion:l("appVersion"),url:a.location.href,userAgent:navigator.userAgent,language:navigator.language||navigator.userLanguage,severity:b.severity,name:b.name,message:b.message,stacktrace:b.stacktrace,file:b.file,lineNumber:b.lineNumber,columnNumber:b.columnNumber,payloadVersion:"2"},p=x.beforeNotify;if("function"==typeof p){var r=p(o,o.metaData);if(r===!1)return}return 0===o.lineNumber&&/Script error\.?/.test(o.message)?g("Ignoring cross-domain script error. See https://bugsnag.com/docs/notifiers/js/cors"):(j(l("endpoint")||G,o),void 0)}}}function o(){var a,b,c=10,d="[anonymous]";try{throw new Error("")}catch(e){a="<generated>\n",b=p(e)}if(!b){a="<generated-ie>\n";var f=[];try{for(var h=arguments.callee.caller.caller;h&&f.length<c;){var i=E.test(h.toString())?RegExp.$1||d:d;f.push(i),h=h.caller}}catch(j){g(j)}b=f.join("\n")}return a+b}function p(a){return a.stack||a.backtrace||a.stacktrace}function q(a){var b={millisecondsAgo:new Date-a.timeStamp,type:a.type,which:a.which,target:r(a.target)};return b}function r(a){if(a){var b=a.attributes;if(b){for(var c="<"+a.nodeName.toLowerCase(),d=0;d<b.length;d++)b[d].value&&"null"!=b[d].value.toString()&&(c+=" "+b[d].name+'="'+b[d].value+'"');return c+">"}return a.nodeName}}function s(){z+=1,a.setTimeout(function(){z-=1})}function t(a,b,c){var d=a[b],e=c(d);a[b]=e}var u,v,w,x={},y=!0,z=0,A=10;x.noConflict=function(){return a.Bugsnag=b,x},x.refresh=function(){A=10},x.notifyException=function(a,b,c,d){b&&"string"!=typeof b&&(c=b,b=void 0),c||(c={}),f(c),n({name:b||a.name,message:a.message||a.description,stacktrace:p(a)||o(),file:a.fileName||a.sourceURL,lineNumber:a.lineNumber||a.line,columnNumber:a.columnNumber?a.columnNumber+1:void 0,severity:d||"warning"},c)},x.notify=function(b,c,d,e){n({name:b,message:c,stacktrace:o(),file:a.location.toString(),lineNumber:1,severity:e||"warning"},d)};var B="complete"!==document.readyState;document.addEventListener?(document.addEventListener("DOMContentLoaded",d,!0),a.addEventListener("load",d,!0)):a.attachEvent("onload",d);var C,D=/^[0-9a-f]{32}$/i,E=/function\s*([\w\-$]+)?\s*\(/i,F="https://notify.bugsnag.com/",G=F+"js",H="2.4.7",I=document.getElementsByTagName("script"),J=I[I.length-1];if(a.atob){if(a.ErrorEvent)try{0===new a.ErrorEvent("test").colno&&(y=!1)}catch(K){}}else y=!1;if(l("autoNotify",!0)){t(a,"onerror",function(b){return function(c,d,e,g,h){var i=l("autoNotify",!0),j={};!g&&a.event&&(g=a.event.errorCharacter),f(j),v=null,i&&!z&&n({name:h&&h.name||"window.onerror",message:c,file:d,lineNumber:e,columnNumber:g,stacktrace:h&&p(h)||o(),severity:"error"},j),b&&b(c,d,e,g,h)}});var L=function(a){return function(b,d){if("function"==typeof b){b=c(b);var e=Array.prototype.slice.call(arguments,2);return a(function(){b.apply(this,e)},d)}return a(b,d)}};t(a,"setTimeout",L),t(a,"setInterval",L),a.requestAnimationFrame&&t(a,"requestAnimationFrame",function(a){return function(b){return a(c(b))}}),a.setImmediate&&t(a,"setImmediate",function(a){return function(){var b=Array.prototype.slice.call(arguments);return b[0]=c(b[0]),a.apply(this,b)}}),"EventTarget Window Node ApplicationCache AudioTrackList ChannelMergerNode CryptoOperation EventSource FileReader HTMLUnknownElement IDBDatabase IDBRequest IDBTransaction KeyOperation MediaController MessagePort ModalWindow Notification SVGElementInstance Screen TextTrack TextTrackCue TextTrackList WebSocket WebSocketWorker Worker XMLHttpRequest XMLHttpRequestEventTarget XMLHttpRequestUpload".replace(/\w+/g,function(b){var d=a[b]&&a[b].prototype;d&&d.hasOwnProperty&&d.hasOwnProperty("addEventListener")&&(t(d,"addEventListener",function(a){return function(b,d,e,f){return d&&d.handleEvent&&(d.handleEvent=c(d.handleEvent,{eventHandler:!0})),a.call(this,b,c(d,{eventHandler:!0}),e,f)}}),t(d,"removeEventListener",function(a){return function(b,d,e,f){return a.call(this,b,d,e,f),a.call(this,b,c(d),e,f)}}))})}a.Bugsnag=x,"function"==typeof define&&define.amd?define([],function(){return x}):"object"==typeof module&&"object"==typeof module.exports&&(module.exports=x)}(window,window.Bugsnag);
+Bugsnag.apiKey = "2a86b308af5a81d2c9329fedfb4b30c7";
+Bugsnag.appVersion = "428ae7cf74e60bfe2100ee2100e3378579c00ef8" + '-' + "1441052328";
+Bugsnag.endpoint = "https://errors-webapp.slack-core.com/js";
+Bugsnag.releaseStage = "prod";
+Bugsnag.autoNotify = false;
+Bugsnag.metaData = {};
+Bugsnag.refresh_interval = setInterval(function () { (window.TS && window.TS.client) ? Bugsnag.refresh() : clearInterval(Bugsnag.refresh_interval); }, 15 * 60 * 1000);
+</script>
+</head>
+
+<body class="">
+
+		  			<script>
+		
+			var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+			if (w > 1440) document.querySelector('body').classList.add('widescreen');
+		
+		</script>
+	
+  	
+	
+
+	
+							<nav class="top persistent">
+	<a href="../index.html" class="logo"></a>
+	<ul>
+		<li><a  href="../is.html">Product</a></li>
+		<li><a  href="../pricing.html">Pricing</a></li>		<li><a  href="https://slack.zendesk.com/hc/en-us">Support</a></li>
+		<li><a  href="http://slackhq.com">Blog</a></li>
+					<li class="sign_in"><a href="../signin.html">Sign in</a></li>
+				<li>
+			<a href="../create.html" class="btn_sticky ga_track_signup mxpnl_signup_nav ">Sign up for free</a>
+		</li>
+		<li class="mobile_menu_btn">
+			<a href="government.html#" class="btn_sticky">Menu</a>
+		</li>
+	</ul>
+</nav>
+<nav class="mobile_menu loading" aria-hidden="true">
+	<a href="../index.html" class="logo"></a>
+	<a href="government.html#" class="close" aria-label="close"><i class="ts_icon ts_icon_times"></i></a>
+	<ul>
+		<li><a  href="../is.html">Product</a></li>
+		<li><a  href="../pricing.html">Pricing</a></li>		<li><a  href="https://slack.zendesk.com/hc/en-us">Support</a></li>
+		<li><a  href="http://slackhq.com">Blog</a></li>
+		<li><a href="../signin.html">Sign in</a></li>
+	</ul>
+	<a href="../create.html" class="sign_up ga_track_signup mxpnl_signup_nav ">Sign up for free</a>
+</nav>	
+	<div id="page" >
+
+		<div id="page_contents" class="">
+
+
+<h1>Government TOS Addendum</h1>
+
+<p>
+	You can view all of our policy documents, including security and disclosure practices, at <a href="../policies.html">Policies</a>.
+</p>
+<div class="tab_set on_neutral_grey">
+	<a href="../terms-of-service.html" >Slack TOS</a>
+	<a href="government.html" class="selected">Government TOS Addendum</a>
+	<a href="api.html" >API TOS</a>
+	<i class="tab_caret ts_icon ts_icon_caret_down"></i>
+	<i class="tab_caret ts_icon ts_icon_caret_up"></i>
+</div>
+<style type="text/css">
+
+.col_right ol li:before,
+#page_contents ol li:before {
+	display: inline-block;
+	margin-bottom: 1rem;
+	margin-right: 0.75rem;
+	font-weight: 700;
+	text-align: right;
+	content: counters(item,".") ".";
+	counter-increment: item;
+}
+
+</style>
+
+<div class="tab_pane selected">
+
+	<div class="col span_5_of_6">
+
+		<p>
+			<b>Amendment to Slack Terms of Service Applicable to Government Users</b>
+		</p>
+
+		<p>
+			This Amendment to Slack’s Terms of Service (“Amendment” or “Agreement”) applies only to users of the Slack Service (as defined in the TOS) that are accessing, using, or wish to access or use Slack’s Service in their capacity as U.S. government or U.S. public entities or in their capacity as employees of a U.S. government or U.S. public entity.  If You are a U.S. government or U.S. public entity or an employee acting on behalf of one of those entities, read on. This Amendment applies to You. If You aren't, then Slack’s Terms of Service apply to you.
+		</p>
+
+		<p>
+			This Amendment is an agreement between Slack Technologies, Inc. ("Slack" or "Company") and U.S. Government users of the Service and applies solely to any U.S. Government agency Administrative Users and Members who use or access the Service on behalf of such U.S. Government agency (the "Agency").
+	You, as a United States Government entity, are required, when entering into agreements with other parties, to follow applicable federal laws and regulations, including those related to ethics; privacy and security; accessibility; federal records; limitations on indemnification; fiscal law constraints; advertising and endorsements; freedom of information; and governing law and dispute resolution forum.
+		</p>
+
+		<p>
+			Slack and You (together, the "Parties") agree that these modifications to the Slack standard Terms of Service, available at <a href="../terms-of-service.html">the "TOS"</a> are appropriate to accommodate Your legal status, Your public (in contrast to private) mission, and other special circumstances. Accordingly, the TOS are hereby modified by this Amendment as they pertain to Agency's use of the Services.
+		</p>
+	
+		<p>
+			<b>A. Government entity:</b> For the purposes of this Amendment to the TOS, "You" shall mean the Agency itself and shall not bind in their individual capacity (i) the individual(s) who utilize the Company site or services on Agency's behalf, or (ii) any individual users who happen to be employed by, or otherwise associated with, the Agency. Company will look solely to the Agency to enforce any violation or breach of the TOS by such individuals when they are acting on behalf of the Agency, subject to federal law.  All other defined terms in the standard TOS will retain their definitions as set forth in that agreement.
+		</p>
+
+		<p>
+			<b>B. Public purpose</b>: Agency shall use the Services solely in furtherance of Agency's public purpose. Any requirement(s) set forth within the TOS that use of the Services be for private, personal and/or non-commercial purposes is hereby waived. Company acknowledges that You may use the Services from locations throughout the world, and that you may have more than one account.  Any prohibitions to the contrary are hereby waived.
+		</p>
+
+		<p>
+			<b>C. Advertisements:</b> Company hereby agrees not to serve or display any third-party commercial advertisements or solicitations in the publicly available portion of the Site displaying content uploaded by or under the control of the Agency. This exclusion shall not extend to house ads, which Company may serve on such pages in a non-intrusive manner.
+		</p>
+
+		<p>
+			<b>D. Indemnification, Liability, Statute of Limitations:</b> Any provisions in the TOS related to indemnification and filing deadlines are hereby waived, and shall not apply except to the extent expressly authorized by law. Liability for any breach of the TOS as modified by this Amendment, or any claim arising from the TOS as modified by this Amendment, shall be determined under the Federal Tort Claims Act, or other governing federal authority. Federal Statute of Limitations provisions shall apply to any breach or claim.
+		</p>
+
+		<p>
+			<b>E. Governing law:</b> Any arbitration, mediation or similar dispute resolution provision in the TOS is hereby waived. The TOS and this Amendment shall be governed, interpreted and enforced in accordance with applicable federal laws of the United States of America without reference to conflict of laws and exclusive jurisdiction shall be in the appropriate U.S. federal courts. To the extent permitted by federal law, the laws of the State of California (excluding California’s choice of law rules) will apply in the absence of applicable federal law.
+		</p>
+
+		<p>
+			<b>F. Changes to standard TOS:</b> Language in the TOS reserving to Company the right to change the TOS without notice at any time is hereby amended to grant You at least three days advance notice of any material change to the TOS. Company shall send this notice to the email address You designate at the time You sign up for service, and You shall notify Company of any change in the notification email address during the life of the Amendment.
+		</p>
+
+		<p>
+			<b>G. Access and use:</b> Company acknowledges that the Agency's use of the Service may energize significant citizen engagement and otherwise become important to the Agency's mission. Language in the TOS allowing Company to terminate service or close the Agency's account at any time, for any reason, is modified to reflect the Parties' agreement that Company may unilaterally terminate Service and/or terminate Agency's account only for breach of the Agency’s obligations under the TOS, its material failure to comply with the instructions and guidelines posted on the Service, if Company ceases to operate the Service generally or as provided in paragraph S. below. Company will provide the Agency with a reasonable opportunity to cure any breach or failure on the Agency's part.
+		</p>
+	
+		<p>
+			<b>H. Provision on crawlers:</b> Any provision in the TOS prohibiting "crawl," "spider" or similar processes is amended to allow the Agency to apply such tools solely to its pages and content, and solely to fulfill Agency's obligations under the Federal Records Act or other applicable federal law or regulation.
+		</p>
+
+		<p>
+			<b>I. Ownership of names:</b> Any provision(s) in the TOS related to Company's ownership of and right to change Your selected user name(s), user ID(s), domain name(s), channel name(s), and group name(s), are modified to reasonably accommodate Agency's proprietary, practical, and/or operational interest in its own publicly-recognized name and the names of Agency programs.
+		</p>
+
+		<p>
+			<b>J. Modifications of Agency content:</b> Any right Company reserves in the TOS to modify or adapt Agency content is limited to technical actions necessary to index, format and display that content. The right to modify or adapt does not include the right to substantively edit or otherwise alter the meaning of the content. In the event Agency discovers that Agency content has been modified in a manner that alters the meaning of such content, Agency may contact Company and the Parties shall work together in good faith to resolve the matter.  Notwithstanding the foregoing, nothing in this Amendment shall result in an expansion of Your rights as a United States Government entity under the Copyright Act of 1976 (17 U.S.C. §§101 et sec.), specifically including Section 105 of the Act.
+		</p>
+
+		<p>
+			<b>K. Limitation of liability:</b> The Parties agree that nothing in the Limitation of Liability clause or elsewhere in the TOS in any way grants Company a waiver from, release of, or limitation of liability pertaining to, any direct past, current or future violation of federal law by Company.
+		</p>
+	
+		<p>
+			<b>L. Uploading, deleting:</b> The Parties understand and agree that You are not obligated to place any of Your Data on the Service, and You reserve the right to remove any and all of Your Data at Your sole discretion.
+		</p>
+
+		<p>
+			<b>M. No endorsement:</b> Company agrees that Your seals, trademarks, logos, service marks, trade names, and the fact that You have a presence on the Site and use its Services, shall not be used by Company in such a manner as to state or imply that Company's products or services are endorsed, sponsored or recommended by You or by any other element of the U.S. Government, or are considered by You or the U.S. Government to be superior to any other products or services. Except for pages whose design and content is under the control of the Agency, or for links to or promotion of such pages, Company agrees not to display any Agency or government seals, trademarks, logos, service marks, and trade names on the Company's homepage or elsewhere on the Site unless permission to do so has been granted by the Agency or by other relevant federal government authority.  Company may list the Agency's name in a publicly available customer list on its homepage or elsewhere so long as the name is not displayed in a more prominent fashion than that of any other third party name.
+		</p>
+
+		<p>
+			<b>N. No business relationship created:</b> The Parties are independent entities and nothing in the TOS as modified by this Amendment creates an agency, partnership, joint venture, or employer/employee relationship.
+		</p>
+
+		<p>
+			<b>O. No cost agreement:</b> Nothing in the TOS as modified by this Amendment obligates You to expend appropriations or incur financial obligations. The Parties acknowledge and agree that none of the obligations arising from the TOS as modified by this Amendment are contingent upon the payment of fees by one party to the other. At the its discretion, Slack may offer a free account under a free usage plan, such as a Slack Free, and in that case this Amendment will apply to the Agency’s usage under the free account/plan. This Amendment also applies if the Agency chooses to use one of Slack’s paid usage plans.
+		</p>
+
+		<p>
+			<b>P. Provision of data:</b> In case of termination of Service, within 30 days of such termination Company will enable You to export all of Your user-generated content that is publicly visible on the Site (subject to the specific export functionality included in Your usage plan). Data will be provided in a commonly used file or database format as Company deems appropriate. Company will not provide data if doing so would violate its privacy policy, available at https://slack.com/privacy-policy.
+		</p>
+
+		<p>
+			<b>Q. Separate future action for fee based Services:</b> Company provides Services at a basic level free of charge to the public, but this may change in the future. Agency acknowledges that while Company will provide Agency with some Services and features for free, Company reserves the right to begin charging for the Services and features at some point in the future. Company will provide Agency with at least 30 days advance notice of a change involving the charging of fees for a previously-free service. You also understand that Company currently offers other premium and enterprise Services for a fee. The parties understand that fee-based products and services are categorically different than free products and services, and are subject to federal procurement rules and processes. Before the Agency decides to enter into a premium or enterprise subscription, or any other fee-based service that this Company or alternative providers may offer now or in the future, You agree: to determine the Agency has a need for those additional services for a fee; to consider the subscription's value in comparison with comparable services available elsewhere; to determine that Agency funds are available for payment; to properly use the Government Purchase Card if that Card is used as the payment method; to review any then-applicable TOS for conformance to federal procurement law; and in all other respects to follow applicable federal acquisition laws, regulations and agency guidelines (including those related to payments) when initiating that separate action.
+		</p>
+
+		<p>
+			<b>R. Assignment:</b> Neither party may assign its obligations under the TOS as modified by this Amendment to any third party without prior written consent of the other; however, Slack or its subsidiaries may assign the TOS as modified by this Amendment to a subsidiary or parent or successor to its assets or business without written consent from the Agency provided that the successor assumes Slack’s obligations under the TOS as modified by this Amendment.
+		</p>
+
+		<p>
+			<b>S. Termination:</b> Agency may close Agency's account and terminate this Amendment at any time. Company may close Agency's account and terminate this Amendment on 30 days written notice, but the Agency shall not be entitled to a refund of any fees paid.
+		</p>
+
+		<p>
+			<b>T. Posting and availability of this Amendment:</b> Any provision of the TOS requiring modifications of its terms to be posted on Company's Site is inapplicable since this Amendment is of limited, not general, application, and is otherwise waived for this special circumstance. The parties agree this Amendment contains no confidential or proprietary information, and either party may release it to the public at large. You may also post it for the benefit of other U.S. Government agencies interested in using the Service on <a href="http://www.digitalgov.gov/resources/negotiated-terms-of-service-agreements/" target="_blank"> http://www.digitalgov.gov/resources/negotiated-terms-of-service-agreements/</a> or similar federal informational web sites. 
+		</p>
+
+		<p>
+			<b>U. Security:</b> Company will, in good faith, exercise due diligence using reasonable business practices for IT security, to ensure that systems are operated and maintained in a secure manner, and that management, operational and technical controls are employed to ensure security of systems and data. Recognizing the changing nature of the Web, Company will continuously work with users to ensure that its Site and Services meet users' requirements for the security of systems and data. Company agrees to discuss implementing additional security controls as deemed necessary by the Agency to conform to the Federal Information Security Management Act (FISMA), 44 U.S.C. 3541 et seq., but is under no obligation to provide such additional security controls.
+		</p>
+	
+		<p>
+			<b>V. Federal Records:</b> Agency acknowledges that use of Company's Services may require management of Federal records. Your Data may meet the definition of Federal records as determined by the Agency. Company makes tools available to its users that enable compliance with a range of recordkeeping requirements.  Some recordkeeping tools may only be available as part of Slack’s paid service.  Agency should advise Company if it has questions about recordkeeping tools or capabilities and should review tools available for each type of Slack plan before registering, but Agency has sole responsibility for complying with the applicable federal recordkeeping laws and Slack has no duty to provide Agencies using free accounts with tools only available to Slack’s paid users.
+		</p>
+
+		<p>
+			<b>W. User Privacy:</b> Agency acknowledges that Company’s Service allows the Agency broad access to user-generated content, including direct messaging which may be considered private by users, as well as IP information and other usage data.  Agency shall be solely responsible for informing users of its policies that apply to the use of Slack, including whether or not there is a reasonable expectation of privacy in any communications or activity.  Further, Agency shall be solely responsible for complying with any applicable law including the U.S. Constitution and the Electronic Communications Privacy Act in access to, handling, and use of user information and communications content collected via Agency’s use of the Company’s Service.
+		</p>
+
+		<p>
+			<b>X. Intellectual property ownership:</b> Except as expressly allowed in the TOS, no rights to the Company Site or Services or any derivative works, inventions, or Company product or service modifications are conferred on Agency or any other party. All such rights belong solely to Company.
+		</p>
+
+		<p>
+			<b>Y. Precedence; Further Amendments:</b> If there is any conflict between this Amendment and the TOS, or between this Amendment and other terms, rules or policies on the Company Site or related to its Services, this Amendment shall prevail. This Amendment constitutes an amendment to the TOS; any language in the TOS indicating it may not be modified or that it alone is the entire agreement between the Parties is waived. Any further amendment must be agreed to by both Parties in writing.
+		</p>
+	
+		<p>
+			<b>Z. Additional Items for Discussion and Possible Inclusion in this Agreement:</b> Company understands current federal law, regulation and policy may affect Agency's use of the Company's products and services in ways not addressed in the list of clauses above. Much depends on the nature of the products and services offered by the Company (which may change from time to time), and how Agency intends to use those services (which also may change). Among the topics Agency may need to discuss with Company, and which may lead to the insertion of additional clauses in this Agreement, are Privacy and Accessibility.
+		</p>
+
+	</div>
+
+	<div class="clear_both"></div>
+
+</div>
+
+		
+	</div>
+	<div id="overlay"></div>
+</div>
+
+
+	<footer >
+	<section>
+		<div class="grid">
+			<div class="col span_1_of_5">
+				<i class="ts_icon ts_icon_slack_pillow"></i>
+				<small>Made with <i class="ts_icon ts_icon_heart"></i> by Slack</small>
+			</div>
+			<div class="col span_1_of_5 nav_col">
+				<ul>
+					<li><a href="../brand-guidelines.html">Brand Guidelines</a></li>
+					<li><a href="../jobs.html">Jobs</a></li>
+					<li><a href="http://slackatwork.com">Slack at Work</a></li>
+					<li><a href="https://slack.zendesk.com/hc/en-us">Support</a></li>
+				</ul>
+			</div>
+			<div class="col span_1_of_5 nav_col">
+				<ul>
+					<li><a href="../privacy-policy.html">Privacy</a></li>
+					<li><a href="../security.html">Security</a></li>
+					<li><a href="../terms-of-service.html">Terms of Service</a></li>
+					<li><a href="../policies.html">Policies</a></li>
+				</ul>
+			</div>
+			<div class="col span_1_of_5 nav_col">
+				<ul>
+					<li><a href="https://status.slack.com/">Status</a></li>
+					<li><a href="https://api.slack.com/">API</a></li>
+					<li><a href="../integrations.html">Integrations</a></li>
+					<li><a href="../apps.html">Apps</a></li>
+				</ul>
+			</div>
+			<div class="col span_1_of_5 nav_col">
+				<ul>
+					<li><a href="../varietypack.html">Podcast</a></li>
+					<li><a href="http://slackhq.com">Blog</a></li>
+					<li><a href="../help/contact.html">Contact Us</a></li>
+					<li><a href="https://twitter.com/SlackHQ">@SlackHQ</a></li>
+				</ul>
+			</div>
+		</div>
+	</section>
+</footer>
+
+
+<script type="text/javascript">
+var cdn_url = "https:\/\/slack.global.ssl.fastly.net";
+var inc_js_setup_data = {
+	emoji_sheets: {
+		apple: 'https://slack.global.ssl.fastly.net/66f9/img/emoji_2015/sheet_apple_64_indexed_256colors.png',
+		google: 'https://slack.global.ssl.fastly.net/66f9/img/emoji_2015/sheet_google_64_indexed_128colors.png',
+		twitter: 'https://slack.global.ssl.fastly.net/66f9/img/emoji_2015/sheet_twitter_64_indexed_128colors.png',
+		emojione: 'https://slack.global.ssl.fastly.net/66f9/img/emoji_2015/sheet_emojione_64_indexed_128colors.png',
+	},
+};
+</script>
+
+	<!-- output_js "core" -->
+<script type="text/javascript" src="https://slack.global.ssl.fastly.net/0fed/js/libs/jquery-2.1.4.js" crossorigin="anonymous"></script>
+
+	<!-- output_js "core_web" -->
+<script type="text/javascript" src="https://slack.global.ssl.fastly.net/896b0/js/rollup-core_web.js" crossorigin="anonymous"></script>
+
+	<!-- output_js "secondary" -->
+
+		<!-- output_js "regular" -->
+<script type="text/javascript" src="https://slack.global.ssl.fastly.net/3ad4/js/sticky_nav.js" crossorigin="anonymous"></script>
+
+	
+	<!-- slack-www295 / 2015-08-31 13:24:25 / v428ae7cf74e60bfe2100ee2100e3378579c00ef8 -->
+<style>.color_9f69e7:not(.nuc) {color:#9F69E7;}.color_4bbe2e:not(.nuc) {color:#4BBE2E;}.color_e7392d:not(.nuc) {color:#E7392D;}.color_3c989f:not(.nuc) {color:#3C989F;}.color_674b1b:not(.nuc) {color:#674B1B;}.color_e96699:not(.nuc) {color:#E96699;}.color_e0a729:not(.nuc) {color:#E0A729;}.color_684b6c:not(.nuc) {color:#684B6C;}.color_5b89d5:not(.nuc) {color:#5B89D5;}.color_2b6836:not(.nuc) {color:#2B6836;}.color_99a949:not(.nuc) {color:#99A949;}.color_df3dc0:not(.nuc) {color:#DF3DC0;}.color_4cc091:not(.nuc) {color:#4CC091;}.color_9b3b45:not(.nuc) {color:#9B3B45;}.color_d58247:not(.nuc) {color:#D58247;}.color_bb86b7:not(.nuc) {color:#BB86B7;}.color_5a4592:not(.nuc) {color:#5A4592;}.color_db3150:not(.nuc) {color:#DB3150;}.color_235e5b:not(.nuc) {color:#235E5B;}.color_9e3997:not(.nuc) {color:#9E3997;}.color_53b759:not(.nuc) {color:#53B759;}.color_c386df:not(.nuc) {color:#C386DF;}.color_385a86:not(.nuc) {color:#385A86;}.color_a63024:not(.nuc) {color:#A63024;}.color_5870dd:not(.nuc) {color:#5870DD;}.color_ea2977:not(.nuc) {color:#EA2977;}.color_50a0cf:not(.nuc) {color:#50A0CF;}.color_d55aef:not(.nuc) {color:#D55AEF;}.color_d1707d:not(.nuc) {color:#D1707D;}.color_43761b:not(.nuc) {color:#43761B;}.color_e06b56:not(.nuc) {color:#E06B56;}.color_8f4a2b:not(.nuc) {color:#8F4A2B;}.color_902d59:not(.nuc) {color:#902D59;}.color_de5f24:not(.nuc) {color:#DE5F24;}.color_a2a5dc:not(.nuc) {color:#A2A5DC;}.color_827327:not(.nuc) {color:#827327;}.color_3c8c69:not(.nuc) {color:#3C8C69;}.color_8d4b84:not(.nuc) {color:#8D4B84;}.color_84b22f:not(.nuc) {color:#84B22F;}.color_4ec0d6:not(.nuc) {color:#4EC0D6;}.color_e23f99:not(.nuc) {color:#E23F99;}.color_e475df:not(.nuc) {color:#E475DF;}.color_619a4f:not(.nuc) {color:#619A4F;}.color_a72f79:not(.nuc) {color:#A72F79;}.color_7d414c:not(.nuc) {color:#7D414C;}.color_aba727:not(.nuc) {color:#ABA727;}.color_965d1b:not(.nuc) {color:#965D1B;}.color_4d5e26:not(.nuc) {color:#4D5E26;}.color_dd8527:not(.nuc) {color:#DD8527;}.color_bd9336:not(.nuc) {color:#BD9336;}.color_e85d72:not(.nuc) {color:#E85D72;}.color_dc7dbb:not(.nuc) {color:#DC7DBB;}.color_bc3663:not(.nuc) {color:#BC3663;}.color_9d8eee:not(.nuc) {color:#9D8EEE;}.color_8469bc:not(.nuc) {color:#8469BC;}.color_73769d:not(.nuc) {color:#73769D;}.color_b14cbc:not(.nuc) {color:#B14CBC;}</style>
+</body>
+</html>
